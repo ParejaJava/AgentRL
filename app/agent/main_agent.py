@@ -4,14 +4,16 @@ from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 from uuid import uuid4
 
-from .llm import LLMConfig, load_llm_config
+from langchain_openai import ChatOpenAI
+
+from .llm import get_llm
 
 
 @dataclass(slots=True)
 class MainAgent:
     """Minimal main-agent facade ready for model and tool integration."""
 
-    llm: LLMConfig = field(default_factory=load_llm_config)
+    llm: ChatOpenAI = field(default_factory=get_llm)
 
     async def run_agent(self, message: str) -> AsyncIterator[dict[str, str]]:
         """Run one task and stream normalized AG-UI-style events."""

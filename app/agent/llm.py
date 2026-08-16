@@ -1,24 +1,17 @@
-"""Language-model initialization helpers."""
+"""项目统一使用的大语言模型客户端工厂。"""
 
-from dataclasses import dataclass
-from os import getenv
+import os
 
-
-@dataclass(frozen=True, slots=True)
-class LLMConfig:
-    """Runtime model configuration loaded from environment variables."""
-
-    model: str = "gpt-4.1-mini"
-    api_key: str | None = None
-    base_url: str | None = None
+from langchain_openai import ChatOpenAI
 
 
-def load_llm_config() -> LLMConfig:
-    """Load model configuration without creating a provider-specific client."""
+def get_llm() -> ChatOpenAI:
+    """根据环境变量创建供所有 Agent 循环使用的 ChatOpenAI 客户端。"""
 
-    return LLMConfig(
-        model=getenv("LLM_MODEL", "gpt-4.1-mini"),
-        api_key=getenv("OPENAI_API_KEY"),
-        base_url=getenv("OPENAI_BASE_URL"),
+    # 使用统一工厂可避免每个 Agent 分别维护模型名称、密钥和服务地址。
+    return ChatOpenAI(
+        model=os.getenv("LLM_MODEL_NAME", "qwen-max"),
+        api_key=os.getenv("LLM_API_KEY"),
+        base_url=os.getenv("LLM_BASE_URL"),
+        temperature=1,
     )
-
