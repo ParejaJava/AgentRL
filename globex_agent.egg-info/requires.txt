@@ -2,9 +2,14 @@ fastapi<1.0,>=0.115
 langchain<2.0,>=1.0
 langchain-openai<2.0,>=0.3
 langgraph<2.0,>=1.0
+numpy<3.0,>=1.26
 uvicorn[standard]<1.0,>=0.30
 
 [dev]
 httpx<1.0,>=0.27
 pytest<9.0,>=8.0
 ruff<1.0,>=0.8
+
+[search]
+faiss-cpu<2.0,>=1.15
+FlagEmbedding<2.0,>=1.3

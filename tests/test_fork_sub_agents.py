@@ -1,12 +1,14 @@
 """验证子 AgentLoop 的 fork 判断、并发调度和上下文隔离。"""
 
 import asyncio
+import json
 from typing import Any
 
 from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableConfig
+from langchain_core.tools import BaseTool
 
-from app.agent.sub_agents import ForkedAgentLoop, should_fork
+from app.agent.sub_agents import ForkedAgentLoop, create_fork_tool, should_fork
 
 
 class FakeAgent:
@@ -72,3 +74,19 @@ def test_forked_agent_loop_uses_independent_threads() -> None:
     assert len(thread_ids) == 3
     assert all(thread_id.startswith("sub-") for thread_id in thread_ids)
     assert fake_agent.max_active_calls == 2
+
+
+def test_create_fork_tool_uses_decorated_async_tool() -> None:
+    loop = ForkedAgentLoop(FakeAgent())
+
+    fork_tool = create_fork_tool(loop)
+    result = asyncio.run(
+        fork_tool.ainvoke({"tasks": ["任务一"], "reason": "parallel"})
+    )
+
+    assert isinstance(fork_tool, BaseTool)
+    assert fork_tool.name == "fork_sub_agents"
+    assert json.loads(result) == {
+        "fork_reason": "parallel",
+        "results": [{"task": "任务一", "answer": "完成：任务一"}],
+    }

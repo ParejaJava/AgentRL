@@ -4,13 +4,13 @@ import asyncio
 import json
 import random
 from collections.abc import Callable, Sequence
-from typing import Any, Literal, Protocol, cast
+from typing import Any, Literal, Protocol
 from uuid import uuid4
 
 from langchain.agents import create_agent
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.runnables import RunnableConfig
-from langchain_core.tools import BaseTool, StructuredTool
+from langchain_core.tools import BaseTool, tool
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -140,9 +140,10 @@ class ForkedAgentLoop:
         return list(await asyncio.gather(*(run_with_limit(item) for item in demands)))
 
 
-def create_fork_tool(sub_agent_loop: ForkedAgentLoop) -> StructuredTool:
+def create_fork_tool(sub_agent_loop: ForkedAgentLoop) -> BaseTool:
     """创建供主 AgentLoop 调用的 fork 工具。"""
 
+    @tool
     async def fork_sub_agents(tasks: list[str], reason: ForkReason) -> str:
         """Fork 子 AgentLoop 并只返回各子任务的最终回答。
 
@@ -165,4 +166,4 @@ def create_fork_tool(sub_agent_loop: ForkedAgentLoop) -> StructuredTool:
             ensure_ascii=False,
         )
 
-    return cast(StructuredTool, StructuredTool.from_function(coroutine=fork_sub_agents))
+    return fork_sub_agents
