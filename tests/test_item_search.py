@@ -7,19 +7,24 @@ from collections.abc import Mapping, Sequence
 import numpy as np
 from langchain_core.tools import BaseTool
 
-from app.tools.item_search.config import ItemSearchConfig
-from app.tools.item_search.faiss_index import InMemoryIndexRegistry, validate_index_id
-from app.tools.item_search.fusion import fuse_request_vector
-from app.tools.item_search.schemas import (
+from app.application.catalog.config import ItemSearchConfig
+from app.application.catalog.fusion import fuse_request_vector
+from app.application.catalog.models import (
     FloatVector,
     ItemSearchRequest,
-    Product,
     RecallHit,
     UserSignal,
 )
-from app.tools.item_search.service import ItemSearchService
-from app.tools.item_search.tool import create_item_search_tool
-from app.tools.item_search.user_tower import InMemoryUserSignalProvider
+from app.application.catalog.search_catalog import ItemSearchService
+from app.domain.catalog import Product
+from app.infrastructure.langchain.tools.product_search import create_item_search_tool
+from app.infrastructure.retrieval.item_search.faiss_index import (
+    InMemoryIndexRegistry,
+    validate_index_id,
+)
+from app.infrastructure.retrieval.item_search.user_tower import (
+    InMemoryUserSignalProvider,
+)
 
 
 class FakeEncoder:

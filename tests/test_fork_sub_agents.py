@@ -8,7 +8,8 @@ from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import BaseTool
 
-from app.agent.sub_agents import ForkedAgentLoop, create_fork_tool, should_fork
+from app.domain.orchestration import OrchestrationPolicy, should_fork
+from app.infrastructure.langchain.sub_agents import ForkedAgentLoop, create_fork_tool
 
 
 class FakeAgent:
@@ -59,6 +60,18 @@ def test_should_fork_when_any_condition_matches() -> None:
     )
 
 
+def test_orchestration_policy_normalizes_fork_plan() -> None:
+    """Domain Orchestrator 应清理空任务和重复任务。"""
+
+    plan = OrchestrationPolicy().create_fork_plan(
+        [" 搜索亚马逊 ", "", "搜索亚马逊", "搜索 Shopee"],
+        "parallel",
+    )
+
+    assert plan.tasks == ("搜索亚马逊", "搜索 Shopee")
+    assert plan.reason == "parallel"
+
+
 def test_forked_agent_loop_uses_independent_threads() -> None:
     fake_agent = FakeAgent()
     loop = ForkedAgentLoop(fake_agent, max_concurrency=2)
@@ -80,9 +93,7 @@ def test_create_fork_tool_uses_decorated_async_tool() -> None:
     loop = ForkedAgentLoop(FakeAgent())
 
     fork_tool = create_fork_tool(loop)
-    result = asyncio.run(
-        fork_tool.ainvoke({"tasks": ["任务一"], "reason": "parallel"})
-    )
+    result = asyncio.run(fork_tool.ainvoke({"tasks": ["任务一"], "reason": "parallel"}))
 
     assert isinstance(fork_tool, BaseTool)
     assert fork_tool.name == "fork_sub_agents"

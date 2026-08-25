@@ -6,7 +6,7 @@ from typing import Any
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 
-from app.agent.llm import get_llm
+from app.infrastructure.llm import get_llm
 
 # 系统提示词不仅定义角色，也告诉模型多步骤任务应按什么顺序执行。
 SYSTEM_PROMPT = """你是一个全球购物助手。
@@ -52,9 +52,7 @@ def print_step(step: dict[str, Any]) -> None:
         for message in update.get("messages", []):
             # AIMessage.tool_calls 保存模型请求执行的工具名称和参数。
             for tool_call in getattr(message, "tool_calls", []):
-                print(
-                    f"[模型选择工具] {tool_call['name']}，参数：{tool_call['args']}"
-                )
+                print(f"[模型选择工具] {tool_call['name']}，参数：{tool_call['args']}")
 
             if message.content:
                 print(f"[{message.type}] {message.content}")

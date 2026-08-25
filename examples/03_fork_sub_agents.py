@@ -8,8 +8,8 @@ from typing import Any
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 
-from app.agent.llm import get_llm
-from app.agent.sub_agents import ForkedAgentLoop, create_fork_tool
+from app.infrastructure.langchain.sub_agents import ForkedAgentLoop, create_fork_tool
+from app.infrastructure.llm import get_llm
 
 CHILD_PROMPT = """你是购物调研子 Agent。
 先调用平台查询工具获取事实，再给出简短结论。只处理当前子任务，不假设其他线程的信息。
