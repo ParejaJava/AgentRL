@@ -24,7 +24,7 @@ from langchain_core.messages import (
 from langchain_core.tools import BaseTool
 from langgraph.types import Command
 
-from app.domain.context import (
+from app.application.context_governance import (
     CompressionPolicyInput,
     CompressionStrategy,
     DeterministicCompressionPolicy,

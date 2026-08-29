@@ -10,9 +10,9 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from app.application.agents import RunAgent
+from app.application.agents import RunAgent, RunAgentCommand
+from app.application.runtime import ShoppingContextSnapshot
 from app.composition import ApplicationContainer, build_container
-from app.infrastructure.context import RequestContext, reset_context, set_context
 
 from .connection import ConnectionManager
 from .dto import AgentRequest
@@ -52,14 +52,11 @@ def create_app(
         """通过 SSE 流式执行一次 Agent Run。"""
 
         use_case = container_provider().run_agent
+        command = _to_command(request)
 
         async def event_stream() -> AsyncIterator[str]:
-            token = set_context(RequestContext(request.thread_id, request.session_dir))
-            try:
-                async for event in as_sse(use_case.execute(request.message)):
-                    yield event
-            finally:
-                reset_context(token)
+            async for event in as_sse(use_case.execute(command)):
+                yield event
 
         return StreamingResponse(event_stream(), media_type="text/event-stream")
 
@@ -72,20 +69,59 @@ def create_app(
         try:
             while True:
                 payload = await websocket.receive_json()
-                message = str(payload.get("message", ""))
-                thread_id = str(payload.get("thread_id") or connection_thread_id)
-                session_dir = payload.get("session_dir")
-                token = set_context(RequestContext(thread_id, session_dir))
-                try:
-                    use_case: RunAgent = container_provider().run_agent
-                    async for event in use_case.execute(message):
-                        await connections.send(websocket, event)
-                finally:
-                    reset_context(token)
+                request = AgentRequest.model_validate(
+                    {
+                        **payload,
+                        "thread_id": payload.get("thread_id")
+                        or connection_thread_id,
+                    }
+                )
+                use_case: RunAgent = container_provider().run_agent
+                async for event in use_case.execute(_to_command(request)):
+                    await connections.send(websocket, event)
         except WebSocketDisconnect:
             connections.disconnect(websocket)
 
+    @api.websocket("/ws/events/{shopping_session_id}")
+    async def session_events(
+        websocket: WebSocket,
+        shopping_session_id: str,
+    ) -> None:
+        """订阅指定购物会话的过程事件，不在该连接中启动 Agent。"""
+
+        await websocket.accept()
+        event_bus = container_provider().event_bus
+        queue = event_bus.subscribe(shopping_session_id)
+        try:
+            while True:
+                event = await queue.get()
+                try:
+                    await websocket.send_json(event.to_dict())
+                finally:
+                    queue.task_done()
+        except WebSocketDisconnect:
+            pass
+        finally:
+            event_bus.unsubscribe(shopping_session_id, queue)
+
     return api
+
+
+def _to_command(request: AgentRequest) -> RunAgentCommand:
+    """把不可信接口 DTO 映射为应用层不可变命令。"""
+
+    shopping = ShoppingContextSnapshot(
+        shopping_session_id=request.shopping_session_id,
+        buyer_id=request.buyer_id,
+        locale=request.locale,
+        currency=request.currency,
+    )
+    return RunAgentCommand(
+        message=request.message,
+        shopping=shopping,
+        thread_id=request.thread_id,
+        session_dir=request.session_dir,
+    )
 
 
 app = create_app()

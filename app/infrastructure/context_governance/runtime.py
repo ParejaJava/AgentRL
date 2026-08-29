@@ -8,7 +8,8 @@ from typing import Any
 
 from langgraph.config import get_config
 
-from app.infrastructure.context import RequestContext, current_context
+from app.application.runtime import AgentExecutionContext
+from app.infrastructure.context import current_execution_context
 
 from .config import GovernanceConfig
 
@@ -22,14 +23,14 @@ def sanitize_thread_id(thread_id: str) -> str:
     return sanitized or "default"
 
 
-def resolve_request_context(runtime: Any | None = None) -> RequestContext:
+def resolve_request_context(runtime: Any | None = None) -> AgentExecutionContext:
     """优先从 LangGraph Runtime 获取上下文，并提供兼容回退。"""
 
     runtime_context = getattr(runtime, "context", None)
-    if isinstance(runtime_context, RequestContext):
+    if isinstance(runtime_context, AgentExecutionContext):
         return runtime_context
 
-    scoped_context = current_context.get()
+    scoped_context = current_execution_context.get()
     if scoped_context is not None:
         return scoped_context
 
@@ -38,11 +39,11 @@ def resolve_request_context(runtime: Any | None = None) -> RequestContext:
         thread_id = str(config.get("configurable", {}).get("thread_id", "default"))
     except RuntimeError:
         thread_id = "default"
-    return RequestContext(thread_id=thread_id)
+    return AgentExecutionContext(thread_id=thread_id)
 
 
 def resolve_session_dir(
-    context: RequestContext,
+    context: AgentExecutionContext,
     config: GovernanceConfig,
 ) -> Path:
     """在配置的会话根目录内解析并校验当前线程目录。"""

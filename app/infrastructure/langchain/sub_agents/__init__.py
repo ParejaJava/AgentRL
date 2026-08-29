@@ -1,6 +1,6 @@
-"""跨平台和领域专用的子 AgentLoop 实现。"""
+"""LangGraph 子 AgentLoop 适配器。"""
 
-from app.domain.orchestration import ForkReason, should_fork
+from app.application.agents import ForkReason, should_fork
 
 from .fork import ForkedAgentLoop, create_fork_tool
 

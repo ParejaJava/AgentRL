@@ -8,7 +8,7 @@ from typing import Any, Literal, NotRequired
 from langchain.agents.middleware import AgentState
 from pydantic import BaseModel, Field
 
-from app.domain.context import CompressionStrategy
+from app.application.context_governance import CompressionStrategy
 
 
 def utc_now() -> datetime:

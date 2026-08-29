@@ -13,8 +13,12 @@ from langchain_core.tools import BaseTool
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.checkpoint.memory import InMemorySaver
 
-from app.domain.runtime import AgentId, AgentRun, RunId, ThreadId
-from app.infrastructure.context import RequestContext, current_context
+from app.application.runtime import AgentExecutionContext
+from app.infrastructure.context import (
+    current_execution_context,
+    reset_context,
+    set_context,
+)
 from app.infrastructure.context_governance.compressor import ContextCompressor
 from app.infrastructure.context_governance.config import GovernanceConfig
 from app.infrastructure.context_governance.factory import create_context_middleware
@@ -25,7 +29,7 @@ from .sub_agents import ForkedAgentLoop, create_fork_tool
 
 
 class MainAgent:
-    """使用 LangChain `create_agent` 运行主循环并输出前端事件。"""
+    """把 LangChain `create_agent` 适配为应用层 Runtime 端口。"""
 
     def __init__(
         self,
@@ -72,31 +76,25 @@ class MainAgent:
             system_prompt=SYSTEM_PROMPT,
             middleware=main_middleware,
             state_schema=SessionAgentState,
-            context_schema=RequestContext,
+            context_schema=AgentExecutionContext,
             checkpointer=self._checkpointer,
             name="main_agent",
         )
 
-    async def run_agent(self, message: str) -> AsyncIterator[dict[str, str]]:
-        """运行一次主 AgentLoop，并流式输出归一化事件。"""
+    async def stream(
+        self,
+        message: str,
+        context: AgentExecutionContext,
+    ) -> AsyncIterator[dict[str, str]]:
+        """执行 LangGraph 循环，只输出框架归一化后的内容片段。"""
 
-        run_id = str(uuid4())
-        request_context = current_context.get() or RequestContext(
-            thread_id=f"main-{uuid4().hex[:12]}"
-        )
-        run = AgentRun(
-            run_id=RunId(run_id),
-            thread_id=ThreadId(request_context.thread_id),
-            agent_id=AgentId("main_agent"),
-        )
-        run.start()
-        config = {"configurable": {"thread_id": request_context.thread_id}}
-        yield {"type": "run_started", "run_id": run_id}
+        config = {"configurable": {"thread_id": context.thread_id}}
+        token = set_context(context)
         try:
             async for update in self._agent.astream(
                 {"messages": [("user", message)]},
                 config=config,
-                context=request_context,
+                context=context,
                 stream_mode="updates",
             ):
                 if not isinstance(update, dict):
@@ -113,9 +111,22 @@ class MainAgent:
                                 "type": "text_message_content",
                                 "content": content,
                             }
-        except Exception as exc:  # noqa: BLE001 - API 边界必须转换运行时错误事件。
-            run.fail(str(exc))
+        finally:
+            reset_context(token)
+
+    async def run_agent(self, message: str) -> AsyncIterator[dict[str, str]]:
+        """兼容旧调用入口；新代码应通过应用层 `RunAgent.execute` 调用。"""
+
+        run_id = str(uuid4())
+        context = current_execution_context.get() or AgentExecutionContext(
+            thread_id=f"main-{uuid4().hex[:12]}",
+            run_id=run_id,
+        )
+        yield {"type": "run_started", "run_id": run_id}
+        try:
+            async for event in self.stream(message, context):
+                yield event
+        except Exception as exc:  # noqa: BLE001 - 仅为旧入口保持事件兼容。
             yield {"type": "run_error", "message": str(exc), "run_id": run_id}
             return
-        run.complete()
         yield {"type": "run_finished", "run_id": run_id}

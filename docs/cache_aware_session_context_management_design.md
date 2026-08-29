@@ -1827,7 +1827,7 @@ ChildAgentResult
 
 | 设计能力 | 实现位置 |
 |---|---|
-| 纯确定性压缩策略和 Epoch Roll 决策 | `app/domain/context/` |
+| 纯确定性压缩策略和 Epoch Roll 决策 | `app/application/context_governance/` |
 | D1～D4 适配 DTO、Session State、CompressionDelta | `app/infrastructure/context_governance/schemas.py` |
 | L0/L1 双 breakpoint 与双哈希 | `app/infrastructure/context_governance/breakpoint.py` |
 | 结构化增量摘要和 Baseline 合并 | `app/infrastructure/context_governance/compressor.py` |
@@ -1838,7 +1838,7 @@ ChildAgentResult
 | Qwen 显式缓存和通用隐式缓存 | `app/infrastructure/context_governance/provider_cache/` |
 | LangChain Model/Tool Middleware | `app/infrastructure/context_governance/middleware.py` |
 | 主 AgentLoop Driver | `app/infrastructure/langchain/main_agent.py` |
-| fork 领域规则 | `app/domain/orchestration/policy.py` |
+| fork 应用编排规则 | `app/application/agents/orchestration.py` |
 | fork 子 Agent LangGraph Driver | `app/infrastructure/langchain/sub_agents/fork.py` |
 
 第一版有意不实现：

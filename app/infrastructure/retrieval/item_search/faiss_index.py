@@ -16,6 +16,7 @@ from app.application.catalog.ports import ItemVectorIndex
 from app.domain.catalog import Product
 
 from .fusion import normalize_matrix, normalize_vector
+from .lexical import keyword_2gram_score
 
 _INDEX_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}")
 
@@ -123,7 +124,7 @@ class FaissItemIndex:
         index.add_with_ids(matrix, numeric_ids)
 
         manifest = IndexManifest(
-            schema_version=1,
+            schema_version=2,
             index_id=index_id,
             embedding_model=embedding_model,
             embedding_dimension=config.embedding_dimension,
@@ -161,6 +162,22 @@ class FaissItemIndex:
                 hits.append(RecallHit(item_id=item_id, score=float(score)))
         return hits
 
+    def keyword_search(self, query: str, top_k: int) -> Sequence[RecallHit]:
+        """在同一索引商品快照上执行无模型的关键词二元组召回。"""
+
+        if top_k < 1:
+            raise ValueError("top_k must be positive")
+        scored = [
+            RecallHit(
+                item_id=product.item_id,
+                score=keyword_2gram_score(query, product.to_search_text()),
+            )
+            for product in self._products.values()
+        ]
+        matched = [hit for hit in scored if hit.score > 0]
+        matched.sort(key=lambda hit: (hit.score, hit.item_id), reverse=True)
+        return tuple(matched[:top_k])
+
     def get_product(self, item_id: str) -> Product:
         try:
             return self._products[item_id]
@@ -195,7 +212,7 @@ class FaissItemIndex:
             (directory / "manifest.json").read_text(encoding="utf-8")
         )
         manifest = IndexManifest(**manifest_data)
-        if manifest.schema_version != 1:
+        if manifest.schema_version not in {1, 2}:
             raise ValueError("unsupported item index schema version")
         if manifest.index_type != "IndexHNSWFlat":
             raise ValueError("unsupported item index type")
@@ -205,7 +222,7 @@ class FaissItemIndex:
         products: dict[str, Product] = {}
         faiss_ids: dict[int, str] = {}
         for row in rows:
-            product = Product(**row["product"])
+            product = Product.from_dict(row["product"])
             products[product.item_id] = product
             faiss_ids[int(row["faiss_id"])] = product.item_id
 

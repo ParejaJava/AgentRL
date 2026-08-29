@@ -2,12 +2,14 @@
 
 Globex Agent 是一个面向多 Agent 场景的全栈项目骨架，后端使用 FastAPI，前端使用 React + Vite。
 
-后端采用 DDD-lite + Hexagonal/Onion Architecture：Agent Runtime、编排和上下文治理规则属于纯 Domain；LangChain、LangGraph、模型供应商、SQLite、FAISS 和 FastAPI 都位于外层适配器。详细依赖规则见 [`docs/architecture.md`](docs/architecture.md)。
+后端采用 DDD-lite + Hexagonal/Onion Architecture：`domain` 只保存电商业务模型与规则；Agent Runtime、编排和上下文治理策略属于 `application`；LangChain、LangGraph、ContextVar、SQLite、FAISS 和 FastAPI 都位于外层适配器。详细调整说明见 [`docs/architecture_reorganization.md`](docs/architecture_reorganization.md)。
 
 ## 快速开始
 
 ```bash
-uv sync
+uv sync --extra search --extra rag
+docker compose -f docker/docker-compose.yml up -d opensearch
+uv run python scripts/ingest_category_knowledge.py
 uv run uvicorn app.presentation.server:app --reload
 ```
 
@@ -38,6 +40,41 @@ LLM_EXPLICIT_CACHE=true
 
 显式缓存标记只添加到临时 Prompt Projection，不会写入 LangGraph State。
 
+## 品类洞察知识库
+
+`category_insight` 会在商品搜索前后提供稳定的品类常识。首次使用或修改
+`knowledge/*.md` 后，运行一次增量摄取：
+
+```bash
+uv run python scripts/ingest_category_knowledge.py
+```
+
+摄取脚本只对新增或内容哈希发生变化的 Markdown 调用结构化 LLM，结果保存在
+`data/category_insight/cards.jsonl`，未变化文档会直接复用并增量同步 OpenSearch。在线查询采用
+BM25 + `BAAI/bge-m3` KNN 混合召回，由 OpenSearch Search Pipeline 做加权 RRF，再使用
+`BAAI/bge-reranker-v2-m3` 精排。它不会调用结构化生成式 LLM，也不会把知识库原文返回给
+Agent；详细设计见 [`docs/category_insight.md`](docs/category_insight.md)。
+
+摄取完成后可运行 100 条离线检索评测：
+
+```bash
+uv run python scripts/evaluate_category_recall.py --backend opensearch
+```
+
+报告包含 Recall@K、Precision@K、MRR、NDCG@K、负例拒答准确率和标签切片结果。
+
+商品搜索工具使用独立的 60 商品、67 查询评测集：
+
+```bash
+uv run python scripts/build_product_eval_index.py
+uv run python scripts/evaluate_product_recall.py --k 1 3 5 10
+```
+
+商品搜索的 `category`、`ship_to`、预算、币种和 Top-K 均由结构化参数校验；硬约束
+由应用代码过滤，不交给模型猜测。传入 `ship_to` 后，商品卡会内联“商品小计 + 运费
++ 关税”的估算到手价，并携带静态规则及汇率快照版本。当前规则边界、计算公式和索引
+兼容性见 [`app/infrastructure/retrieval/item_search/README.md`](app/infrastructure/retrieval/item_search/README.md)。
+
 前端开发：
 
 ```bash
@@ -47,3 +84,6 @@ npm run dev
 ```
 
 健康检查：`GET http://127.0.0.1:8000/health`
+
+会话事件订阅：`WS /ws/events/{shopping_session_id}`。`shopping_session_id`
+是购物会话和事件分区键，`thread_id` 是 LangGraph 短期消息历史键，两者不能混用。

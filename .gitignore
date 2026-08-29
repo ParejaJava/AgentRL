@@ -9,6 +9,8 @@ pytest-context-temp/
 .ruff_cache/
 data/*
 !data/.gitkeep
+eval/reports/*.json
+!eval/reports/.gitkeep
 frontend/node_modules/
 frontend/dist/
 

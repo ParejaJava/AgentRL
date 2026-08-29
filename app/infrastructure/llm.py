@@ -28,6 +28,18 @@ def create_compression_model(settings: Settings) -> ChatOpenAI:
     )
 
 
+def create_category_structuring_model(settings: Settings) -> ChatOpenAI:
+    """创建只供离线品类知识摄取使用的零温度结构化模型。"""
+
+    return ChatOpenAI(
+        model=settings.category_structuring_model,
+        api_key=settings.llm_api_key,
+        base_url=settings.llm_base_url,
+        temperature=0,
+        max_tokens=settings.category_structuring_max_tokens,
+    )
+
+
 def get_llm() -> ChatOpenAI:
     """兼容入口：从当前环境创建聊天模型。"""
 

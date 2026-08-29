@@ -91,3 +91,14 @@ def test_application_does_not_depend_on_concrete_adapters() -> None:
         forbidden_roots=APPLICATION_FORBIDDEN_ROOTS,
         forbidden_app_prefixes=APPLICATION_FORBIDDEN_APP_PREFIXES,
     )
+
+
+def test_agent_platform_modules_do_not_return_to_domain() -> None:
+    """平台运行机制属于 Application，不能再次伪装成电商 Domain。"""
+
+    forbidden_packages = {"context", "orchestration", "runtime", "session", "tools"}
+    current_packages = {
+        path.name for path in DOMAIN_ROOT.iterdir() if path.is_dir()
+    }
+
+    assert not current_packages & forbidden_packages

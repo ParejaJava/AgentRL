@@ -1,10 +1,10 @@
-"""验证 Agent Runtime 核心状态机不依赖 LangGraph。"""
+"""验证 Agent Runtime 应用状态机不依赖 LangGraph。"""
 
-from app.domain.runtime import AgentId, AgentRun, RunId, RunStatus, ThreadId
+from app.application.runtime import AgentId, AgentRun, RunId, RunStatus, ThreadId
 
 
 def test_agent_run_lifecycle() -> None:
-    """Run 只能按照领域状态机从创建进入运行和完成。"""
+    """Run 只能按照应用状态机从创建进入运行和完成。"""
 
     run = AgentRun(
         run_id=RunId("run-1"),

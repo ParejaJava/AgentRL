@@ -15,10 +15,10 @@ from langchain_core.tools import BaseTool, tool
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.checkpoint.memory import InMemorySaver
 
-from app.domain.orchestration import ForkReason, OrchestrationPolicy
+from app.application.agents import ForkReason, OrchestrationPolicy
+from app.application.runtime import AgentExecutionContext
 from app.infrastructure.context import (
-    RequestContext,
-    current_context,
+    current_execution_context,
     reset_context,
     set_context,
 )
@@ -78,7 +78,7 @@ class ForkedAgentLoop:
             system_prompt=system_prompt,
             middleware=middleware,
             state_schema=SessionAgentState,
-            context_schema=RequestContext,
+            context_schema=AgentExecutionContext,
             checkpointer=checkpointer or InMemorySaver(),
             name="forked_sub_agent",
         )
@@ -97,7 +97,7 @@ class ForkedAgentLoop:
         config: RunnableConfig = {
             "configurable": {"thread_id": sub_thread_id},
         }
-        parent = current_context.get()
+        parent = current_execution_context.get()
         if parent is not None and parent.session_dir:
             parent_session_dir = parent.session_dir.rstrip("/\\")
             child_session_dir = (
@@ -110,8 +110,10 @@ class ForkedAgentLoop:
             )
         else:
             child_session_dir = None
-        child_context = RequestContext(
+        child_context = AgentExecutionContext(
             thread_id=sub_thread_id,
+            shopping=parent.shopping if parent is not None else None,
+            run_id=str(uuid4()),
             session_dir=child_session_dir,
         )
         token = set_context(child_context)
@@ -132,7 +134,7 @@ class ForkedAgentLoop:
         self,
         demand: str,
         config: RunnableConfig,
-        context: RequestContext,
+        context: AgentExecutionContext,
     ) -> dict[str, Any]:
         """遇到供应商 429 限流时进行带抖动的指数退避重试。"""
 

@@ -15,12 +15,12 @@ from langchain_core.outputs import ChatGeneration, ChatResult
 from langchain_core.tools import tool
 from langgraph.runtime import Runtime
 
-from app.domain.context import (
+from app.application.context_governance import (
     CompressionPolicyInput,
     CompressionStrategy,
     DeterministicCompressionPolicy,
 )
-from app.infrastructure.context import RequestContext
+from app.application.runtime import AgentExecutionContext
 from app.infrastructure.context_governance.artifact_store import FileArtifactStore
 from app.infrastructure.context_governance.breakpoint import CacheBreakpointManager
 from app.infrastructure.context_governance.config import GovernanceConfig
@@ -244,7 +244,7 @@ def test_governance_invokes_structured_compressor_and_archives_events() -> None:
             HumanMessage(content="当前请求"),
         ]
     }
-    runtime = Runtime(context=RequestContext(thread_id="thread-summary"))
+    runtime = Runtime(context=AgentExecutionContext(thread_id="thread-summary"))
 
     update = asyncio.run(middleware.abefore_model(state, runtime))
 
@@ -281,7 +281,7 @@ def test_governance_does_not_call_llm_below_threshold() -> None:
             HumanMessage(content="当前请求"),
         ]
     }
-    runtime = Runtime(context=RequestContext(thread_id="thread-low-context"))
+    runtime = Runtime(context=AgentExecutionContext(thread_id="thread-low-context"))
 
     update = asyncio.run(middleware.abefore_model(state, runtime))
 
@@ -310,7 +310,7 @@ def test_semantic_invalidation_rolls_epoch_with_llm_baseline() -> None:
         "token_ledger": {"model_calls": 1},
         "cache_epoch": 0,
     }
-    runtime = Runtime(context=RequestContext(thread_id="thread-correction"))
+    runtime = Runtime(context=AgentExecutionContext(thread_id="thread-correction"))
 
     update = asyncio.run(middleware.abefore_model(state, runtime))
 
@@ -335,7 +335,7 @@ def test_tool_middleware_offloads_large_result_without_changing_call_id() -> Non
         tool=large_tool,
         state={"cache_epoch": 2},
         runtime=SimpleNamespace(
-            context=RequestContext(thread_id="thread-tool"),
+            context=AgentExecutionContext(thread_id="thread-tool"),
         ),
     )
 

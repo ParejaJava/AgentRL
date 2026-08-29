@@ -8,7 +8,9 @@ from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import BaseTool
 
-from app.domain.orchestration import OrchestrationPolicy, should_fork
+from app.application.agents import OrchestrationPolicy, should_fork
+from app.application.runtime import AgentExecutionContext, ShoppingContextSnapshot
+from app.infrastructure.context import reset_context, set_context
 from app.infrastructure.langchain.sub_agents import ForkedAgentLoop, create_fork_tool
 
 
@@ -17,6 +19,7 @@ class FakeAgent:
 
     def __init__(self) -> None:
         self.configs: list[RunnableConfig | None] = []
+        self.contexts: list[AgentExecutionContext | None] = []
         self.active_calls = 0
         self.max_active_calls = 0
 
@@ -24,8 +27,10 @@ class FakeAgent:
         self,
         input: dict[str, Any],
         config: RunnableConfig | None = None,
+        context: AgentExecutionContext | None = None,
     ) -> dict[str, Any]:
         self.configs.append(config)
+        self.contexts.append(context)
         demand = input["messages"][0][1]
         self.active_calls += 1
         self.max_active_calls = max(self.max_active_calls, self.active_calls)
@@ -61,7 +66,7 @@ def test_should_fork_when_any_condition_matches() -> None:
 
 
 def test_orchestration_policy_normalizes_fork_plan() -> None:
-    """Domain Orchestrator 应清理空任务和重复任务。"""
+    """Application Orchestrator 应清理空任务和重复任务。"""
 
     plan = OrchestrationPolicy().create_fork_plan(
         [" 搜索亚马逊 ", "", "搜索亚马逊", "搜索 Shopee"],
@@ -101,3 +106,27 @@ def test_create_fork_tool_uses_decorated_async_tool() -> None:
         "fork_reason": "parallel",
         "results": [{"task": "任务一", "answer": "完成：任务一"}],
     }
+
+
+def test_fork_inherits_shopping_session_but_isolates_execution_ids() -> None:
+    """子 Agent 继承购物身份，但必须拥有独立 thread_id 和 run_id。"""
+
+    fake_agent = FakeAgent()
+    loop = ForkedAgentLoop(fake_agent, pass_runtime_context=True)
+    parent = AgentExecutionContext(
+        thread_id="main-thread",
+        run_id="main-run",
+        shopping=ShoppingContextSnapshot("shopping-1", "buyer-1"),
+    )
+
+    token = set_context(parent)
+    try:
+        asyncio.run(loop.arun("搜索亚马逊"))
+    finally:
+        reset_context(token)
+
+    child = fake_agent.contexts[0]
+    assert child is not None
+    assert child.shopping == parent.shopping
+    assert child.thread_id != parent.thread_id
+    assert child.run_id != parent.run_id
