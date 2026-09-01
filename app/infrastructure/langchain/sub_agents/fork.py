@@ -17,8 +17,14 @@ from langgraph.checkpoint.memory import InMemorySaver
 
 from app.application.agents import ForkReason, OrchestrationPolicy
 from app.application.runtime import AgentExecutionContext
+from app.application.tasking import (
+    TaskDispatchService,
+    TaskExecutionOutcome,
+    TaskWorkItem,
+)
 from app.infrastructure.context import (
     current_execution_context,
+    require_context,
     reset_context,
     set_context,
 )
@@ -161,46 +167,141 @@ class ForkedAgentLoop:
     async def arun_many(self, demands: Sequence[str]) -> list[str]:
         """并发执行多个子任务，并按照输入顺序返回最终回答。"""
 
+        settled = await self.arun_many_settled(demands)
+        answers: list[str] = []
+        for result in settled:
+            if isinstance(result, Exception):
+                raise result
+            answers.append(result)
+        return answers
+
+    async def arun_many_settled(
+        self,
+        demands: Sequence[str],
+    ) -> list[str | Exception]:
+        """并发执行并保留每个任务的成功或失败，避免丢失部分结果。"""
+
         if not demands:
             return []
 
         # 信号量限制同时运行的模型请求数，避免触发供应商限流。
         semaphore = asyncio.Semaphore(self._max_concurrency)
 
-        async def run_with_limit(demand: str) -> str:
+        async def run_with_limit(demand: str) -> str | Exception:
             async with semaphore:
-                return await self.arun(demand)
+                try:
+                    return await self.arun(demand)
+                except Exception as exc:  # noqa: BLE001 - 每个子任务独立结算。
+                    return exc
 
         # gather 并发调度任务，同时保持返回结果与 demands 的顺序一致。
         return list(await asyncio.gather(*(run_with_limit(item) for item in demands)))
 
 
-def create_fork_tool(sub_agent_loop: ForkedAgentLoop) -> BaseTool:
+class ForkedTaskExecutor:
+    """把同质 LangGraph 子 AgentLoop 适配为 Application 执行端口。"""
+
+    def __init__(self, sub_agent_loop: ForkedAgentLoop) -> None:
+        self._sub_agent_loop = sub_agent_loop
+
+    async def execute_many(
+        self,
+        tasks: Sequence[TaskWorkItem],
+    ) -> tuple[TaskExecutionOutcome, ...]:
+        """并发执行工作项，并逐项保留成功结果或错误。"""
+
+        settled = await self._sub_agent_loop.arun_many_settled(
+            [task.to_prompt() for task in tasks]
+        )
+        return tuple(
+            TaskExecutionOutcome(
+                task_id=task.task_id,
+                succeeded=not isinstance(result, Exception),
+                result=result if isinstance(result, str) else None,
+                error=str(result) if isinstance(result, Exception) else None,
+            )
+            for task, result in zip(tasks, settled, strict=True)
+        )
+
+
+def create_fork_tool(
+    sub_agent_loop: ForkedAgentLoop,
+    task_dispatcher: TaskDispatchService | None = None,
+) -> BaseTool:
     """创建供主 AgentLoop 调用的 fork 工具。"""
 
     policy = OrchestrationPolicy()
 
     @tool
-    async def fork_sub_agents(tasks: list[str], reason: ForkReason) -> str:
+    async def fork_sub_agents(
+        reason: ForkReason,
+        task_ids: list[str] | None = None,
+        tasks: list[str] | None = None,
+    ) -> str:
         """Fork 子 AgentLoop 并只返回各子任务的最终回答。
 
-        当任务可并行、需要隔离上下文，或预计调用链不少于三层时使用。
-        reason 分别填写 parallel、context_isolation 或 deep_chain。
-        tasks 应拆成彼此完整、可独立执行的任务描述。
+        reason=parallel 时必须传入至少两个由 TaskList 返回且 runnable=true 的
+        task_ids；系统会再次校验依赖、原子认领、并发执行并自动回写 completed 或
+        failed。reason=context_isolation 或 deep_chain 时，可以传 task_ids 走任务看板，
+        也可以传入自包含的 tasks 做一次性隔离执行。task_ids 与 tasks 不能同时传入。
         """
 
-        # Domain Policy 负责批准并规范化 fork，Driver 只负责并发执行。
+        if task_ids and tasks:
+            return json.dumps(
+                {"status": "error", "message": "task_ids 与 tasks 不能同时传入"},
+                ensure_ascii=False,
+            )
+        if task_ids:
+            if task_dispatcher is None:
+                return json.dumps(
+                    {"status": "error", "message": "任务派发服务尚未配置"},
+                    ensure_ascii=False,
+                )
+            try:
+                report = await task_dispatcher.dispatch(
+                    require_context().thread_id,
+                    task_ids,
+                    reason=reason,
+                )
+            except ValueError as exc:
+                return json.dumps(
+                    {"status": "error", "message": str(exc)},
+                    ensure_ascii=False,
+                )
+            return json.dumps(
+                {"status": "ok", **report.to_dict()},
+                ensure_ascii=False,
+            )
+
+        # 配置任务服务后，parallel 不允许绕过 Task DAG 直接提交自然语言任务。
+        if reason == "parallel" and task_dispatcher is not None:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": "parallel 派发必须先创建任务并传入 task_ids",
+                },
+                ensure_ascii=False,
+            )
+
+        # 一次性隔离执行仍由应用层策略清理空任务和重复任务。
         try:
-            plan = policy.create_fork_plan(tasks, reason)
+            plan = policy.create_fork_plan(tasks or [], reason)
         except ValueError as exc:
-            return str(exc)
+            return json.dumps(
+                {"status": "error", "message": str(exc)},
+                ensure_ascii=False,
+            )
         answers = await sub_agent_loop.arun_many(plan.tasks)
         final_answers = [
             {"task": task, "answer": answer}
             for task, answer in zip(plan.tasks, answers, strict=True)
         ]
         return json.dumps(
-            {"fork_reason": plan.reason, "results": final_answers},
+            {
+                "status": "ok",
+                "fork_reason": plan.reason,
+                "results": final_answers,
+            },
             ensure_ascii=False,
         )
 

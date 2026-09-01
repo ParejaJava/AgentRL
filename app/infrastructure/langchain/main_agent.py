@@ -14,6 +14,7 @@ from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.checkpoint.memory import InMemorySaver
 
 from app.application.runtime import AgentExecutionContext
+from app.application.tasking import TaskBoardService, TaskDispatchService
 from app.infrastructure.context import (
     current_execution_context,
     reset_context,
@@ -24,8 +25,8 @@ from app.infrastructure.context_governance.config import GovernanceConfig
 from app.infrastructure.context_governance.factory import create_context_middleware
 from app.infrastructure.context_governance.schemas import SessionAgentState
 
-from .prompts import SYSTEM_PROMPT
-from .sub_agents import ForkedAgentLoop, create_fork_tool
+from .prompts import MAIN_SYSTEM_PROMPT, SUB_AGENT_SYSTEM_PROMPT
+from .sub_agents import ForkedAgentLoop, ForkedTaskExecutor, create_fork_tool
 
 
 class MainAgent:
@@ -37,6 +38,8 @@ class MainAgent:
         model: BaseChatModel,
         tools: Sequence[BaseTool],
         governance_config: GovernanceConfig,
+        main_only_tools: Sequence[BaseTool] = (),
+        task_service: TaskBoardService | None = None,
         compressor: ContextCompressor | None = None,
         checkpointer: BaseCheckpointSaver[Any] | None = None,
         sub_agent_max_concurrency: int = 50,
@@ -49,7 +52,7 @@ class MainAgent:
         child_middleware = create_context_middleware(
             model=self._model,
             tools=child_tools,
-            system_prompt=SYSTEM_PROMPT,
+            system_prompt=SUB_AGENT_SYSTEM_PROMPT,
             agent_id="forked_sub_agent",
             config=self._config,
             compressor=compressor,
@@ -57,15 +60,27 @@ class MainAgent:
         child_loop = ForkedAgentLoop.create(
             model=self._model,
             tools=child_tools,
-            system_prompt=SYSTEM_PROMPT,
+            system_prompt=SUB_AGENT_SYSTEM_PROMPT,
             max_concurrency=sub_agent_max_concurrency,
             middleware=child_middleware,
         )
-        main_tools = [*child_tools, create_fork_tool(child_loop)]
+        task_dispatcher = (
+            TaskDispatchService(task_service, ForkedTaskExecutor(child_loop))
+            if task_service is not None
+            else None
+        )
+        # 任务控制面只属于主 Agent；子 Agent 只复用业务执行工具。
+        main_tools = [
+            *child_tools,
+            *main_only_tools,
+            create_fork_tool(child_loop, task_dispatcher),
+        ]
+        self._child_tool_names = tuple(tool.name for tool in child_tools)
+        self._main_tool_names = tuple(tool.name for tool in main_tools)
         main_middleware = create_context_middleware(
             model=self._model,
             tools=main_tools,
-            system_prompt=SYSTEM_PROMPT,
+            system_prompt=MAIN_SYSTEM_PROMPT,
             agent_id="main_agent",
             config=self._config,
             compressor=compressor,
@@ -73,13 +88,25 @@ class MainAgent:
         self._agent = create_agent(
             model=self._model,
             tools=main_tools,
-            system_prompt=SYSTEM_PROMPT,
+            system_prompt=MAIN_SYSTEM_PROMPT,
             middleware=main_middleware,
             state_schema=SessionAgentState,
             context_schema=AgentExecutionContext,
             checkpointer=self._checkpointer,
             name="main_agent",
         )
+
+    @property
+    def child_tool_names(self) -> tuple[str, ...]:
+        """返回 fork 子 Agent 可见的工具名，用于装配检查和诊断。"""
+
+        return self._child_tool_names
+
+    @property
+    def main_tool_names(self) -> tuple[str, ...]:
+        """返回主 Agent 可见的完整工具名。"""
+
+        return self._main_tool_names
 
     async def stream(
         self,

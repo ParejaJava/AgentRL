@@ -391,3 +391,32 @@ def test_main_agent_runs_create_agent_with_context_governance() -> None:
     assert events[0]["type"] == "run_started"
     assert {event.get("content") for event in events} >= {"治理循环正常"}
     assert events[-1]["type"] == "run_finished"
+
+
+def test_main_agent_does_not_give_main_only_tools_to_children() -> None:
+    @tool
+    def shared_tool(value: str) -> str:
+        """供主 Agent 和子 Agent 共同使用的测试工具。"""
+
+        return value
+
+    @tool
+    def task_control(value: str) -> str:
+        """只允许主 Agent 使用的测试控制面工具。"""
+
+        return value
+
+    agent = MainAgent(
+        model=ToolCapableFakeModel(),
+        tools=[shared_tool],
+        main_only_tools=[task_control],
+        compressor=FakeCompressor(),
+        governance_config=_config(TEST_SESSION_ROOT),
+    )
+
+    assert agent.child_tool_names == ("shared_tool",)
+    assert set(agent.main_tool_names) == {
+        "shared_tool",
+        "task_control",
+        "fork_sub_agents",
+    }

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -32,6 +33,10 @@ class Settings:
     sub_agent_max_concurrency: int
     item_index_root: Path
     item_search_index_id: str
+    retrieval_device: str
+    retrieval_use_fp16: bool
+    retrieval_embedding_batch_size: int
+    retrieval_reranker_batch_size: int
     category_knowledge_root: Path
     category_card_store: Path
     category_ingestion_manifest: Path
@@ -76,6 +81,14 @@ class Settings:
             item_index_root=Path(os.getenv("ITEM_INDEX_ROOT", "data/indexes")),
             item_search_index_id=os.getenv(
                 "ITEM_SEARCH_INDEX_ID", "evaluation-products"
+            ),
+            retrieval_device=os.getenv("RETRIEVAL_DEVICE", "auto").strip().lower(),
+            retrieval_use_fp16=_env_bool("RETRIEVAL_USE_FP16", False),
+            retrieval_embedding_batch_size=int(
+                os.getenv("RETRIEVAL_EMBEDDING_BATCH_SIZE", "16")
+            ),
+            retrieval_reranker_batch_size=int(
+                os.getenv("RETRIEVAL_RERANKER_BATCH_SIZE", "8")
             ),
             category_knowledge_root=Path(
                 os.getenv("CATEGORY_KNOWLEDGE_ROOT", "knowledge")
@@ -156,6 +169,16 @@ class Settings:
             raise ValueError("SUB_AGENT_MAX_CONCURRENCY 必须大于 0")
         if not settings.item_search_index_id.strip():
             raise ValueError("ITEM_SEARCH_INDEX_ID 不能为空")
+        if not settings.retrieval_device:
+            raise ValueError("RETRIEVAL_DEVICE 不能为空")
+        if not re.fullmatch(r"auto|cpu|mps|cuda(?::\d+)?", settings.retrieval_device):
+            raise ValueError(
+                "RETRIEVAL_DEVICE 只能是 auto、cpu、mps、cuda 或 cuda:<序号>"
+            )
+        if settings.retrieval_embedding_batch_size < 1:
+            raise ValueError("RETRIEVAL_EMBEDDING_BATCH_SIZE 必须大于 0")
+        if settings.retrieval_reranker_batch_size < 1:
+            raise ValueError("RETRIEVAL_RERANKER_BATCH_SIZE 必须大于 0")
         if settings.compression_llm_max_tokens < 1:
             raise ValueError("COMPRESSION_LLM_MAX_TOKENS 必须大于 0")
         if settings.category_structuring_max_tokens < 1:

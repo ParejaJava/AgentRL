@@ -18,18 +18,25 @@ def create_item_search_service(
     config: ItemSearchConfig | None = None,
     user_signals: UserSignalProvider | None = None,
     use_fp16: bool = False,
+    device: str = "auto",
+    embedding_batch_size: int = 16,
+    reranker_batch_size: int = 8,
 ) -> ItemSearchService:
-    """装配生产商品搜索服务，但不提前加载两个 BGE 模型。"""
+    """按统一设备、精度和批大小装配商品搜索服务。"""
 
     resolved_config = config or ItemSearchConfig()
     encoder = BGEEmbeddingEncoder(
         resolved_config.embedding_model,
         dimension=resolved_config.embedding_dimension,
+        batch_size=embedding_batch_size,
         use_fp16=use_fp16,
+        device=device,
     )
     reranker = BGEReranker(
         resolved_config.reranker_model,
         use_fp16=use_fp16,
+        device=device,
+        batch_size=reranker_batch_size,
     )
     indexes = FaissDirectoryIndexRegistry(
         index_root,
@@ -50,13 +57,17 @@ def create_item_index_builder(
     *,
     config: ItemSearchConfig | None = None,
     use_fp16: bool = False,
+    device: str = "auto",
+    embedding_batch_size: int = 16,
 ) -> ItemIndexBuilder:
-    """装配与在线检索使用相同 BGE-M3 配置的离线索引构建器。"""
+    """按线上同款推理配置装配离线 BGE-M3 索引构建器。"""
 
     resolved_config = config or ItemSearchConfig()
     encoder = BGEEmbeddingEncoder(
         resolved_config.embedding_model,
         dimension=resolved_config.embedding_dimension,
+        batch_size=embedding_batch_size,
         use_fp16=use_fp16,
+        device=device,
     )
     return ItemIndexBuilder(encoder, config=resolved_config)

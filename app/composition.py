@@ -8,12 +8,14 @@ from app.application.catalog.category_insight_ports import (
     CategoryKnowledgeRetriever,
 )
 from app.application.catalog.search_catalog import ItemSearchService
+from app.application.tasking import TaskBoardService
 from app.infrastructure.context_governance.compressor import StructuredLLMCompressor
 from app.infrastructure.eventbus import InMemoryTradeEventBus
 from app.infrastructure.langchain import MainAgent
 from app.infrastructure.langchain.tools import (
     create_category_insight_tool,
     create_item_search_tool,
+    create_task_tools,
 )
 from app.infrastructure.llm import (
     create_category_structuring_model,
@@ -36,6 +38,7 @@ from app.infrastructure.retrieval.item_search.factory import (
     create_item_search_service,
 )
 from app.infrastructure.settings import Settings
+from app.infrastructure.tasking import SQLiteTaskBoardRepository
 
 
 @dataclass(frozen=True, slots=True)
@@ -74,9 +77,17 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         ),
         create_category_insight_tool(category_insight_service),
     ]
+    task_service = TaskBoardService(
+        SQLiteTaskBoardRepository(
+            resolved.governance.session_root / "task_boards.db"
+        )
+    )
+    task_tools = create_task_tools(task_service)
     runtime = MainAgent(
         model=model,
         tools=tools,
+        main_only_tools=task_tools,
+        task_service=task_service,
         compressor=compressor,
         governance_config=resolved.governance,
         sub_agent_max_concurrency=resolved.sub_agent_max_concurrency,
@@ -127,7 +138,13 @@ def build_item_search_service(
     """为在线工具和离线评测装配同一套商品搜索服务。"""
 
     resolved = settings or Settings.from_env()
-    return create_item_search_service(resolved.item_index_root)
+    return create_item_search_service(
+        resolved.item_index_root,
+        use_fp16=resolved.retrieval_use_fp16,
+        device=resolved.retrieval_device,
+        embedding_batch_size=resolved.retrieval_embedding_batch_size,
+        reranker_batch_size=resolved.retrieval_reranker_batch_size,
+    )
 
 
 def build_item_index_builder(
@@ -135,5 +152,9 @@ def build_item_index_builder(
 ) -> ItemIndexBuilder:
     """为离线索引脚本装配与线上一致的 BGE-M3 编码器。"""
 
-    del settings
-    return create_item_index_builder()
+    resolved = settings or Settings.from_env()
+    return create_item_index_builder(
+        use_fp16=resolved.retrieval_use_fp16,
+        device=resolved.retrieval_device,
+        embedding_batch_size=resolved.retrieval_embedding_batch_size,
+    )

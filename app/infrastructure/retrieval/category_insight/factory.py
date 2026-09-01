@@ -43,8 +43,16 @@ def create_opensearch_category_repository(
     encoder = BGEEmbeddingEncoder(
         settings.category_embedding_model,
         dimension=settings.category_embedding_dimension,
+        batch_size=settings.retrieval_embedding_batch_size,
+        use_fp16=settings.retrieval_use_fp16,
+        device=settings.retrieval_device,
     )
-    reranker = BGEReranker(settings.category_reranker_model)
+    reranker = BGEReranker(
+        settings.category_reranker_model,
+        use_fp16=settings.retrieval_use_fp16,
+        device=settings.retrieval_device,
+        batch_size=settings.retrieval_reranker_batch_size,
+    )
     keyword_fallback = LocalCategoryCardRetriever(
         JsonlCategoryCardStore(settings.category_card_store)
     )

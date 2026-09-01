@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import math
 from collections import defaultdict
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -13,6 +13,8 @@ from typing import Any
 from app.application.catalog.models import ItemSearchCommand
 from app.application.catalog.search_catalog import ItemSearchService
 from app.domain.catalog import ProductSearchSpec
+
+ProductProgressCallback = Callable[[int, int, "EvaluatedProductCase"], None]
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,15 +91,18 @@ def evaluate_product_recall(
     service: ItemSearchService,
     cases: Sequence[ProductRecallCase],
     ks: Sequence[int],
+    *,
+    progress: ProductProgressCallback | None = None,
 ) -> dict[str, Any]:
-    """评测完整 ItemSearch：BGE-M3 召回加 BGE reranker 最终排序。"""
+    """逐条评测完整 ItemSearch，并可在每条完成后回调输出进度。"""
 
     normalized_ks = tuple(sorted(set(ks)))
     if not normalized_ks or normalized_ks[0] < 1:
         raise ValueError("K 必须至少包含一个正整数")
     max_k = normalized_ks[-1]
     evaluated: list[EvaluatedProductCase] = []
-    for case in cases:
+    total = len(cases)
+    for current, case in enumerate(cases, start=1):
         response = service.search(
             ItemSearchCommand(
                 spec=ProductSearchSpec(
@@ -109,22 +114,23 @@ def evaluate_product_recall(
         )
         ranked_ids = tuple(item.product.item_id for item in response.items)
         grades = {item.item_id: item.grade for item in case.relevance}
-        evaluated.append(
-            EvaluatedProductCase(
-                case_id=case.case_id,
-                query=case.query,
-                index_id=case.index_id,
-                kind=case.kind,
-                tags=case.tags,
-                reciprocal_rank=_reciprocal_rank(ranked_ids, grades),
-                metrics={
-                    k: _ranking_at_k(ranked_ids, grades, k)
-                    for k in normalized_ks
-                },
-                expected=tuple(grades),
-                retrieved=ranked_ids,
-            )
+        item = EvaluatedProductCase(
+            case_id=case.case_id,
+            query=case.query,
+            index_id=case.index_id,
+            kind=case.kind,
+            tags=case.tags,
+            reciprocal_rank=_reciprocal_rank(ranked_ids, grades),
+            metrics={
+                k: _ranking_at_k(ranked_ids, grades, k)
+                for k in normalized_ks
+            },
+            expected=tuple(grades),
+            retrieved=ranked_ids,
         )
+        evaluated.append(item)
+        if progress is not None:
+            progress(current, total, item)
 
     report = {
         "dataset": {

@@ -2,7 +2,9 @@
 
 import asyncio
 import json
+from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableConfig
@@ -10,8 +12,14 @@ from langchain_core.tools import BaseTool
 
 from app.application.agents import OrchestrationPolicy, should_fork
 from app.application.runtime import AgentExecutionContext, ShoppingContextSnapshot
+from app.application.tasking import TaskBoardService, TaskDispatchService
 from app.infrastructure.context import reset_context, set_context
-from app.infrastructure.langchain.sub_agents import ForkedAgentLoop, create_fork_tool
+from app.infrastructure.langchain.sub_agents import (
+    ForkedAgentLoop,
+    ForkedTaskExecutor,
+    create_fork_tool,
+)
+from app.infrastructure.tasking import SQLiteTaskBoardRepository
 
 
 class FakeAgent:
@@ -103,6 +111,7 @@ def test_create_fork_tool_uses_decorated_async_tool() -> None:
     assert isinstance(fork_tool, BaseTool)
     assert fork_tool.name == "fork_sub_agents"
     assert json.loads(result) == {
+        "status": "ok",
         "fork_reason": "parallel",
         "results": [{"task": "任务一", "answer": "完成：任务一"}],
     }
@@ -130,3 +139,49 @@ def test_fork_inherits_shopping_session_but_isolates_execution_ids() -> None:
     assert child.shopping == parent.shopping
     assert child.thread_id != parent.thread_id
     assert child.run_id != parent.run_id
+
+
+def test_parallel_fork_dispatches_only_runnable_task_ids_and_writes_back() -> None:
+    """parallel 模式应经过 TaskBoard 认领并自动保存子 Agent 结果。"""
+
+    database = (
+        Path("data/test-output/tasking-tests") / uuid4().hex / "fork-tasks.db"
+    )
+    tasks = TaskBoardService(SQLiteTaskBoardRepository(database))
+    fake_agent = FakeAgent()
+    loop = ForkedAgentLoop(fake_agent, max_concurrency=2)
+    dispatcher = TaskDispatchService(tasks, ForkedTaskExecutor(loop))
+    fork_tool = create_fork_tool(loop, dispatcher)
+
+    async def scenario() -> dict[str, Any]:
+        first = await tasks.create(
+            "main-thread",
+            subject="检索平台一",
+            description="检索平台一的商品",
+        )
+        second = await tasks.create(
+            "main-thread",
+            subject="检索平台二",
+            description="检索平台二的商品",
+        )
+        context = AgentExecutionContext(thread_id="main-thread")
+        token = set_context(context)
+        try:
+            raw = await fork_tool.ainvoke(
+                {
+                    "reason": "parallel",
+                    "task_ids": [first.id, second.id],
+                }
+            )
+        finally:
+            reset_context(token)
+        return json.loads(raw)
+
+    result = asyncio.run(scenario())
+
+    assert result["status"] == "ok"
+    assert [task["status"] for task in result["tasks"]] == [
+        "completed",
+        "completed",
+    ]
+    assert fake_agent.max_active_calls == 2

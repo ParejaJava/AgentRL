@@ -120,3 +120,36 @@ def test_evaluator_computes_precision_recall_mrr_ndcg_and_rejection() -> None:
     assert 0.0 < at_three["ndcg"] < 1.0
     assert report["summary"]["mrr_at_3"] == 0.5
     assert report["summary"]["negative_rejection_accuracy"] == 1.0
+
+
+def test_category_evaluator_reports_each_completed_case() -> None:
+    """进度回调按数据顺序逐条执行，并携带当前序号和总数。"""
+
+    cases = (
+        CategoryRecallCase(
+            case_id="first",
+            query="测试",
+            expected_category="测试品类",
+            relevance=(RelevanceLabel("a.md", "bestseller", "核心", 3),),
+            tags=(),
+        ),
+        CategoryRecallCase(
+            case_id="second",
+            query="无答案",
+            expected_category=None,
+            relevance=(),
+            tags=(),
+        ),
+    )
+    progress: list[tuple[int, int, str]] = []
+
+    evaluate_category_recall(
+        FakeRetriever(),
+        cases,
+        (3,),
+        progress=lambda current, total, item: progress.append(
+            (current, total, item.case_id)
+        ),
+    )
+
+    assert progress == [(1, 2, "first"), (2, 2, "second")]

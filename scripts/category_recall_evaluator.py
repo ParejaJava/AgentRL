@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import math
 from collections import defaultdict
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -14,6 +14,7 @@ from app.application.catalog.category_insight_models import RetrievedCategoryCar
 from app.application.catalog.category_insight_ports import CategoryKnowledgeRetriever
 
 EvaluationKey = tuple[str, str]
+CategoryProgressCallback = Callable[[int, int, "EvaluatedCase"], None]
 
 
 @dataclass(frozen=True, slots=True)
@@ -98,17 +99,26 @@ def evaluate_category_recall(
     retriever: CategoryKnowledgeRetriever,
     cases: Sequence[CategoryRecallCase],
     ks: Sequence[int],
+    *,
+    progress: CategoryProgressCallback | None = None,
 ) -> dict[str, Any]:
-    """运行全量检索，计算正例排序指标与负例拒答准确率。"""
+    """逐条运行检索，并可在每条完成后回调输出进度。"""
 
     normalized_ks = tuple(sorted(set(ks)))
     if not normalized_ks or normalized_ks[0] < 1:
         raise ValueError("K 必须至少包含一个正整数")
     max_k = normalized_ks[-1]
-    evaluated = [
-        _evaluate_case(case, retriever.search(case.query, max_k), normalized_ks)
-        for case in cases
-    ]
+    evaluated: list[EvaluatedCase] = []
+    total = len(cases)
+    for current, case in enumerate(cases, start=1):
+        item = _evaluate_case(
+            case,
+            retriever.search(case.query, max_k),
+            normalized_ks,
+        )
+        evaluated.append(item)
+        if progress is not None:
+            progress(current, total, item)
     positives = [item for item in evaluated if not item.is_negative]
     negatives = [item for item in evaluated if item.is_negative]
     if not positives:

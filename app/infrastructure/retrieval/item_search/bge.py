@@ -1,8 +1,4 @@
-"""Lazy BGE embedding and reranker adapters.
-
-Importing this module never loads or downloads a model. Model initialization only
-happens on the first encode or rerank call.
-"""
+"""BGE embedding 与 reranker 的惰性加载适配器。"""
 
 from collections.abc import Sequence
 from threading import Lock
@@ -16,7 +12,7 @@ from .fusion import normalize_matrix
 
 
 class BGEEmbeddingEncoder:
-    """Dense BGE-M3 adapter backed by FlagEmbedding."""
+    """基于 FlagEmbedding 的 BGE-M3 稠密向量编码器。"""
 
     def __init__(
         self,
@@ -26,12 +22,16 @@ class BGEEmbeddingEncoder:
         batch_size: int = 16,
         max_length: int = 512,
         use_fp16: bool = False,
+        device: str = "auto",
     ) -> None:
+        if batch_size < 1:
+            raise ValueError("embedding batch_size 必须大于 0")
         self.model_name = model_name
         self._dimension = dimension
         self._batch_size = batch_size
         self._max_length = max_length
         self._use_fp16 = use_fp16
+        self._device = device
         self._model: Any | None = None
         self._load_lock = Lock()
 
@@ -40,6 +40,8 @@ class BGEEmbeddingEncoder:
         return self._dimension
 
     def _get_model(self) -> Any:
+        """首次推理时加载模型，并把显存相关参数传给 FlagEmbedding。"""
+
         if self._model is not None:
             return self._model
 
@@ -54,6 +56,10 @@ class BGEEmbeddingEncoder:
                 self._model = BGEM3FlagModel(
                     self.model_name,
                     use_fp16=self._use_fp16,
+                    devices=None if self._device == "auto" else self._device,
+                    batch_size=self._batch_size,
+                    query_max_length=self._max_length,
+                    passage_max_length=self._max_length,
                 )
         return self._model
 
@@ -84,20 +90,30 @@ class BGEEmbeddingEncoder:
 
 
 class BGEReranker:
-    """BGE cross-encoder adapter that returns normalized relevance scores."""
+    """使用 BGE cross-encoder 返回归一化相关性分数。"""
 
     def __init__(
         self,
         model_name: str = "BAAI/bge-reranker-v2-m3",
         *,
         use_fp16: bool = False,
+        device: str = "auto",
+        batch_size: int = 8,
+        max_length: int = 512,
     ) -> None:
+        if batch_size < 1:
+            raise ValueError("reranker batch_size 必须大于 0")
         self.model_name = model_name
         self._use_fp16 = use_fp16
+        self._device = device
+        self._batch_size = batch_size
+        self._max_length = max_length
         self._model: Any | None = None
         self._load_lock = Lock()
 
     def _get_model(self) -> Any:
+        """首次重排时加载模型，避免应用启动阶段占用显存。"""
+
         if self._model is not None:
             return self._model
 
@@ -112,6 +128,9 @@ class BGEReranker:
                 self._model = FlagReranker(
                     self.model_name,
                     use_fp16=self._use_fp16,
+                    devices=None if self._device == "auto" else self._device,
+                    batch_size=self._batch_size,
+                    max_length=self._max_length,
                 )
         return self._model
 
@@ -120,6 +139,8 @@ class BGEReranker:
             return []
         scores = self._get_model().compute_score(
             [list(pair) for pair in pairs],
+            batch_size=self._batch_size,
+            max_length=self._max_length,
             normalize=True,
         )
         return np.atleast_1d(scores).astype(float).tolist()

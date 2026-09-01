@@ -92,3 +92,32 @@ def test_product_evaluator_computes_four_ranking_metrics() -> None:
     assert at_three["precision"] == pytest.approx(2 / 3)
     assert 0.0 < at_three["ndcg"] < 1.0
     assert report["summary"]["mrr_at_3"] == 0.5
+
+
+def test_product_evaluator_reports_each_completed_case() -> None:
+    """商品评测在每条查询完成后触发一次进度回调。"""
+
+    cases = tuple(
+        ProductRecallCase(
+            case_id=f"case-{number}",
+            query="测试商品",
+            index_id="evaluation-products",
+            kind="semantic",
+            relevance=(ProductRelevanceLabel("A", 3),),
+            tags=(),
+            note="",
+        )
+        for number in (1, 2)
+    )
+    progress: list[tuple[int, int, str]] = []
+
+    evaluate_product_recall(
+        FakeItemSearchService(),
+        cases,
+        (3,),
+        progress=lambda current, total, item: progress.append(
+            (current, total, item.case_id)
+        ),
+    )
+
+    assert progress == [(1, 2, "case-1"), (2, 2, "case-2")]

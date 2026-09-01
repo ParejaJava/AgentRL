@@ -7,6 +7,7 @@ from dataclasses import replace
 from pathlib import Path
 
 from category_recall_evaluator import (
+    EvaluatedCase,
     evaluate_category_recall,
     load_category_recall_cases,
     write_evaluation_report,
@@ -14,6 +15,38 @@ from category_recall_evaluator import (
 
 from app.composition import build_category_retriever
 from app.infrastructure.settings import Settings
+
+
+def _one_line(text: str, limit: int = 80) -> str:
+    """折叠查询中的空白，保证一个用例只打印一行。"""
+
+    normalized = " ".join(text.split())
+    return normalized if len(normalized) <= limit else f"{normalized[:limit - 1]}…"
+
+
+def _print_progress(
+    current: int,
+    total: int,
+    item: EvaluatedCase,
+    *,
+    max_k: int,
+) -> None:
+    """立即打印单条品类召回结果，便于观察长时间 GPU 评测。"""
+
+    prefix = (
+        f"[{current:>3}/{total}] case={item.case_id} "
+        f'query="{_one_line(item.query)}" retrieved={len(item.retrieved)}'
+    )
+    if item.is_negative:
+        print(f"{prefix} negative_rejected={item.negative_rejected}", flush=True)
+        return
+    metrics = item.metrics[max_k]
+    print(
+        f"{prefix} R@{max_k}={metrics.recall:.4f} "
+        f"P@{max_k}={metrics.precision:.4f} "
+        f"MRR={item.reciprocal_rank:.4f} NDCG@{max_k}={metrics.ndcg:.4f}",
+        flush=True,
+    )
 
 
 def _parse_args() -> argparse.Namespace:
@@ -48,7 +81,19 @@ def main() -> None:
         settings = replace(settings, category_retriever_backend=args.backend)
     cases = load_category_recall_cases(args.dataset)
     retriever = build_category_retriever(settings)
-    report = evaluate_category_recall(retriever, cases, args.k)
+    max_k = max(args.k)
+    print(f"开始品类召回评测：{len(cases)} 条，max_k={max_k}", flush=True)
+    report = evaluate_category_recall(
+        retriever,
+        cases,
+        args.k,
+        progress=lambda current, total, item: _print_progress(
+            current,
+            total,
+            item,
+            max_k=max_k,
+        ),
+    )
     write_evaluation_report(report, args.report)
 
     dataset = report["dataset"]
@@ -64,7 +109,6 @@ def main() -> None:
             f"{k}\t{metrics['recall']:.4f}\t"
             f"{metrics['precision']:.4f}\t{metrics['ndcg']:.4f}"
         )
-    max_k = max(args.k)
     print(f"MRR@{max_k}\t{summary[f'mrr_at_{max_k}']:.4f}")
     rejection = summary["negative_rejection_accuracy"]
     if rejection is not None:

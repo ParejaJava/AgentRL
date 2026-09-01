@@ -44,6 +44,10 @@ uv run python scripts/build_product_eval_index.py
 uv run python scripts/evaluate_product_recall.py --k 1 3 5 10
 ```
 
+两个评测脚本都会在每条查询完成后立即输出一行进度，包括当前序号、查询、召回数量和
+该条用例在最大 K 下的 Recall、Precision、MRR、NDCG；品类负例改为输出是否正确拒答。
+模型首次加载期间还没有完成任何查询，因此第一行进度通常会比后续行等待更久。
+
 默认索引域是 `data/indexes/evaluation-products`，评测集是
 `eval/product_recall.jsonl`，报告写入 `eval/reports/product_recall.json`。索引构建器为保护
 已有产物不会覆盖非空目录；种子变化后请先明确移走旧索引，或通过 `--index-id` 构建新版本，

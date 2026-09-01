@@ -50,3 +50,6 @@ query -> BGE-M3 -> FAISS HNSW 召回 -> BGE reranker -> Top-K
 
 指标与品类评测保持一致：Recall@K、Precision@K、MRR@max(K)、NDCG@K。报告还会按
 `tags` 输出同样四项指标的切片结果。
+
+命令行评测默认逐条打印进度，逐条明细和最终汇总仍以 JSON 报告为准。进度行中的指标
+使用命令指定的最大 K，例如 `--k 1 3 5 10` 会显示 `R@10`、`P@10` 和 `NDCG@10`。
