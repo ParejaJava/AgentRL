@@ -15,3 +15,10 @@ class AgentRequest(BaseModel):
     currency: str = "CNY"
     thread_id: str = Field(default_factory=lambda: str(uuid4()))
     session_dir: str | None = None
+
+
+class CancelOrderRequest(BaseModel):
+    """从 REST 接口取消订单意向单的请求。"""
+
+    buyer_id: str = Field(min_length=1)
+    reason: str = Field(min_length=1, max_length=300)

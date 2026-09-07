@@ -6,15 +6,14 @@ import argparse
 from dataclasses import replace
 from pathlib import Path
 
-from category_recall_evaluator import (
+from app.composition import build_category_retriever
+from app.infrastructure.settings import Settings
+from scripts.category_recall_evaluator import (
     EvaluatedCase,
     evaluate_category_recall,
     load_category_recall_cases,
     write_evaluation_report,
 )
-
-from app.composition import build_category_retriever
-from app.infrastructure.settings import Settings
 
 
 def _one_line(text: str, limit: int = 80) -> str:

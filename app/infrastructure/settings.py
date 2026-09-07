@@ -31,6 +31,33 @@ class Settings:
     compression_llm_max_tokens: int
     context_llm_enabled: bool
     sub_agent_max_concurrency: int
+    model_max_concurrency: int
+    model_min_interval_seconds: float
+    model_max_retries: int
+    fallback_llm_model: str | None
+    lite_llm_model: str | None
+    token_budget_total: int
+    tool_timeout_seconds: float
+    tool_failure_threshold: int
+    tool_recovery_seconds: float
+    tool_repeated_call_limit: int
+    breaker_shared: bool
+    drift_detect_enabled: bool
+    drift_check_interval: int
+    langfuse_enabled: bool
+    redis_enabled: bool
+    redis_url: str
+    redis_key_prefix: str
+    queue_max_attempts: int
+    queue_large_request_turns: int
+    checkpoint_backend: str
+    checkpoint_database_path: Path
+    tavily_api_key: str | None
+    embedding_cache_enabled: bool
+    embedding_cache_ttl_seconds: int
+    semantic_cache_enabled: bool
+    semantic_cache_threshold: float
+    semantic_cache_ttl_seconds: int
     item_index_root: Path
     item_search_index_id: str
     retrieval_device: str
@@ -42,6 +69,7 @@ class Settings:
     category_ingestion_manifest: Path
     category_structuring_model: str
     category_structuring_max_tokens: int
+    category_ingestion_max_concurrency: int
     category_quick_recall_k: int
     category_deep_recall_k: int
     category_min_confidence: float
@@ -59,6 +87,10 @@ class Settings:
     opensearch_category_pipeline: str
     opensearch_bm25_weight: float
     opensearch_knn_weight: float
+    preference_database_path: Path
+    preference_max_likes: int
+    preference_prompt_like_limit: int
+    order_database_path: Path
     governance: GovernanceConfig
 
     @classmethod
@@ -78,6 +110,50 @@ class Settings:
             ),
             context_llm_enabled=_env_bool("CONTEXT_LLM_ENABLED", True),
             sub_agent_max_concurrency=int(os.getenv("SUB_AGENT_MAX_CONCURRENCY", "50")),
+            model_max_concurrency=int(os.getenv("MODEL_MAX_CONCURRENCY", "50")),
+            model_min_interval_seconds=float(
+                os.getenv("MODEL_MIN_INTERVAL_SECONDS", "0")
+            ),
+            model_max_retries=int(os.getenv("MODEL_MAX_RETRIES", "2")),
+            fallback_llm_model=os.getenv("FALLBACK_LLM_MODEL") or None,
+            lite_llm_model=os.getenv("LITE_LLM_MODEL") or None,
+            token_budget_total=int(os.getenv("TOKEN_BUDGET_TOTAL", "0")),
+            tool_timeout_seconds=float(os.getenv("TOOL_TIMEOUT_SECONDS", "30")),
+            tool_failure_threshold=int(os.getenv("TOOL_FAILURE_THRESHOLD", "3")),
+            tool_recovery_seconds=float(os.getenv("TOOL_RECOVERY_SECONDS", "30")),
+            tool_repeated_call_limit=int(os.getenv("TOOL_REPEATED_CALL_LIMIT", "3")),
+            breaker_shared=_env_bool("BREAKER_SHARED", False),
+            drift_detect_enabled=_env_bool("DRIFT_DETECT_ENABLED", False),
+            drift_check_interval=int(os.getenv("DRIFT_CHECK_INTERVAL", "3")),
+            langfuse_enabled=_env_bool("LANGFUSE_ENABLED", False),
+            redis_enabled=_env_bool("REDIS_ENABLED", False),
+            redis_url=os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+            redis_key_prefix=os.getenv("REDIS_KEY_PREFIX", "globex").strip(),
+            queue_max_attempts=int(os.getenv("QUEUE_MAX_ATTEMPTS", "3")),
+            queue_large_request_turns=int(
+                os.getenv("QUEUE_LARGE_REQUEST_TURNS", "30")
+            ),
+            checkpoint_backend=os.getenv("CHECKPOINT_BACKEND", "memory")
+            .strip()
+            .lower(),
+            checkpoint_database_path=Path(
+                os.getenv(
+                    "CHECKPOINT_DATABASE_PATH",
+                    "data/sessions/langgraph-checkpoints.db",
+                )
+            ),
+            tavily_api_key=os.getenv("TAVILY_API_KEY") or None,
+            embedding_cache_enabled=_env_bool("EMBEDDING_CACHE_ENABLED", False),
+            embedding_cache_ttl_seconds=int(
+                os.getenv("EMBEDDING_CACHE_TTL_SECONDS", "604800")
+            ),
+            semantic_cache_enabled=_env_bool("SEMANTIC_CACHE_ENABLED", False),
+            semantic_cache_threshold=float(
+                os.getenv("SEMANTIC_CACHE_THRESHOLD", "0.95")
+            ),
+            semantic_cache_ttl_seconds=int(
+                os.getenv("SEMANTIC_CACHE_TTL_SECONDS", "86400")
+            ),
             item_index_root=Path(os.getenv("ITEM_INDEX_ROOT", "data/indexes")),
             item_search_index_id=os.getenv(
                 "ITEM_SEARCH_INDEX_ID", "evaluation-products"
@@ -111,6 +187,9 @@ class Settings:
             ),
             category_structuring_max_tokens=int(
                 os.getenv("CATEGORY_STRUCTURING_MAX_TOKENS", "4096")
+            ),
+            category_ingestion_max_concurrency=int(
+                os.getenv("CATEGORY_INGESTION_MAX_CONCURRENCY", "5")
             ),
             category_quick_recall_k=int(
                 os.getenv("CATEGORY_QUICK_RECALL_K", "8")
@@ -163,10 +242,55 @@ class Settings:
             opensearch_knn_weight=float(
                 os.getenv("OPENSEARCH_KNN_WEIGHT", "0.6")
             ),
+            preference_database_path=Path(
+                os.getenv(
+                    "PREFERENCE_DATABASE_PATH",
+                    "data/sessions/preferences.db",
+                )
+            ),
+            preference_max_likes=int(os.getenv("PREFERENCE_MAX_LIKES", "50")),
+            preference_prompt_like_limit=int(
+                os.getenv("PREFERENCE_PROMPT_LIKE_LIMIT", "8")
+            ),
+            order_database_path=Path(
+                os.getenv("ORDER_DATABASE_PATH", "data/orders/orders.db")
+            ),
             governance=GovernanceConfig.from_env(),
         )
         if settings.sub_agent_max_concurrency < 1:
             raise ValueError("SUB_AGENT_MAX_CONCURRENCY 必须大于 0")
+        if settings.model_max_concurrency < 1:
+            raise ValueError("MODEL_MAX_CONCURRENCY 必须大于 0")
+        if settings.model_min_interval_seconds < 0 or settings.model_max_retries < 0:
+            raise ValueError("模型请求间隔和重试次数不能小于 0")
+        if settings.token_budget_total < 0:
+            raise ValueError("TOKEN_BUDGET_TOTAL 不能小于 0")
+        if settings.tool_timeout_seconds <= 0:
+            raise ValueError("TOOL_TIMEOUT_SECONDS 必须大于 0")
+        if min(
+            settings.tool_failure_threshold,
+            settings.tool_repeated_call_limit,
+            settings.drift_check_interval,
+        ) < 1 or settings.tool_recovery_seconds < 0:
+            raise ValueError("工具熔断和重复调用参数不合法")
+        if not settings.redis_url or not settings.redis_key_prefix:
+            raise ValueError("REDIS_URL 和 REDIS_KEY_PREFIX 不能为空")
+        if min(settings.queue_max_attempts, settings.queue_large_request_turns) < 1:
+            raise ValueError("Redis 队列重试次数和大请求轮次必须大于 0")
+        if settings.queue_max_attempts < 1:
+            raise ValueError("QUEUE_MAX_ATTEMPTS 必须大于 0")
+        if settings.checkpoint_backend not in {"memory", "sqlite"}:
+            raise ValueError("CHECKPOINT_BACKEND 只能是 memory 或 sqlite")
+        if settings.embedding_cache_ttl_seconds < 1:
+            raise ValueError("EMBEDDING_CACHE_TTL_SECONDS 必须大于 0")
+        if settings.embedding_cache_enabled and not settings.redis_enabled:
+            raise ValueError("Embedding 缓存需要同时启用 Redis")
+        if not 0.0 < settings.semantic_cache_threshold <= 1.0:
+            raise ValueError("SEMANTIC_CACHE_THRESHOLD 必须位于 0 到 1 之间")
+        if settings.semantic_cache_ttl_seconds < 1:
+            raise ValueError("SEMANTIC_CACHE_TTL_SECONDS 必须大于 0")
+        if settings.semantic_cache_enabled and not settings.redis_enabled:
+            raise ValueError("语义响应缓存需要同时启用 Redis")
         if not settings.item_search_index_id.strip():
             raise ValueError("ITEM_SEARCH_INDEX_ID 不能为空")
         if not settings.retrieval_device:
@@ -183,6 +307,8 @@ class Settings:
             raise ValueError("COMPRESSION_LLM_MAX_TOKENS 必须大于 0")
         if settings.category_structuring_max_tokens < 1:
             raise ValueError("CATEGORY_STRUCTURING_MAX_TOKENS 必须大于 0")
+        if settings.category_ingestion_max_concurrency < 1:
+            raise ValueError("CATEGORY_INGESTION_MAX_CONCURRENCY 必须大于 0")
         if settings.category_quick_recall_k < 1:
             raise ValueError("CATEGORY_QUICK_RECALL_K 必须大于 0")
         if settings.category_deep_recall_k < settings.category_quick_recall_k:
@@ -215,4 +341,8 @@ class Settings:
             raise ValueError("OpenSearch Hybrid 权重必须位于 0 到 1 之间")
         if abs(sum(weights) - 1.0) > 1e-9:
             raise ValueError("OPENSEARCH_BM25_WEIGHT 与 KNN 权重之和必须为 1")
+        if settings.preference_max_likes < 1:
+            raise ValueError("PREFERENCE_MAX_LIKES 必须大于 0")
+        if settings.preference_prompt_like_limit < 0:
+            raise ValueError("PREFERENCE_PROMPT_LIKE_LIMIT 不能小于 0")
         return settings

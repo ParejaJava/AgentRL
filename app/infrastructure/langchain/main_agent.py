@@ -7,8 +7,9 @@ from typing import Any
 from uuid import uuid4
 
 from langchain.agents import create_agent
+from langchain.agents.middleware import AgentMiddleware
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.tools import BaseTool
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.checkpoint.memory import InMemorySaver
@@ -27,6 +28,7 @@ from app.infrastructure.context_governance.schemas import SessionAgentState
 
 from .prompts import MAIN_SYSTEM_PROMPT, SUB_AGENT_SYSTEM_PROMPT
 from .sub_agents import ForkedAgentLoop, ForkedTaskExecutor, create_fork_tool
+from .sub_agents.fork import ObservabilityCallbacks
 
 
 class MainAgent:
@@ -43,26 +45,34 @@ class MainAgent:
         compressor: ContextCompressor | None = None,
         checkpointer: BaseCheckpointSaver[Any] | None = None,
         sub_agent_max_concurrency: int = 50,
+        shared_middleware: Sequence[AgentMiddleware] = (),
+        observability: ObservabilityCallbacks | None = None,
     ) -> None:
         self._model = model
         self._config = governance_config
         self._checkpointer = checkpointer or InMemorySaver()
+        self._observability = observability
         child_tools = list(tools)
 
-        child_middleware = create_context_middleware(
-            model=self._model,
-            tools=child_tools,
-            system_prompt=SUB_AGENT_SYSTEM_PROMPT,
-            agent_id="forked_sub_agent",
-            config=self._config,
-            compressor=compressor,
-        )
+        child_middleware = [
+            *shared_middleware,
+            *create_context_middleware(
+                model=self._model,
+                tools=child_tools,
+                system_prompt=SUB_AGENT_SYSTEM_PROMPT,
+                agent_id="forked_sub_agent",
+                config=self._config,
+                compressor=compressor,
+            ),
+        ]
         child_loop = ForkedAgentLoop.create(
             model=self._model,
             tools=child_tools,
             system_prompt=SUB_AGENT_SYSTEM_PROMPT,
             max_concurrency=sub_agent_max_concurrency,
             middleware=child_middleware,
+            observability=observability,
+            checkpointer=self._checkpointer,
         )
         task_dispatcher = (
             TaskDispatchService(task_service, ForkedTaskExecutor(child_loop))
@@ -77,14 +87,17 @@ class MainAgent:
         ]
         self._child_tool_names = tuple(tool.name for tool in child_tools)
         self._main_tool_names = tuple(tool.name for tool in main_tools)
-        main_middleware = create_context_middleware(
-            model=self._model,
-            tools=main_tools,
-            system_prompt=MAIN_SYSTEM_PROMPT,
-            agent_id="main_agent",
-            config=self._config,
-            compressor=compressor,
-        )
+        main_middleware = [
+            *shared_middleware,
+            *create_context_middleware(
+                model=self._model,
+                tools=main_tools,
+                system_prompt=MAIN_SYSTEM_PROMPT,
+                agent_id="main_agent",
+                config=self._config,
+                compressor=compressor,
+            ),
+        ]
         self._agent = create_agent(
             model=self._model,
             tools=main_tools,
@@ -112,10 +125,16 @@ class MainAgent:
         self,
         message: str,
         context: AgentExecutionContext,
-    ) -> AsyncIterator[dict[str, str]]:
+    ) -> AsyncIterator[dict[str, Any]]:
         """执行 LangGraph 循环，只输出框架归一化后的内容片段。"""
 
-        config = {"configurable": {"thread_id": context.thread_id}}
+        config: dict[str, Any] = {
+            "configurable": {"thread_id": context.thread_id},
+        }
+        if self._observability is not None:
+            config["callbacks"] = self._observability.create(context, "main_agent")
+            config["metadata"] = self._observability.metadata(context, "main_agent")
+            config["run_name"] = "globex-main-agent"
         token = set_context(context)
         try:
             async for update in self._agent.astream(
@@ -130,14 +149,39 @@ class MainAgent:
                     if not isinstance(node_update, dict):
                         continue
                     for output_message in node_update.get("messages", []):
-                        if not isinstance(output_message, AIMessage):
-                            continue
-                        content = output_message.text
-                        if content:
+                        if isinstance(output_message, AIMessage):
+                            for tool_call in output_message.tool_calls:
+                                yield {
+                                    "type": "tool_invoke",
+                                    "tool_name": str(tool_call.get("name", "")),
+                                    "tool_call_id": str(tool_call.get("id", "")),
+                                    "arguments": tool_call.get("args", {}),
+                                }
+                            content = output_message.text
+                            if content:
+                                yield {
+                                    "type": "text_message_content",
+                                    "content": content,
+                                }
+                        elif isinstance(output_message, ToolMessage):
                             yield {
-                                "type": "text_message_content",
-                                "content": content,
+                                "type": "tool_result",
+                                "tool_name": output_message.name or "",
+                                "tool_call_id": output_message.tool_call_id,
+                                "status": output_message.status,
+                                "content": output_message.text,
                             }
+                    governance = node_update.get("last_governance")
+                    strategies = (
+                        governance.get("strategies", [])
+                        if isinstance(governance, dict)
+                        else []
+                    )
+                    if any(strategy != "none" for strategy in strategies):
+                        yield {
+                            "type": "context_compressed",
+                            "details": governance,
+                        }
         finally:
             reset_context(token)
 

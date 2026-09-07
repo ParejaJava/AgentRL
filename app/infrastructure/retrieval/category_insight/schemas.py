@@ -6,7 +6,7 @@ import hashlib
 from dataclasses import replace
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from app.domain.catalog import (
     AttributeDistribution,
@@ -64,6 +64,19 @@ class ExtractedCategoryCard(BaseModel):
     attributes: list[ExtractedAttributeDistribution] = Field(default_factory=list)
     price_tiers: list[ExtractedPriceTier] = Field(default_factory=list)
     pitfalls: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_typed_payload(self) -> ExtractedCategoryCard:
+        """卡片类型必须具有对应的非空业务载荷。"""
+
+        payloads = {
+            "bestseller": self.bestsellers,
+            "attribute": self.attributes,
+            "price_range": self.price_tiers,
+        }
+        if not payloads[self.card_type]:
+            raise ValueError(f"{self.card_type} 卡片缺少对应业务载荷")
+        return self
 
 
 class StructuredCategoryDocument(BaseModel):

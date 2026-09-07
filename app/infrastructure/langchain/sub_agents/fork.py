@@ -42,6 +42,18 @@ class AgentInvoker(Protocol):
     ) -> dict[str, Any]: ...
 
 
+class ObservabilityCallbacks(Protocol):
+    """子 Agent 只依赖的观测回调最小接口。"""
+
+    def create(self, context: AgentExecutionContext, agent_id: str) -> list[Any]: ...
+
+    def metadata(
+        self,
+        context: AgentExecutionContext,
+        agent_id: str,
+    ) -> dict[str, object]: ...
+
+
 class ForkedAgentLoop:
     """复用同质 Agent 图，以独立线程并发执行多个隔离的子任务。"""
 
@@ -52,6 +64,7 @@ class ForkedAgentLoop:
         max_concurrency: int = 4,
         max_rate_limit_retries: int = 4,
         pass_runtime_context: bool = False,
+        observability: ObservabilityCallbacks | None = None,
     ) -> None:
         if max_concurrency < 1:
             raise ValueError("max_concurrency 必须大于或等于 1")
@@ -62,6 +75,7 @@ class ForkedAgentLoop:
         self._max_concurrency = max_concurrency
         self._max_rate_limit_retries = max_rate_limit_retries
         self._pass_runtime_context = pass_runtime_context
+        self._observability = observability
 
     @classmethod
     def create(
@@ -74,6 +88,7 @@ class ForkedAgentLoop:
         max_rate_limit_retries: int = 4,
         checkpointer: BaseCheckpointSaver[Any] | None = None,
         middleware: Sequence[AgentMiddleware] = (),
+        observability: ObservabilityCallbacks | None = None,
     ) -> "ForkedAgentLoop":
         """使用统一模型和工具集创建可 fork 的同质子 AgentLoop。"""
 
@@ -93,6 +108,7 @@ class ForkedAgentLoop:
             max_concurrency=max_concurrency,
             max_rate_limit_retries=max_rate_limit_retries,
             pass_runtime_context=True,
+            observability=observability,
         )
 
     async def arun(self, demand: str) -> str:
@@ -122,6 +138,16 @@ class ForkedAgentLoop:
             run_id=str(uuid4()),
             session_dir=child_session_dir,
         )
+        if self._observability is not None:
+            config["callbacks"] = self._observability.create(
+                child_context,
+                "forked_sub_agent",
+            )
+            config["metadata"] = self._observability.metadata(
+                child_context,
+                "forked_sub_agent",
+            )
+            config["run_name"] = "globex-forked-sub-agent"
         token = set_context(child_context)
         try:
             result = await self._ainvoke_with_rate_limit_retry(

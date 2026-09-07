@@ -5,15 +5,14 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from product_recall_evaluator import (
+from app.composition import build_item_search_service
+from app.infrastructure.settings import Settings
+from scripts.product_recall_evaluator import (
     EvaluatedProductCase,
     evaluate_product_recall,
     load_product_recall_cases,
     write_product_evaluation_report,
 )
-
-from app.composition import build_item_search_service
-from app.infrastructure.settings import Settings
 
 
 def _one_line(text: str, limit: int = 80) -> str:

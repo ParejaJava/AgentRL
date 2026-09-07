@@ -7,14 +7,33 @@ Globex Agent 是一个面向多 Agent 场景的全栈项目骨架，后端使用
 ## 快速开始
 
 ```bash
-uv sync --extra search --extra rag
-docker compose -f docker/docker-compose.yml up -d opensearch
+uv sync --extra search --extra rag --extra platform --extra dev
+docker compose -f docker/docker-compose.yml up -d redis opensearch
 uv run python scripts/ingest_category_knowledge.py
 uv run uvicorn app.presentation.server:app --reload
 ```
 
 复制 `.env.example` 为 `.env`，至少配置 `LLM_API_KEY`、`LLM_BASE_URL`
 和 `LLM_MODEL_NAME`。`app.infrastructure.settings` 会在容器启动时读取该文件。
+
+如需一次启动 API、worker、Redis 和 OpenSearch，请先启动 Docker Desktop，再执行：
+
+```bash
+docker compose -f docker/docker-compose.yml up --build
+```
+
+## 平台运行能力
+
+- 主 Agent 与 fork 子 Agent 复用同一套 LangGraph 编排定义，使用独立 `thread_id` 隔离状态；
+- SQLite 持久化买家偏好，并同时注入模型工作记忆与商品检索用户塔；
+- 订单意向支持创建、查询与取消，但不处理真实支付、库存占用和退款；
+- 模型调用具备并发门控、重试和备用模型，工具具备超时、熔断、循环及前置证据链保护；
+- 可选启用单次意图四档 Token 预算、Silent-Drift 事件和 Redis 跨实例共享熔断；
+- 可选 LangFuse Trace、Redis Pub/Sub 事件、Redis Stream 异步任务、Embedding 与语义响应缓存；
+- `POST /api/agent` 返回 SSE，`WS /ws/events/{shopping_session_id}` 可订阅工具、fork、压缩和最终结果事件。
+
+完整实现与边界见
+[`docs/reference_gap_full_implementation.md`](docs/reference_gap_full_implementation.md)。
 
 ## 会话级上下文治理
 
