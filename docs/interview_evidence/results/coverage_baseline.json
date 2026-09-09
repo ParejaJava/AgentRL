@@ -1,0 +1,11 @@
+{
+  "source_run_id": "20260909T073736Z-offline",
+  "source_commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+  "thresholds": {
+    "total_line_percent": 73.4192,
+    "domain_line_percent": 93.19,
+    "application_line_percent": 85.7875,
+    "reliability_line_percent": 72.9064,
+    "critical_domain_branch_percent": 100.0
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "run_id": "20260909T073736Z-offline",
+  "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+  "claims": [
+    {
+      "claim_id": "ENV-001",
+      "capability": "可复现运行环境与依赖预检",
+      "status": "code_verified",
+      "code_anchors": [
+        "scripts/evidence/preflight.py",
+        "app/infrastructure/health.py"
+      ],
+      "test_anchors": [
+        "tests/test_evidence_infrastructure.py"
+      ],
+      "limitations": [
+        "预检证明运行时依赖可用，不证明业务指标达标"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "preflight.json"
+      ]
+    },
+    {
+      "claim_id": "TEST-001",
+      "capability": "自动化回归与关键模块覆盖率",
+      "status": "code_verified",
+      "code_anchors": [
+        "scripts/evidence/offline.py",
+        "eval/evidence/thresholds.json"
+      ],
+      "test_anchors": [
+        "tests"
+      ],
+      "limitations": [
+        "覆盖率不等同于线上业务正确率"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "tests.json"
+      ]
+    },
+    {
+      "claim_id": "ARCH-001",
+      "capability": "DDD-lite 与 Hexagonal 依赖隔离",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/domain",
+        "app/application",
+        "app/composition.py"
+      ],
+      "test_anchors": [
+        "tests/test_architecture.py"
+      ],
+      "limitations": [
+        "架构测试证明依赖方向，不等同于生产规模验证"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "architecture.json"
+      ]
+    },
+    {
+      "claim_id": "RAG-THRESHOLD-001",
+      "capability": "品类拒答阈值独立开发集校准",
+      "status": "code_verified",
+      "code_anchors": [
+        "scripts/evidence/category_calibration.py"
+      ],
+      "test_anchors": [
+        "eval/evidence/category_threshold_dev.jsonl"
+      ],
+      "limitations": [
+        "小型开发集阈值仍需持续回归"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "category_threshold.json"
+      ]
+    },
+    {
+      "claim_id": "ORCH-001",
+      "capability": "Task DAG 与隔离子 Agent 并行编排",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/application/tasking",
+        "app/infrastructure/langchain/sub_agents"
+      ],
+      "test_anchors": [
+        "tests/test_tasking.py",
+        "tests/test_fork_sub_agents.py"
+      ],
+      "limitations": [
+        "资源互斥尚未建模"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "orchestration.json"
+      ]
+    },
+    {
+      "claim_id": "E2E-001",
+      "capability": "真实 Kimi 多 Agent 端到端执行",
+      "status": "code_verified",
+      "code_anchors": [
+        "scripts/evidence/live.py",
+        "app/composition.py"
+      ],
+      "test_anchors": [
+        "eval/evidence/live_cases.jsonl"
+      ],
+      "limitations": [
+        "模型输出有随机性，因此固定三次重复并保留全部失败样本"
+      ],
+      "published_statuses": [],
+      "report_files": []
+    },
+    {
+      "claim_id": "CTX-001",
+      "capability": "Cache-aware 会话上下文治理",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/infrastructure/context_governance"
+      ],
+      "test_anchors": [
+        "tests/test_context_governance.py"
+      ],
+      "limitations": [
+        "Kimi 未返回缓存明细时只能证明前缀稳定率，不能声称缓存命中率"
+      ],
+      "published_statuses": [],
+      "report_files": []
+    },
+    {
+      "claim_id": "RAG-001",
+      "capability": "品类知识 Hybrid RAG",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/infrastructure/retrieval/category_insight"
+      ],
+      "test_anchors": [
+        "tests/test_opensearch_category_insight.py",
+        "tests/test_category_recall_evaluator.py"
+      ],
+      "limitations": [
+        "拒答阈值只在独立开发集选择，冻结测试集只用于最终报告"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "category_bm25.json",
+        "category_hybrid_rerank.json",
+        "category_hybrid_rrf.json",
+        "category_keyword.json",
+        "category_knn.json"
+      ]
+    },
+    {
+      "claim_id": "SEARCH-001",
+      "capability": "商品语义召回与交叉编码重排",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/application/catalog/search_catalog.py",
+        "app/infrastructure/retrieval/item_search"
+      ],
+      "test_anchors": [
+        "tests/test_item_search.py",
+        "tests/test_product_recall_evaluator.py"
+      ],
+      "limitations": [
+        "评测使用固定 60 商品快照，不代表真实平台全量搜索"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "product_embedding.json",
+        "product_embedding_rerank.json",
+        "product_lexical.json"
+      ]
+    },
+    {
+      "claim_id": "SEARCH-PERSONALIZATION-001",
+      "capability": "商品 User Tower 个性化 on/off 消融",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/application/catalog/fusion.py",
+        "app/infrastructure/retrieval/item_search/user_tower.py"
+      ],
+      "test_anchors": [
+        "tests/test_preferences.py",
+        "eval/evidence/product_personalization.jsonl"
+      ],
+      "limitations": [
+        "10 条定向画像集不代表全量线上用户收益"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "product_personalization.json"
+      ]
+    },
+    {
+      "claim_id": "COMMERCE-001",
+      "capability": "偏好、到手价与订单意向领域规则",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/domain",
+        "app/application/orders",
+        "app/application/memory"
+      ],
+      "test_anchors": [
+        "tests/test_preferences.py",
+        "tests/test_pricing.py",
+        "tests/test_orders.py"
+      ],
+      "limitations": [
+        "不处理真实库存、支付、退款或第三方平台下单"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "commerce-001.json"
+      ]
+    },
+    {
+      "claim_id": "REL-001",
+      "capability": "模型与工具可靠性防线",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/infrastructure/langchain/reliability_middleware.py"
+      ],
+      "test_anchors": [
+        "tests/test_platform_extensions.py",
+        "tests/test_item_search.py"
+      ],
+      "limitations": [
+        "故障注入结果不等同于生产故障率"
+      ],
+      "published_statuses": [
+        "verified"
+      ],
+      "report_files": [
+        "rel-001.json"
+      ]
+    },
+    {
+      "claim_id": "OBS-001",
+      "capability": "Langfuse 与逐事件可观测链路",
+      "status": "code_verified",
+      "code_anchors": [
+        "app/application/events",
+        "app/infrastructure/observability",
+        "app/presentation/server.py",
+        "scripts/evidence/observability.py"
+      ],
+      "test_anchors": [
+        "tests/test_eventbus.py",
+        "tests/test_run_agent.py",
+        "tests/test_evidence_infrastructure.py"
+      ],
+      "limitations": [
+        "公开证据只保存脱敏拓扑、Token 与延迟摘要；抽样 Trace 不代表全量上传率"
+      ],
+      "published_statuses": [],
+      "report_files": []
+    },
+    {
+      "claim_id": "BOUNDARY-PAYMENT",
+      "capability": "真实支付与库存占用",
+      "status": "boundary",
+      "code_anchors": [
+        "app/domain/order/models.py"
+      ],
+      "test_anchors": [],
+      "limitations": [
+        "本项目仅创建购买意向单"
+      ],
+      "published_statuses": [],
+      "report_files": []
+    }
+  ]
+}

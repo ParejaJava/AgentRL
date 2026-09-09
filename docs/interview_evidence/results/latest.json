@@ -1,0 +1,10 @@
+{
+  "runs": {
+    "offline": {
+      "run_id": "20260909T073736Z-offline",
+      "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+      "published_at": "2026-09-09T07:45:56.528232+00:00",
+      "path": "docs/interview_evidence/results/20260909T073736Z-offline"
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "claim_id": "ARCH-001",
+  "capability": "DDD-lite 与 Hexagonal 依赖方向",
+  "status": "verified",
+  "started_at": "2026-09-09T07:37:37.518298+00:00",
+  "duration_seconds": 0.12276,
+  "command": "uv run python -m scripts.evidence run --suite offline",
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "dependency_edges": [
+    {
+      "source": "application",
+      "target": "application"
+    },
+    {
+      "source": "application",
+      "target": "domain"
+    },
+    {
+      "source": "domain",
+      "target": "domain"
+    },
+    {
+      "source": "infrastructure",
+      "target": "application"
+    },
+    {
+      "source": "infrastructure",
+      "target": "domain"
+    },
+    {
+      "source": "infrastructure",
+      "target": "infrastructure"
+    },
+    {
+      "source": "presentation",
+      "target": "application"
+    }
+  ],
+  "permission_matrix": {
+    "main_agent": [
+      "item_search",
+      "category_insight",
+      "web_search(optional)",
+      "TaskCreate",
+      "TaskGet",
+      "TaskList",
+      "TaskUpdate",
+      "remember_preference",
+      "forget_preference",
+      "create_order_intent",
+      "query_order",
+      "cancel_order",
+      "fork_sub_agents"
+    ],
+    "forked_sub_agent": [
+      "item_search",
+      "category_insight",
+      "web_search(optional)"
+    ]
+  },
+  "composition_root": {
+    "module": "app/composition.py",
+    "direction": "ports <- adapters <- use_cases <- presentation",
+    "adapters": [
+      "LangChain/LangGraph agent runtime",
+      "OpenSearch category repository",
+      "FAISS product repository",
+      "Redis/SQLite persistence",
+      "Langfuse observability",
+      "FastAPI presentation"
+    ]
+  },
+  "violations": [],
+  "passed": true,
+  "limitations": [
+    "AST 扫描证明静态 import 方向，不证明运行时业务逻辑正确。"
+  ]
+}

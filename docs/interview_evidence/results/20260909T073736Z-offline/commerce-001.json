@@ -1,0 +1,39 @@
+{
+  "claim_id": "COMMERCE-001",
+  "capability": "个性化、到手价与订单意向边界",
+  "status": "verified",
+  "started_at": "2026-09-09T07:38:05.608404+00:00",
+  "duration_seconds": 4.002683,
+  "command": "[LOCAL_PATH] -m pytest -q tests/test_preferences.py tests/test_pricing.py tests/test_orders.py tests/test_item_search.py",
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "tested_paths": [
+    "tests/test_preferences.py",
+    "tests/test_pricing.py",
+    "tests/test_orders.py",
+    "tests/test_item_search.py"
+  ],
+  "stdout": ".............................                                            [100%]\n29 passed in 2.63s\n",
+  "stderr": "",
+  "failures": [],
+  "limitations": [
+    "只创建订单意向，不访问真实库存、支付、退款或平台下单接口。"
+  ],
+  "passed": true
+}

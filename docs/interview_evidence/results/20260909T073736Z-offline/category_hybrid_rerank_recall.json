@@ -1,0 +1,7151 @@
+{
+  "dataset": {
+    "cases": 100,
+    "positive_cases": 90,
+    "negative_cases": 10
+  },
+  "summary": {
+    "at_k": {
+      "1": {
+        "recall": 0.661111,
+        "precision": 0.722222,
+        "ndcg": 0.677778
+      },
+      "3": {
+        "recall": 0.833333,
+        "precision": 0.318519,
+        "ndcg": 0.77209
+      },
+      "5": {
+        "recall": 0.9,
+        "precision": 0.206667,
+        "ndcg": 0.80268
+      },
+      "10": {
+        "recall": 0.944444,
+        "precision": 0.108889,
+        "ndcg": 0.817855
+      }
+    },
+    "mrr_at_10": 0.803717,
+    "negative_rejection_accuracy": 0.9,
+    "latency_ms": {
+      "p50": 666.297,
+      "p95": 679.735
+    }
+  },
+  "by_tag": {
+    "attribute": {
+      "cases": 31,
+      "recall": 0.967742,
+      "precision": 0.096774,
+      "ndcg": 0.871484,
+      "mrr": 0.83871
+    },
+    "bestseller": {
+      "cases": 9,
+      "recall": 1.0,
+      "precision": 0.1,
+      "ndcg": 0.881186,
+      "mrr": 0.842593
+    },
+    "category": {
+      "cases": 2,
+      "recall": 1.0,
+      "precision": 0.1,
+      "ndcg": 0.75,
+      "mrr": 0.666667
+    },
+    "colloquial": {
+      "cases": 4,
+      "recall": 1.0,
+      "precision": 0.1,
+      "ndcg": 1.0,
+      "mrr": 1.0
+    },
+    "cross-border": {
+      "cases": 15,
+      "recall": 0.8,
+      "precision": 0.08,
+      "ndcg": 0.454321,
+      "mrr": 0.347857
+    },
+    "cross-document": {
+      "cases": 6,
+      "recall": 0.833333,
+      "precision": 0.166667,
+      "ndcg": 0.646132,
+      "mrr": 0.7
+    },
+    "digital": {
+      "cases": 20,
+      "recall": 0.95,
+      "precision": 0.115,
+      "ndcg": 0.875337,
+      "mrr": 0.875
+    },
+    "home": {
+      "cases": 17,
+      "recall": 0.941176,
+      "precision": 0.111765,
+      "ndcg": 0.883618,
+      "mrr": 0.894118
+    },
+    "mixed-language": {
+      "cases": 7,
+      "recall": 0.857143,
+      "precision": 0.085714,
+      "ndcg": 0.73299,
+      "mrr": 0.690476
+    },
+    "multi-relevant": {
+      "cases": 8,
+      "recall": 1.0,
+      "precision": 0.2,
+      "ndcg": 0.837386,
+      "mrr": 1.0
+    },
+    "outdoor": {
+      "cases": 18,
+      "recall": 1.0,
+      "precision": 0.127778,
+      "ndcg": 0.872349,
+      "mrr": 0.907407
+    },
+    "paraphrase": {
+      "cases": 3,
+      "recall": 1.0,
+      "precision": 0.1,
+      "ndcg": 0.771822,
+      "mrr": 0.708333
+    },
+    "pitfall": {
+      "cases": 12,
+      "recall": 0.916667,
+      "precision": 0.091667,
+      "ndcg": 0.830355,
+      "mrr": 0.803571
+    },
+    "price": {
+      "cases": 25,
+      "recall": 0.9,
+      "precision": 0.1,
+      "ndcg": 0.736397,
+      "mrr": 0.711
+    },
+    "travel": {
+      "cases": 20,
+      "recall": 1.0,
+      "precision": 0.105,
+      "ndcg": 0.92808,
+      "mrr": 0.904167
+    },
+    "typo": {
+      "cases": 1,
+      "recall": 1.0,
+      "precision": 0.1,
+      "ndcg": 1.0,
+      "mrr": 1.0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "category-001",
+      "query": {
+        "sha256": "ae72b601256c2e35e7e8920ef6babc30c92b3eb96ecf30f9981fc8b30d5941ae",
+        "chars": 22
+      },
+      "tags": [
+        "travel",
+        "attribute",
+        "paraphrase"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 6860.5,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-002",
+      "query": {
+        "sha256": "1ec3662f35c7dbd18294160bb7185866dbf8d3c6123c2291bf9dbc152b921908",
+        "chars": 11
+      },
+      "tags": [
+        "travel",
+        "category"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.3333333333333333,
+      "negative_rejected": null,
+      "latency_ms": 518.498,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.5
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.5
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-003",
+      "query": {
+        "sha256": "cc7d82961f41c628a43897fe5437a8b42f020dad9502e6a891c53c66a2207d83",
+        "chars": 13
+      },
+      "tags": [
+        "travel",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.25,
+      "negative_rejected": null,
+      "latency_ms": 522.354,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-004",
+      "query": {
+        "sha256": "97a63a3feaf86362b749ea52c4556c13bfe67bdd4033278db89756e81b6c998a",
+        "chars": 11
+      },
+      "tags": [
+        "travel",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 516.789,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-005",
+      "query": {
+        "sha256": "272d496006bdff30827d66ac3534ed236f2559f79d97d2a42e57318426918e07",
+        "chars": 15
+      },
+      "tags": [
+        "travel",
+        "bestseller",
+        "paraphrase"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 510.913,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-006",
+      "query": {
+        "sha256": "0e04368c3ae24989c1063a2d162b3a9844e7a5e79087cf4a6ecc68896f1bb2ee",
+        "chars": 16
+      },
+      "tags": [
+        "travel",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 510.969,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-007",
+      "query": {
+        "sha256": "2b4ac340fd7351cc89689d662581ac483f85ef493ea1a288eb22f55ea6eadc89",
+        "chars": 12
+      },
+      "tags": [
+        "travel",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 659.387,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-008",
+      "query": {
+        "sha256": "9a03f81c1d6b0db451655916110238818985c3af2a0fce2cafe37d2c68933e28",
+        "chars": 14
+      },
+      "tags": [
+        "travel",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 663.722,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-009",
+      "query": {
+        "sha256": "e04e6a342d046a1525a1cf5868291b1be17938830d9e15697a901f930d39b67d",
+        "chars": 9
+      },
+      "tags": [
+        "travel",
+        "attribute",
+        "colloquial"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 671.556,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-010",
+      "query": {
+        "sha256": "8079ffa6375f4782200d8327033da5629c96183fb5463f8e8880934c71c8b1c6",
+        "chars": 14
+      },
+      "tags": [
+        "travel",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 679.114,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-011",
+      "query": {
+        "sha256": "27dae7f7f63f649f71d381ff505ed867302d09cba52c2a0ffcea89cc72857320",
+        "chars": 18
+      },
+      "tags": [
+        "travel",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 678.645,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-012",
+      "query": {
+        "sha256": "150ffda82e3bc40f9beb67f9a9e6c081f9866087e28a8d4a51943b73c3908259",
+        "chars": 14
+      },
+      "tags": [
+        "travel",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 673.315,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-013",
+      "query": {
+        "sha256": "122aff2169770f9a68ab51f38c9834429c3294c72b71dca13fceab94959045c0",
+        "chars": 10
+      },
+      "tags": [
+        "travel",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 662.993,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-014",
+      "query": {
+        "sha256": "290695d5a9ebe2128d3be010848a055bdd7758129ea5b14276a427a06b56bd6b",
+        "chars": 15
+      },
+      "tags": [
+        "travel",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 658.545,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-015",
+      "query": {
+        "sha256": "1f5e5b488aa32ae9e8ce30afc1cb23b29f57e23cef7485021605e7627be44e20",
+        "chars": 12
+      },
+      "tags": [
+        "travel",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 673.74,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-016",
+      "query": {
+        "sha256": "4b5eed69080f8acf213339efc042efed32c1e463ea62d52b75080c211681d09c",
+        "chars": 14
+      },
+      "tags": [
+        "travel",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 666.944,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-017",
+      "query": {
+        "sha256": "a99e3436e6ed58d2f91ff35491e7503b992292c8d0d8c5aad442172131708592",
+        "chars": 19
+      },
+      "tags": [
+        "travel",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 653.111,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-018",
+      "query": {
+        "sha256": "c4cb349e2d1b653790f1a62e0c13f11ef2e54613786d201672169a252194d76d",
+        "chars": 15
+      },
+      "tags": [
+        "travel",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 558.036,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-019",
+      "query": {
+        "sha256": "d2cf7a11fa5cb5d9c4894ce888633a978d39d5bc259cc785f9b110429f63933c",
+        "chars": 16
+      },
+      "tags": [
+        "travel",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 663.729,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-020",
+      "query": {
+        "sha256": "167aa3ea2a7267e31bfb721eb953d05313e5648a41d9f96db8f5400082721fd3",
+        "chars": 34
+      },
+      "tags": [
+        "travel",
+        "attribute",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 677.22,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-021",
+      "query": {
+        "sha256": "7674c4ac860ec6a3dce2d08cf0fba21994a99000c1926491a7d80d59db006d09",
+        "chars": 13
+      },
+      "tags": [
+        "digital",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 664.908,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-022",
+      "query": {
+        "sha256": "9c6dd0b3b1091c1d4d381e0ee562c2e22717c13a769782b1388a07bbfd12c869",
+        "chars": 18
+      },
+      "tags": [
+        "digital",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 661.53,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-023",
+      "query": {
+        "sha256": "c5dae1316ed1913d7c4886b562c8120f3c487df9948c83a76bda200f8a5f0870",
+        "chars": 12
+      },
+      "tags": [
+        "digital",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 674.554,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-024",
+      "query": {
+        "sha256": "f10ff3385f2e7d07fbd1bdf6447f3355b07de644e96b95d61fbcb4742e47087e",
+        "chars": 20
+      },
+      "tags": [
+        "digital",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 666.12,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.3373519727104165
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.6763610077981964
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6763610077981964
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-025",
+      "query": {
+        "sha256": "67044d9b0fba4f8bd49d4ec58bc9d93843cab095a0ce37ac1670a04a502c8c1e",
+        "chars": 16
+      },
+      "tags": [
+        "digital",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 663.047,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-026",
+      "query": {
+        "sha256": "b8943012f07230bebdc5cb55c6cff2c0e5c576149d0f1deddc7ad6948e9d601f",
+        "chars": 22
+      },
+      "tags": [
+        "digital",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 672.954,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-027",
+      "query": {
+        "sha256": "a2c88c856817349f362ffdb9aa739a16daeae0cc1e7f5086c98b001b271afce0",
+        "chars": 17
+      },
+      "tags": [
+        "digital",
+        "attribute",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 665.416,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-028",
+      "query": {
+        "sha256": "cbcbeefa44476083673b5f895de5e93a98c35a982e8597f58fe1309abd973d03",
+        "chars": 17
+      },
+      "tags": [
+        "digital",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 663.617,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-029",
+      "query": {
+        "sha256": "4dae20b7de803bdab451e3b2f92e3c3ea1b727d23700159f430f98ad3407e990",
+        "chars": 14
+      },
+      "tags": [
+        "digital",
+        "attribute",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 668.693,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-030",
+      "query": {
+        "sha256": "0f0ae09bc41394cbb54f5726ee33c93205c6c98f31fe30a4702ce51c14944dab",
+        "chars": 14
+      },
+      "tags": [
+        "digital",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 670.493,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-031",
+      "query": {
+        "sha256": "5cf40166c1e118d3e094b6940fc42f412f4b3ca1ac8b1f62679f6708cdd029f8",
+        "chars": 19
+      },
+      "tags": [
+        "digital",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 666.931,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-032",
+      "query": {
+        "sha256": "c25d60a6bd089894d00ce070ff94a9555215e8641f50604bf335e1d65bad6c3e",
+        "chars": 14
+      },
+      "tags": [
+        "digital",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 670.602,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-033",
+      "query": {
+        "sha256": "86681561b509220851b2086fcfaf5c0957817c2be6c072317412a0293c1fef8e",
+        "chars": 15
+      },
+      "tags": [
+        "digital",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 662.967,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-034",
+      "query": {
+        "sha256": "c8572151e5a9fb9bc8002ddb14095d3c980e8f7a0e60caf62c45c425aaa733a9",
+        "chars": 15
+      },
+      "tags": [
+        "digital",
+        "price",
+        "colloquial"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 662.931,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-035",
+      "query": {
+        "sha256": "6009dc1074617d129a8d9460c1b6026a3f66e70658d1c0382ba28aabd66e5b7b",
+        "chars": 13
+      },
+      "tags": [
+        "digital",
+        "cross-document"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 673.745,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.606422698504514
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.606422698504514
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.606422698504514
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-036",
+      "query": {
+        "sha256": "955771cc333e9328e218629304197d81a8091bb56d1e7f95991a372c19b26196",
+        "chars": 17
+      },
+      "tags": [
+        "digital",
+        "cross-document"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 660.69,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.6934264036172708
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.6934264036172708
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6934264036172708
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-037",
+      "query": {
+        "sha256": "e6cd9b6c18726090856b325c4d34c46f0db8453cf2b8004cea9a982014c4856f",
+        "chars": 14
+      },
+      "tags": [
+        "digital",
+        "cross-document",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 814.502,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.7871546029909718
+        },
+        "5": {
+          "recall": 0.5,
+          "precision": 0.2,
+          "ndcg": 0.7871546029909718
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8996052605611106
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-038",
+      "query": {
+        "sha256": "926d603c7cd9272e5e6b5f23c72d582b2220801705d83acbcac8c2feb0fdb268",
+        "chars": 18
+      },
+      "tags": [
+        "digital",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 678.885,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-039",
+      "query": {
+        "sha256": "c4dd6734cffe4d81005dc1239b467a15ce19844b9352a319357190bf4e2e13ef",
+        "chars": 16
+      },
+      "tags": [
+        "digital",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": null,
+      "latency_ms": 670.379,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-040",
+      "query": {
+        "sha256": "e00229f606b6e417569d36abdbf4c2eabe49d17a0ed2e0ffc0da21af175e61b1",
+        "chars": 10
+      },
+      "tags": [
+        "digital",
+        "attribute",
+        "typo",
+        "colloquial"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 661.059,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-041",
+      "query": {
+        "sha256": "3da772985c03148a1606402f1c73d0a4197f3b0c7a7ee4454a0db54318ef3524",
+        "chars": 13
+      },
+      "tags": [
+        "home",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 674.894,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-042",
+      "query": {
+        "sha256": "caf6724ecfc60b0806f6a846d5593138da2e87a3620b40e40182f0bbf3817faa",
+        "chars": 13
+      },
+      "tags": [
+        "home",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 667.17,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-043",
+      "query": {
+        "sha256": "2efabfac6a14b93718af0ab744ae869e92b0475f93a123bb9a25c38d5f090632",
+        "chars": 14
+      },
+      "tags": [
+        "home",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 664.618,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-044",
+      "query": {
+        "sha256": "6516059dccb1acd9a97bcac76e8d8a1e42b0863aeebbe7b123abb7fc8ec482fa",
+        "chars": 12
+      },
+      "tags": [
+        "home",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 672.317,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-045",
+      "query": {
+        "sha256": "f762edbb41d9fd9c849d3e6c9b9cafbf14b3ac5d6a9118e6cb7e79d26a460d0a",
+        "chars": 13
+      },
+      "tags": [
+        "home",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 670.441,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-046",
+      "query": {
+        "sha256": "8d6fcb47cc5c4733bf1e8fa3dcb1263703da62d82ea46c361680680e433196f7",
+        "chars": 15
+      },
+      "tags": [
+        "home",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 665.539,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-047",
+      "query": {
+        "sha256": "6e286c836a56cbbe1efc0b0f677293a24d6f5647bfd6ecf38b3f6faee2a30fc4",
+        "chars": 16
+      },
+      "tags": [
+        "home",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 664.763,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-048",
+      "query": {
+        "sha256": "dd4a59092fee2851ef1185e8f6a391174d59b13aab333dfcdc308bd49c9d0e6a",
+        "chars": 15
+      },
+      "tags": [
+        "home",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 670.462,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-049",
+      "query": {
+        "sha256": "ac59f1026264348c10fef68f6c2479df733bad954feb95890773bf06ef7ad338",
+        "chars": 12
+      },
+      "tags": [
+        "home",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 658.59,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-050",
+      "query": {
+        "sha256": "46fe5857a243874afe51768777a220b46c9bed9a4c6f145162c64639e83afc85",
+        "chars": 13
+      },
+      "tags": [
+        "home",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 672.075,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-051",
+      "query": {
+        "sha256": "2799f1df3830a681d36cf65831bb1f2282cc1f5d963223b4723ecbf251db6821",
+        "chars": 17
+      },
+      "tags": [
+        "home",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 672.826,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-052",
+      "query": {
+        "sha256": "7e39a541a2155b1f58053189802fd5b2e4219b3f0560343f70259221fd15266b",
+        "chars": 16
+      },
+      "tags": [
+        "home",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 668.479,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-053",
+      "query": {
+        "sha256": "2ea805cdfaf8bcdf55e2650443676726c2ad0df9c9a63798bf5c515db7322c66",
+        "chars": 17
+      },
+      "tags": [
+        "home",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 686.596,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-054",
+      "query": {
+        "sha256": "640f6381d6c8cb33c4088958c781feb458d335cc3b46a9c1f8ffd53ec157ca3b",
+        "chars": 15
+      },
+      "tags": [
+        "home",
+        "cross-document"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 664.323,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.7871546029909718
+        },
+        "5": {
+          "recall": 0.5,
+          "precision": 0.2,
+          "ndcg": 0.7871546029909718
+        },
+        "10": {
+          "recall": 0.5,
+          "precision": 0.1,
+          "ndcg": 0.7871546029909718
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-055",
+      "query": {
+        "sha256": "72f7b087bda706c36d127ff74fef053cf555ae758b8d4bbe52032fcb67242a0c",
+        "chars": 16
+      },
+      "tags": [
+        "home",
+        "cross-document",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.2,
+      "negative_rejected": null,
+      "latency_ms": 666.057,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.5,
+          "precision": 0.2,
+          "ndcg": 0.30451296789464855
+        },
+        "10": {
+          "recall": 0.5,
+          "precision": 0.1,
+          "ndcg": 0.30451296789464855
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-056",
+      "query": {
+        "sha256": "97b3cf8d8d56b0f730e009390fb1f424bf7135b12d7f32a5bf87a219b52ced3c",
+        "chars": 32
+      },
+      "tags": [
+        "home",
+        "attribute",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 634.58,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-057",
+      "query": {
+        "sha256": "ffd31139e47593a3aac259f23394966c69a89c47bbd0908dd453f009f94b4bd6",
+        "chars": 15
+      },
+      "tags": [
+        "home",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 667.061,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-058",
+      "query": {
+        "sha256": "5d4bc7bb2114a54214d470bddd9e245d9f85d063f540367634a50e853b01d279",
+        "chars": 12
+      },
+      "tags": [
+        "outdoor",
+        "category"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 664.568,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-059",
+      "query": {
+        "sha256": "f6b04f70b68f52093aef7b1aa5bf0e2192767d62412a41228818d2ce1c28b5d0",
+        "chars": 12
+      },
+      "tags": [
+        "outdoor",
+        "bestseller"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.3333333333333333,
+      "negative_rejected": null,
+      "latency_ms": 674.825,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.5
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.5
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-060",
+      "query": {
+        "sha256": "271663e6355819326fb50254915f13fdf29850f580fb08e8a17932eccc6d34e0",
+        "chars": 14
+      },
+      "tags": [
+        "outdoor",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 639.562,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-061",
+      "query": {
+        "sha256": "d33d28f904f16cfbbfc59142a086b7ba3c6b383a59b07c361c67df18694af8e7",
+        "chars": 23
+      },
+      "tags": [
+        "outdoor",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 667.481,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-062",
+      "query": {
+        "sha256": "502fbec02c071e011a097bbb034b882b17f3825d749e6770b4a299e32d684840",
+        "chars": 13
+      },
+      "tags": [
+        "outdoor",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 661.519,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-063",
+      "query": {
+        "sha256": "7cc654770c7f7eea9c1cb849661daf83b1373a7c6c6f47030133c8d7134b2d8a",
+        "chars": 16
+      },
+      "tags": [
+        "outdoor",
+        "multi-relevant"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 662.882,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.7309292742059024
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.7309292742059024
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.7309292742059024
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-064",
+      "query": {
+        "sha256": "d102cafe10473216fffdd0da25a8c2c31c4929fcfc7bdedf66bab02f2f6f4be6",
+        "chars": 16
+      },
+      "tags": [
+        "outdoor",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 659.111,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-065",
+      "query": {
+        "sha256": "aa9e400b5db32d7f4c24e759269e721848f7163d9a74ff7f851d90d3aa2d9157",
+        "chars": 24
+      },
+      "tags": [
+        "outdoor",
+        "attribute",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 658.028,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-066",
+      "query": {
+        "sha256": "073030d052400c133e2f86ea01f97635937d8d2018a30ba957001e6ffebd8454",
+        "chars": 11
+      },
+      "tags": [
+        "outdoor",
+        "attribute",
+        "colloquial"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 669.155,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-067",
+      "query": {
+        "sha256": "9ad57b2a6531a1358e0aa16bcda9478649c6c0e8f7b21ab2fd137e2f082483ad",
+        "chars": 16
+      },
+      "tags": [
+        "outdoor",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 668.889,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-068",
+      "query": {
+        "sha256": "d719d3617f7822f43359a650e230c42f7ca7b87fdc994ad11f8468e973ed4e89",
+        "chars": 14
+      },
+      "tags": [
+        "outdoor",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 663.83,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-069",
+      "query": {
+        "sha256": "9dbb00bb57e2f8cdd68552967c0c7b1043ad576f0cad6573274d9eafa7a3a0f0",
+        "chars": 11
+      },
+      "tags": [
+        "outdoor",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 684.134,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-070",
+      "query": {
+        "sha256": "1f945858ea483c1c87223526538a3507371ec8e40259f9eac851c77f7fb2535c",
+        "chars": 15
+      },
+      "tags": [
+        "outdoor",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 667.811,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-071",
+      "query": {
+        "sha256": "0f498b64dc22b7fff69266d3691444a96d895f6a77c05136b2f874a575729bd4",
+        "chars": 11
+      },
+      "tags": [
+        "outdoor",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 672.087,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-072",
+      "query": {
+        "sha256": "43d6f98578d42148e8850ba333a6ef65fcd637b7494a2f7893b9e31c2e9a8a62",
+        "chars": 14
+      },
+      "tags": [
+        "outdoor",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 664.167,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-073",
+      "query": {
+        "sha256": "010fe2111239259e6666fc57f85184e298ef578893722ec0d696046913ccf81b",
+        "chars": 15
+      },
+      "tags": [
+        "outdoor",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 671.038,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-074",
+      "query": {
+        "sha256": "bd8e7825f3b359b0eecec01391857f5d6fb1a7a613e40b9d540c061ccb6b32a2",
+        "chars": 14
+      },
+      "tags": [
+        "outdoor",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 669.954,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-075",
+      "query": {
+        "sha256": "24531d30255ac1b4a16ac1b3f31880775486cac06884ea831ca6dc9cab3d03c1",
+        "chars": 17
+      },
+      "tags": [
+        "outdoor",
+        "cross-document",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 649.563,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.3373519727104165
+        },
+        "5": {
+          "recall": 0.5,
+          "precision": 0.2,
+          "ndcg": 0.3373519727104165
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.5856716025542826
+        }
+      },
+      "expected": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-076",
+      "query": {
+        "sha256": "12bb14cd4b8f444afd50ef4ce68ca258b19c3acc9f78dfdfc5aec25ca6fcfdbe",
+        "chars": 15
+      },
+      "tags": [
+        "cross-border",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.16666666666666666,
+      "negative_rejected": null,
+      "latency_ms": 659.928,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.3562071871080222
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-077",
+      "query": {
+        "sha256": "9b688cd6624a0373cd4c2c975e8651facc03fe348f025fcbd3538f14816b3dbe",
+        "chars": 15
+      },
+      "tags": [
+        "cross-border",
+        "price",
+        "paraphrase"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.125,
+      "negative_rejected": null,
+      "latency_ms": 667.966,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.31546487678572877
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-078",
+      "query": {
+        "sha256": "99f2e99d8b988f3cb1fdb433f43907aec90ac936b59b1e6cca69b08d4a1b639b",
+        "chars": 21
+      },
+      "tags": [
+        "cross-border",
+        "price",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.3333333333333333,
+      "negative_rejected": null,
+      "latency_ms": 670.486,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.5
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.5
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-079",
+      "query": {
+        "sha256": "4d813cdfa98cf9ae42e7f0b57eecec168717969238cd6fcaf32cda7f367b491d",
+        "chars": 13
+      },
+      "tags": [
+        "cross-border",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 663.881,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-080",
+      "query": {
+        "sha256": "517653ecdd76b96d6588ba08e781e8c8a58678f0f4da943f10d0252d4f2e356d",
+        "chars": 18
+      },
+      "tags": [
+        "cross-border",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.25,
+      "negative_rejected": null,
+      "latency_ms": 668.4,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-081",
+      "query": {
+        "sha256": "184576b4b24b78faab9295f1cd4064b332db6ecfc72adf2cd92421901ed0ed37",
+        "chars": 22
+      },
+      "tags": [
+        "cross-border",
+        "price",
+        "mixed-language"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": null,
+      "latency_ms": 667.247,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-082",
+      "query": {
+        "sha256": "bc44384f5cb55941f92e842a0539c8e88731aa636fb6d55a2cb6bb5db18aabf3",
+        "chars": 12
+      },
+      "tags": [
+        "cross-border",
+        "pitfall"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.14285714285714285,
+      "negative_rejected": null,
+      "latency_ms": 659.483,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.33333333333333337
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-083",
+      "query": {
+        "sha256": "faa407861d4684f1c21a2907159c86848554071a211d3746f48fd4bd84447274",
+        "chars": 15
+      },
+      "tags": [
+        "cross-border",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.2,
+      "negative_rejected": null,
+      "latency_ms": 656.805,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.38685280723454163
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.38685280723454163
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-084",
+      "query": {
+        "sha256": "aa6cbe04f20d4ff799c2e7febe9a4eba4d7d9b7795980c7a1e6d24edbc62ee03",
+        "chars": 13
+      },
+      "tags": [
+        "cross-border",
+        "price"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": null,
+      "latency_ms": 672.389,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-085",
+      "query": {
+        "sha256": "ed10a4ada07eecc465cc187bdd1e999f1311c2860c2765d853ae9edd031491ea",
+        "chars": 14
+      },
+      "tags": [
+        "cross-border",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.25,
+      "negative_rejected": null,
+      "latency_ms": 669.946,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-086",
+      "query": {
+        "sha256": "0f8f6a5789ebb99d1d337cde46447fc6be2220ede30a38a7a2524c3c01d8d02e",
+        "chars": 17
+      },
+      "tags": [
+        "cross-border",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.5,
+      "negative_rejected": null,
+      "latency_ms": 657.161,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        }
+      ]
+    },
+    {
+      "case_id": "category-087",
+      "query": {
+        "sha256": "8ace5f41453b99dbaecb5b822a1d1f9f6d2a0f9457790053aaa717840bc31d89",
+        "chars": 17
+      },
+      "tags": [
+        "cross-border",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 679.705,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-088",
+      "query": {
+        "sha256": "183255ef1fb6ed87c0db30a34434ab82d52abe1007645e94a7ddabc6b7426736",
+        "chars": 19
+      },
+      "tags": [
+        "cross-border",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 1.0,
+      "negative_rejected": null,
+      "latency_ms": 677.982,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-089",
+      "query": {
+        "sha256": "620003ee26e7c2a4780879e4c5ebceb74d49cbf1ae7636bc7aa06a98e58c5adf",
+        "chars": 18
+      },
+      "tags": [
+        "cross-border",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.25,
+      "negative_rejected": null,
+      "latency_ms": 661.562,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller"
+        }
+      ]
+    },
+    {
+      "case_id": "category-090",
+      "query": {
+        "sha256": "71c4d4d203fc0f3314b26206c0c2a56d291ee5b54ebf11b3db00af780647a29e",
+        "chars": 20
+      },
+      "tags": [
+        "cross-border",
+        "attribute"
+      ],
+      "is_negative": false,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": null,
+      "latency_ms": 680.302,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute"
+        }
+      ],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-091",
+      "query": {
+        "sha256": "832ad06fd94f4725f89cdd48307b46cebe959af627c76f0aa520ae6a750c3e8b",
+        "chars": 16
+      },
+      "tags": [
+        "negative",
+        "out-of-knowledge"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 672.716,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-092",
+      "query": {
+        "sha256": "617283cc403931977b78df8846cbeca484511e11e158e594f9dfb2d514552e5e",
+        "chars": 16
+      },
+      "tags": [
+        "negative",
+        "out-of-knowledge",
+        "mixed-language"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 674.016,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-093",
+      "query": {
+        "sha256": "0ee0fc3d9ca1085316313b3b390baad885cfddda8b39a19b399bdb1867dcb027",
+        "chars": 13
+      },
+      "tags": [
+        "negative",
+        "realtime"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": false,
+      "latency_ms": 664.846,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller"
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range"
+        }
+      ]
+    },
+    {
+      "case_id": "category-094",
+      "query": {
+        "sha256": "d030e6a57fff06e8904e875c8e9900db670c6ef253eeee88f7a922d503da31ef",
+        "chars": 12
+      },
+      "tags": [
+        "negative",
+        "realtime"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 657.675,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-095",
+      "query": {
+        "sha256": "c6283ae0e9a12340b9763d73816cf244eabb8ef0c34921f8fe5e79e666449b81",
+        "chars": 11
+      },
+      "tags": [
+        "negative",
+        "out-of-domain"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 676.381,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-096",
+      "query": {
+        "sha256": "a0599473ef8530f574fb97e6596cdd4bf7b1d58c7a7ad574c7bec04646ccf2ab",
+        "chars": 12
+      },
+      "tags": [
+        "negative",
+        "out-of-domain"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 663.803,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-097",
+      "query": {
+        "sha256": "68115dec78baa7098e77b946c1bc0df05dc369d415c965b3e0c01ebc691f41c8",
+        "chars": 12
+      },
+      "tags": [
+        "negative",
+        "out-of-domain"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 665.427,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-098",
+      "query": {
+        "sha256": "20d9b70b9a25e1ad4cf31df6e7b48fae1f95249cb8f572c5e260a8f5c3f599e1",
+        "chars": 12
+      },
+      "tags": [
+        "negative",
+        "out-of-knowledge"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 663.836,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-099",
+      "query": {
+        "sha256": "3ce805c69244f7d17757a8f6dc8f7adf1d5c8ea5efa404cb1be6be31f6141b5a",
+        "chars": 13
+      },
+      "tags": [
+        "negative",
+        "out-of-domain"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 666.474,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    },
+    {
+      "case_id": "category-100",
+      "query": {
+        "sha256": "b7b7a2699c4c6581b207fa4eb23342a294ffa62231ddcd1a2e764bbc07938b39",
+        "chars": 13
+      },
+      "tags": [
+        "negative",
+        "out-of-domain"
+      ],
+      "is_negative": true,
+      "reciprocal_rank": 0.0,
+      "negative_rejected": true,
+      "latency_ms": 658.471,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [],
+      "retrieved": []
+    }
+  ]
+}

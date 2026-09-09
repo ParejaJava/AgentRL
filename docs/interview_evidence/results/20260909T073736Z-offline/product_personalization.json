@@ -1,0 +1,101 @@
+{
+  "claim_id": "SEARCH-PERSONALIZATION-001",
+  "capability": "商品 User Tower 个性化 on/off 消融",
+  "status": "verified",
+  "started_at": "2026-09-09T07:42:27.885147+00:00",
+  "duration_seconds": 37.234787,
+  "command": "uv run python -m scripts.evidence run --suite offline",
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "dataset": {
+    "path": "eval/evidence/product_personalization.jsonl",
+    "sha256": "1cae8935597b56664d2385f01b83b1b4e2e8bbc0f32cf4d04c9ee39ee0c81dfc",
+    "cases": 10
+  },
+  "metrics": {
+    "off": {
+      "at_k": {
+        "1": {
+          "recall": 0.5,
+          "precision": 0.9,
+          "ndcg": 0.9
+        },
+        "3": {
+          "recall": 0.85,
+          "precision": 0.533333,
+          "ndcg": 0.865465
+        },
+        "5": {
+          "recall": 0.95,
+          "precision": 0.36,
+          "ndcg": 0.913894
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.19,
+          "ndcg": 0.92405
+        }
+      },
+      "mrr_at_10": 0.933333,
+      "latency_ms": {
+        "p50": 380.933,
+        "p95": 4784.166
+      }
+    },
+    "on": {
+      "at_k": {
+        "1": {
+          "recall": 0.55,
+          "precision": 1.0,
+          "ndcg": 0.885714
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.633333,
+          "ndcg": 0.962381
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.38,
+          "ndcg": 0.962381
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.19,
+          "ndcg": 0.962381
+        }
+      },
+      "mrr_at_10": 1.0,
+      "latency_ms": {
+        "p50": 454.26,
+        "p95": 5318.41
+      }
+    },
+    "delta": {
+      "recall_at_10": 0.0,
+      "mrr_at_10": 0.066667,
+      "ndcg_at_10": 0.038331
+    }
+  },
+  "failures": [],
+  "limitations": [
+    "该小型定向集只证明画像影响排序；不代表全量用户线上收益。"
+  ],
+  "passed": true
+}

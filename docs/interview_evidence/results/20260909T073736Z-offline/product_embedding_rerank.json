@@ -1,0 +1,3758 @@
+{
+  "claim_id": "SEARCH-001",
+  "capability": "商品召回与交叉编码重排",
+  "strategy": "embedding_rerank",
+  "status": "verified",
+  "started_at": "2026-09-09T07:41:35.688904+00:00",
+  "duration_seconds": 52.078824,
+  "command": "[LOCAL_PATH] scripts/evaluate_product_recall.py --report [LOCAL_PATH] --strategy embedding_rerank --k 1 3 5 10",
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "models": {
+    "embedding": {
+      "name": "BAAI/bge-m3",
+      "available": true,
+      "source": "huggingface_cache",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "reranker": {
+      "name": "BAAI/bge-reranker-v2-m3",
+      "available": true,
+      "source": "huggingface_cache",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  },
+  "retrieval_infrastructure": {
+    "index_id": "evaluation-products",
+    "backend": "FAISS"
+  },
+  "dataset": {
+    "path": "eval/product_recall.jsonl",
+    "sha256": "bdd6b48d950df2b5edcfb33c69bc1cdde752355bfbf90a9e507e4aef357799a4",
+    "cases": 67,
+    "indexes": [
+      "evaluation-products"
+    ]
+  },
+  "metrics": {
+    "at_k": {
+      "1": {
+        "recall": 0.747512,
+        "precision": 0.910448,
+        "ndcg": 0.876333
+      },
+      "3": {
+        "recall": 0.946517,
+        "precision": 0.447761,
+        "ndcg": 0.918685
+      },
+      "5": {
+        "recall": 0.955224,
+        "precision": 0.274627,
+        "ndcg": 0.922135
+      },
+      "10": {
+        "recall": 0.962687,
+        "precision": 0.138806,
+        "ndcg": 0.925841
+      }
+    },
+    "mrr_at_10": 0.932214,
+    "latency_ms": {
+      "p50": 509.491,
+      "p95": 1232.909
+    }
+  },
+  "acceptance_thresholds": {
+    "category_recall_at_10": 0.93,
+    "category_negative_rejection_accuracy": 0.8,
+    "product_recall_at_10": 0.95,
+    "product_mrr_at_10": 0.92,
+    "product_ndcg_at_10": 0.92
+  },
+  "slices": {
+    "constraint-in-query": {
+      "cases": 5,
+      "recall": 0.7,
+      "precision": 0.18,
+      "ndcg": 0.561234,
+      "mrr": 0.625
+    },
+    "lexical": {
+      "cases": 55,
+      "recall": 0.972727,
+      "precision": 0.138182,
+      "ndcg": 0.955339,
+      "mrr": 0.965909
+    },
+    "price": {
+      "cases": 3,
+      "recall": 0.5,
+      "precision": 0.1,
+      "ndcg": 0.401383,
+      "mrr": 0.375
+    },
+    "semantic": {
+      "cases": 12,
+      "recall": 0.916667,
+      "precision": 0.141667,
+      "ndcg": 0.790643,
+      "mrr": 0.777778
+    },
+    "shipping": {
+      "cases": 3,
+      "recall": 0.666667,
+      "precision": 0.2,
+      "ndcg": 0.534007,
+      "mrr": 0.666667
+    }
+  },
+  "cases": [
+    {
+      "case_id": "product-001",
+      "query": {
+        "sha256": "85f9489da1cf43a32c975df3f73376127f652b31342c1222c8458e05ce38fb67",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 7252.542,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1011"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1011",
+        "P1007",
+        "P1019",
+        "P1033",
+        "P1006",
+        "P1014",
+        "P1053",
+        "P1059",
+        "P1049"
+      ]
+    },
+    {
+      "case_id": "product-002",
+      "query": {
+        "sha256": "574f8c9d5598d4bb229b68d0581429ad732535b3652a3d0aefb42aca3390b7d4",
+        "chars": 12
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 415.278,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1001"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1019",
+        "P1011",
+        "P1033",
+        "P1006",
+        "P1007",
+        "P1009",
+        "P1013",
+        "P1018",
+        "P1050"
+      ]
+    },
+    {
+      "case_id": "product-003",
+      "query": {
+        "sha256": "c3ad5bd3ed28da8daebba3b360685e4cf82efc77162abfbd3b5854798b12ebb9",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 416.205,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1011"
+      ],
+      "retrieved": [
+        "P1011",
+        "P1001",
+        "P1019",
+        "P1012",
+        "P1034",
+        "P1009",
+        "P1014",
+        "P1006",
+        "P1033",
+        "P1049"
+      ]
+    },
+    {
+      "case_id": "product-004",
+      "query": {
+        "sha256": "cf33cdce276a266431ff78da10e8dff2c84e8dbd4f0f45a559120c1ef375d352",
+        "chars": 2
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 380.992,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.9721212198129313
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.9721212198129313
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.9721212198129313
+        }
+      },
+      "expected": [
+        "P1012",
+        "P1011",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1012",
+        "P1001",
+        "P1011",
+        "P1034",
+        "P1054",
+        "P1037",
+        "P1043",
+        "P1042",
+        "P1046",
+        "P1023"
+      ]
+    },
+    {
+      "case_id": "product-005",
+      "query": {
+        "sha256": "c1729bb92c785371250f49e75119d76a3e250d78f12dafa6744e4d2c54f566d7",
+        "chars": 4
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 384.595,
+      "metrics": {
+        "1": {
+          "recall": 0.25,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.75,
+          "precision": 1.0,
+          "ndcg": 0.8656565720663316
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.8,
+          "ndcg": 0.959229624413194
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.959229624413194
+        }
+      },
+      "expected": [
+        "P1013",
+        "P1058",
+        "P1011",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1011",
+        "P1001",
+        "P1058",
+        "P1023",
+        "P1057",
+        "P1046",
+        "P1009",
+        "P1053",
+        "P1029"
+      ]
+    },
+    {
+      "case_id": "product-006",
+      "query": {
+        "sha256": "4ee87699f35254ded7fab80339e6865399ddb7d7d47d0babfa6c4182e6518d76",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 390.356,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1013"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1001",
+        "P1009",
+        "P1011",
+        "P1037",
+        "P1019",
+        "P1058",
+        "P1006",
+        "P1034",
+        "P1033"
+      ]
+    },
+    {
+      "case_id": "product-007",
+      "query": {
+        "sha256": "27b7c61558eca237b6a06fd662f1b97bf6cdbc626c99a9ff0bdd8609d71057a5",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 418.906,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1002",
+        "P1016"
+      ],
+      "retrieved": [
+        "P1002",
+        "P1016",
+        "P1051",
+        "P1015",
+        "P1050",
+        "P1043",
+        "P1003",
+        "P1001",
+        "P1017",
+        "P1060"
+      ]
+    },
+    {
+      "case_id": "product-008",
+      "query": {
+        "sha256": "3df7fb276be530b7f7b0e23d2bed7ee7c0db04413b6e9126dcac9dfa6e146804",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 492.296,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1015"
+      ],
+      "retrieved": [
+        "P1015",
+        "P1002",
+        "P1050",
+        "P1059",
+        "P1016",
+        "P1001",
+        "P1049",
+        "P1056",
+        "P1051",
+        "P1052"
+      ]
+    },
+    {
+      "case_id": "product-009",
+      "query": {
+        "sha256": "396843283d1e29102895ab7a778390ca2a7e2ae881c002fee86ad1eb88054ce8",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 521.993,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1002",
+        "P1015",
+        "P1050"
+      ],
+      "retrieved": [
+        "P1002",
+        "P1015",
+        "P1050",
+        "P1018",
+        "P1001",
+        "P1017",
+        "P1016",
+        "P1003",
+        "P1060",
+        "P1029"
+      ]
+    },
+    {
+      "case_id": "product-010",
+      "query": {
+        "sha256": "9f911ad73d60ed1588bfb84d3463934b368a06055067d812aebcdfbfddd2205a",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 521.003,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1016"
+      ],
+      "retrieved": [
+        "P1016",
+        "P1002",
+        "P1051",
+        "P1001",
+        "P1050",
+        "P1003",
+        "P1015",
+        "P1049",
+        "P1018",
+        "P1059"
+      ]
+    },
+    {
+      "case_id": "product-011",
+      "query": {
+        "sha256": "4b02729565c9904af5df70794299e392c7b64cf71a1df4b60d2bdb5216084122",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 503.855,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1014",
+        "P1059"
+      ],
+      "retrieved": [
+        "P1014",
+        "P1059",
+        "P1019",
+        "P1003",
+        "P1001",
+        "P1051",
+        "P1056",
+        "P1017",
+        "P1043",
+        "P1049"
+      ]
+    },
+    {
+      "case_id": "product-012",
+      "query": {
+        "sha256": "ef3f8ce5eaea5f7ef51e7b402a153a19a13967019c5de1a8304341f7862968d9",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 495.425,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1003"
+      ],
+      "retrieved": [
+        "P1003",
+        "P1020",
+        "P1019",
+        "P1059",
+        "P1017",
+        "P1010",
+        "P1051",
+        "P1001",
+        "P1021",
+        "P1018"
+      ]
+    },
+    {
+      "case_id": "product-013",
+      "query": {
+        "sha256": "09bbf90108d0acf18493d8e8333bd0d9ced5c9b61dc7904365e8cf626f6c2699",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 499.681,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1018"
+      ],
+      "retrieved": [
+        "P1018",
+        "P1056",
+        "P1003",
+        "P1017",
+        "P1001",
+        "P1046",
+        "P1015",
+        "P1050",
+        "P1051",
+        "P1009"
+      ]
+    },
+    {
+      "case_id": "product-014",
+      "query": {
+        "sha256": "2a41c8b752744a466ee199f30101bdb2b8526c38df3984aa254169e44e3b84d7",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 521.213,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1019"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1034",
+        "P1001",
+        "P1011",
+        "P1009",
+        "P1003",
+        "P1014",
+        "P1059",
+        "P1049",
+        "P1051"
+      ]
+    },
+    {
+      "case_id": "product-015",
+      "query": {
+        "sha256": "01bfcc74ef68af6863b3587063898fe5685b863b1456f16c1095d36db021e88a",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 509.845,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1009"
+      ],
+      "retrieved": [
+        "P1009",
+        "P1013",
+        "P1001",
+        "P1043",
+        "P1019",
+        "P1059",
+        "P1051",
+        "P1011",
+        "P1034",
+        "P1014"
+      ]
+    },
+    {
+      "case_id": "product-016",
+      "query": {
+        "sha256": "634b7d0abb7a5d8312bd5d51bcfa6277b23e77e737eabcb8a7a064a9aaae63e8",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 495.888,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1043"
+      ],
+      "retrieved": [
+        "P1043",
+        "P1009",
+        "P1001",
+        "P1019",
+        "P1042",
+        "P1046",
+        "P1017",
+        "P1012",
+        "P1011",
+        "P1059"
+      ]
+    },
+    {
+      "case_id": "product-017",
+      "query": {
+        "sha256": "4c259f4858b08ca8db7085a2865fd4df624295da6dc36846097a174187b73218",
+        "chars": 4
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 488.963,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1007"
+      ],
+      "retrieved": [
+        "P1007",
+        "P1055",
+        "P1009",
+        "P1042",
+        "P1058",
+        "P1019",
+        "P1059",
+        "P1018",
+        "P1046",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-018",
+      "query": {
+        "sha256": "dfee3375193540adff784d9573c7cc50f7a643c34d108741cbf4f1a1bc363dc2",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 495.819,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1053"
+      ],
+      "retrieved": [
+        "P1053",
+        "P1023",
+        "P1004",
+        "P1022",
+        "P1013",
+        "P1035",
+        "P1012",
+        "P1009",
+        "P1037",
+        "P1058"
+      ]
+    },
+    {
+      "case_id": "product-019",
+      "query": {
+        "sha256": "1e4aad93d218086e365b8625dedd24014badfe347b045c007f518c81206d0347",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 496.447,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1051"
+      ],
+      "retrieved": [
+        "P1051",
+        "P1001",
+        "P1014",
+        "P1003",
+        "P1017",
+        "P1002",
+        "P1056",
+        "P1015",
+        "P1052",
+        "P1050"
+      ]
+    },
+    {
+      "case_id": "product-020",
+      "query": {
+        "sha256": "81018aa93ffe2c74334d3319566ed35364ccedcb4dc5ce894eaf58733f5bb0bf",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 486.835,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1052"
+      ],
+      "retrieved": [
+        "P1052",
+        "P1059",
+        "P1014",
+        "P1015",
+        "P1002",
+        "P1003",
+        "P1017",
+        "P1016",
+        "P1050",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-021",
+      "query": {
+        "sha256": "cf6c67737a61f54afc11a28eb89bebfdbb915d8dc1549f735b57224d3910244a",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 527.739,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1060"
+      ],
+      "retrieved": [
+        "P1060",
+        "P1002",
+        "P1015",
+        "P1051",
+        "P1052",
+        "P1017",
+        "P1014",
+        "P1001",
+        "P1059",
+        "P1003"
+      ]
+    },
+    {
+      "case_id": "product-022",
+      "query": {
+        "sha256": "e97abe2bfc24ef1e75da0c130b6793f1a5182eaf59bfad83898b28778333e7c9",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 507.659,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1021"
+      ],
+      "retrieved": [
+        "P1021",
+        "P1045",
+        "P1003",
+        "P1006",
+        "P1018",
+        "P1036",
+        "P1059",
+        "P1053",
+        "P1050",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-023",
+      "query": {
+        "sha256": "4beb8b4ca27c6febe2f293ae132c158efca1f59ed1e6112a2b0d55a6314c0458",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 511.054,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1045"
+      ],
+      "retrieved": [
+        "P1045",
+        "P1009",
+        "P1021",
+        "P1036",
+        "P1006",
+        "P1037",
+        "P1050",
+        "P1031",
+        "P1032",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-024",
+      "query": {
+        "sha256": "fda89588b16c469c791a51b77d9ffa42a976947c4a141fc0805e1cf463577c65",
+        "chars": 4
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 491.672,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1004",
+        "P1023"
+      ],
+      "retrieved": [
+        "P1023",
+        "P1004",
+        "P1053",
+        "P1022",
+        "P1035",
+        "P1054",
+        "P1028",
+        "P1026",
+        "P1010",
+        "P1027"
+      ]
+    },
+    {
+      "case_id": "product-025",
+      "query": {
+        "sha256": "45792e2841ec7ef835515200b5f81515aa4ae3a9b9f07a314d42ebc5db7563b6",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 510.886,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1022"
+      ],
+      "retrieved": [
+        "P1022",
+        "P1004",
+        "P1023",
+        "P1053",
+        "P1027",
+        "P1026",
+        "P1024",
+        "P1049",
+        "P1038",
+        "P1005"
+      ]
+    },
+    {
+      "case_id": "product-026",
+      "query": {
+        "sha256": "c6d6621a8ae7f3b4df37d81fd32acda1fa6a8fe73b100ef408060d508eb02835",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 508.399,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1005",
+        "P1025"
+      ],
+      "retrieved": [
+        "P1005",
+        "P1025",
+        "P1024",
+        "P1028",
+        "P1038",
+        "P1008",
+        "P1042",
+        "P1026",
+        "P1027",
+        "P1012"
+      ]
+    },
+    {
+      "case_id": "product-027",
+      "query": {
+        "sha256": "55e8b4727bb3d4cc587e9648c879dd1f8ab128bdb48e177a981e431afeacbd1f",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 494.797,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1025"
+      ],
+      "retrieved": [
+        "P1025",
+        "P1005",
+        "P1027",
+        "P1024",
+        "P1028",
+        "P1042",
+        "P1038",
+        "P1012",
+        "P1026",
+        "P1008"
+      ]
+    },
+    {
+      "case_id": "product-028",
+      "query": {
+        "sha256": "34592901c7054b21f0449e981b9f3b94bae2099e41bcb17cd1432e3382a3a279",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 485.364,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1024"
+      ],
+      "retrieved": [
+        "P1024",
+        "P1038",
+        "P1027",
+        "P1005",
+        "P1025",
+        "P1026",
+        "P1008",
+        "P1028",
+        "P1022",
+        "P1042"
+      ]
+    },
+    {
+      "case_id": "product-029",
+      "query": {
+        "sha256": "86ea2210dafc9481c854bfae7fe5c4123abeabef46a1d57634c3d515b4dcd4bf",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 587.83,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1026"
+      ],
+      "retrieved": [
+        "P1026",
+        "P1005",
+        "P1021",
+        "P1002",
+        "P1053",
+        "P1038",
+        "P1004",
+        "P1012",
+        "P1016",
+        "P1023"
+      ]
+    },
+    {
+      "case_id": "product-030",
+      "query": {
+        "sha256": "8bf0eece2f285f3566d0107d5d1eb667746b41a7fe8ed4a2d52f724842f65682",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1270.166,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1028"
+      ],
+      "retrieved": [
+        "P1028",
+        "P1005",
+        "P1025",
+        "P1024",
+        "P1060",
+        "P1030",
+        "P1027",
+        "P1038",
+        "P1008",
+        "P1026"
+      ]
+    },
+    {
+      "case_id": "product-031",
+      "query": {
+        "sha256": "a7755b3aac3d4d63b27d60cfa2f6cc7c57a6c24fee6a615972bf57530c5c7481",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1302.381,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1027"
+      ],
+      "retrieved": [
+        "P1027",
+        "P1028",
+        "P1030",
+        "P1005",
+        "P1029",
+        "P1051",
+        "P1026",
+        "P1024",
+        "P1060",
+        "P1022"
+      ]
+    },
+    {
+      "case_id": "product-032",
+      "query": {
+        "sha256": "959f7d3925b98d989adf35fa45639d680a3ea9eefb1c898d596cac353a228394",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1139.607,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1029"
+      ],
+      "retrieved": [
+        "P1029",
+        "P1005",
+        "P1024",
+        "P1016",
+        "P1052",
+        "P1027",
+        "P1015",
+        "P1002",
+        "P1011",
+        "P1051"
+      ]
+    },
+    {
+      "case_id": "product-033",
+      "query": {
+        "sha256": "556830b556b3ca7bc6b3db665455d08d4654c7708ef87f701eb7f4369e0503f3",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 971.034,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1030"
+      ],
+      "retrieved": [
+        "P1030",
+        "P1051",
+        "P1024",
+        "P1028",
+        "P1027",
+        "P1005",
+        "P1052",
+        "P1014",
+        "P1025",
+        "P1022"
+      ]
+    },
+    {
+      "case_id": "product-034",
+      "query": {
+        "sha256": "dcf7c7c400fc03e5de9fd3a77a7334931d7136f520e2121829fb9270176478d3",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 960.183,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1032",
+        "P1031"
+      ],
+      "retrieved": [
+        "P1032",
+        "P1031",
+        "P1036",
+        "P1006",
+        "P1021",
+        "P1050",
+        "P1045",
+        "P1033",
+        "P1034",
+        "P1035"
+      ]
+    },
+    {
+      "case_id": "product-035",
+      "query": {
+        "sha256": "3ed7ac3b22e2463d485d00ff248f47b5890f4bd416836d158f8ab3ba2bcdba53",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1089.378,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1031",
+        "P1006"
+      ],
+      "retrieved": [
+        "P1031",
+        "P1006",
+        "P1035",
+        "P1033",
+        "P1009",
+        "P1032",
+        "P1046",
+        "P1037",
+        "P1019",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-036",
+      "query": {
+        "sha256": "ad76df4d7b90e20937f8492c893e825b13573691499c0d20630b44243d778c4b",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1188.489,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1006"
+      ],
+      "retrieved": [
+        "P1006",
+        "P1033",
+        "P1019",
+        "P1001",
+        "P1050",
+        "P1014",
+        "P1021",
+        "P1011",
+        "P1059",
+        "P1049"
+      ]
+    },
+    {
+      "case_id": "product-037",
+      "query": {
+        "sha256": "420d71fd1cac249c2b6244c3f79f9883f28a54e079b738a7d1c890b87e812aba",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1173.249,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1033"
+      ],
+      "retrieved": [
+        "P1033",
+        "P1037",
+        "P1006",
+        "P1031",
+        "P1019",
+        "P1001",
+        "P1009",
+        "P1032",
+        "P1048",
+        "P1041"
+      ]
+    },
+    {
+      "case_id": "product-038",
+      "query": {
+        "sha256": "6d1a5a90a2c5d0c5358ba0a78118ae62dd820bdf25ca60a58caf1a80eb30b170",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1251.946,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1037"
+      ],
+      "retrieved": [
+        "P1037",
+        "P1042",
+        "P1019",
+        "P1034",
+        "P1009",
+        "P1043",
+        "P1001",
+        "P1033",
+        "P1012",
+        "P1058"
+      ]
+    },
+    {
+      "case_id": "product-039",
+      "query": {
+        "sha256": "43417cb0041b79b1d318af6aba69ac555519c6b613e890a97a32d3f557bee9a6",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1060.031,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1036"
+      ],
+      "retrieved": [
+        "P1036",
+        "P1031",
+        "P1032",
+        "P1006",
+        "P1021",
+        "P1050",
+        "P1045",
+        "P1055",
+        "P1059",
+        "P1033"
+      ]
+    },
+    {
+      "case_id": "product-040",
+      "query": {
+        "sha256": "1c06d5c1dfb244add1c6d9c2f7ffa5533a99e34f4e6f512ace21aa977e36a8fc",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1174.416,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1055"
+      ],
+      "retrieved": [
+        "P1055",
+        "P1054",
+        "P1052",
+        "P1058",
+        "P1007",
+        "P1050",
+        "P1042",
+        "P1059",
+        "P1018",
+        "P1005"
+      ]
+    },
+    {
+      "case_id": "product-041",
+      "query": {
+        "sha256": "288c2fcc3eb9856cda8ce137833646bfbccd758f1ffeea63f7ac2f4a408fb8bb",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 610.312,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1057"
+      ],
+      "retrieved": [
+        "P1057",
+        "P1046",
+        "P1009",
+        "P1003",
+        "P1017",
+        "P1041",
+        "P1059",
+        "P1047",
+        "P1010",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-042",
+      "query": {
+        "sha256": "0b6aadb2606f42be000436fafc92c98e0748b839f6c50408091d8806d08f5e7a",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 496.859,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1008",
+        "P1039"
+      ],
+      "retrieved": [
+        "P1008",
+        "P1039",
+        "P1042",
+        "P1038",
+        "P1046",
+        "P1017",
+        "P1005",
+        "P1018",
+        "P1003",
+        "P1009"
+      ]
+    },
+    {
+      "case_id": "product-043",
+      "query": {
+        "sha256": "2e7f77624e11bcc31243c7739040bcabf6080393c778163736a5e4fe371e188a",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 494.709,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1039"
+      ],
+      "retrieved": [
+        "P1039",
+        "P1008",
+        "P1038",
+        "P1042",
+        "P1005",
+        "P1025",
+        "P1012",
+        "P1026",
+        "P1024",
+        "P1046"
+      ]
+    },
+    {
+      "case_id": "product-044",
+      "query": {
+        "sha256": "ce80530d40705511a05d4568197d14a95e9eb2277bc1d89f41d623d3fd3a52e5",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 477.731,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.9721212198129313
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.9721212198129313
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.9721212198129313
+        }
+      },
+      "expected": [
+        "P1010",
+        "P1047",
+        "P1040"
+      ],
+      "retrieved": [
+        "P1010",
+        "P1040",
+        "P1047",
+        "P1044",
+        "P1017",
+        "P1002",
+        "P1016",
+        "P1015",
+        "P1003",
+        "P1046"
+      ]
+    },
+    {
+      "case_id": "product-045",
+      "query": {
+        "sha256": "2ab7b1b15c1f3de7837933cb490f32518b3d33ff9c64bbcc8652a83d94a653e3",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 492.013,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1047"
+      ],
+      "retrieved": [
+        "P1047",
+        "P1010",
+        "P1046",
+        "P1040",
+        "P1003",
+        "P1017",
+        "P1044",
+        "P1041",
+        "P1057",
+        "P1016"
+      ]
+    },
+    {
+      "case_id": "product-046",
+      "query": {
+        "sha256": "dafa580b2134b80fcb22beb014b5c149c3f15fb3c5c2a60155fcd3036a10c4b1",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 513.381,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1040"
+      ],
+      "retrieved": [
+        "P1040",
+        "P1010",
+        "P1002",
+        "P1015",
+        "P1047",
+        "P1050",
+        "P1041",
+        "P1044",
+        "P1029",
+        "P1003"
+      ]
+    },
+    {
+      "case_id": "product-047",
+      "query": {
+        "sha256": "9eaa41a9e43ed4c12b3d77c76fa2537a25d1a738fe3b46fd91531cdb83a98154",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 490.216,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1042"
+      ],
+      "retrieved": [
+        "P1042",
+        "P1012",
+        "P1037",
+        "P1014",
+        "P1018",
+        "P1046",
+        "P1058",
+        "P1017",
+        "P1055",
+        "P1019"
+      ]
+    },
+    {
+      "case_id": "product-048",
+      "query": {
+        "sha256": "7a0393f8793b255c9a400ad3c880d02a155fc9e8ce4420154a5b067324f8e451",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 501.79,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1041"
+      ],
+      "retrieved": [
+        "P1041",
+        "P1042",
+        "P1019",
+        "P1020",
+        "P1014",
+        "P1059",
+        "P1003",
+        "P1001",
+        "P1043",
+        "P1037"
+      ]
+    },
+    {
+      "case_id": "product-049",
+      "query": {
+        "sha256": "2d5b068f05e8d5d1619fc03d9e463d39dcbdecb39cda3075e300f00cea0852c5",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 509.576,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1048"
+      ],
+      "retrieved": [
+        "P1048",
+        "P1055",
+        "P1050",
+        "P1010",
+        "P1037",
+        "P1031",
+        "P1045",
+        "P1033",
+        "P1036",
+        "P1006"
+      ]
+    },
+    {
+      "case_id": "product-050",
+      "query": {
+        "sha256": "7a9264fe2b722f2800f5a5b951a71e5e086c6666bc0c0e50092fbb5c051b37b4",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 491.652,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1046"
+      ],
+      "retrieved": [
+        "P1046",
+        "P1057",
+        "P1009",
+        "P1003",
+        "P1011",
+        "P1001",
+        "P1017",
+        "P1047",
+        "P1018",
+        "P1059"
+      ]
+    },
+    {
+      "case_id": "product-051",
+      "query": {
+        "sha256": "53dc797b4ec7b40e457da87544d373e1805f057eba0ed528ecb2da30b77e851b",
+        "chars": 18
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 514.289,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1013"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1009",
+        "P1013",
+        "P1019",
+        "P1018",
+        "P1010",
+        "P1002",
+        "P1033",
+        "P1049",
+        "P1006"
+      ]
+    },
+    {
+      "case_id": "product-052",
+      "query": {
+        "sha256": "6d1dfa837bdbfbedf686d70b2fdf61cf1af3ff3cfdba2d342ba27b4f9df55105",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price"
+      ],
+      "reciprocal_rank": 0.125,
+      "latency_ms": 372.527,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.5,
+          "precision": 0.1,
+          "ndcg": 0.24831962984386616
+        }
+      },
+      "expected": [
+        "P1014",
+        "P1059"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1003",
+        "P1011",
+        "P1019",
+        "P1012",
+        "P1049",
+        "P1009",
+        "P1014",
+        "P1017",
+        "P1002"
+      ]
+    },
+    {
+      "case_id": "product-053",
+      "query": {
+        "sha256": "fb945e15c071c7a052d12edca85c6e80abe003758c43f8d765fa96a01d039e23",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "shipping"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 462.608,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.8428282648809379
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.8428282648809379
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.8428282648809379
+        }
+      },
+      "expected": [
+        "P1010",
+        "P1047",
+        "P1040"
+      ],
+      "retrieved": [
+        "P1047",
+        "P1010",
+        "P1040",
+        "P1044",
+        "P1015",
+        "P1002",
+        "P1051",
+        "P1046",
+        "P1017",
+        "P1018"
+      ]
+    },
+    {
+      "case_id": "product-054",
+      "query": {
+        "sha256": "e593de00ee6b7dd345a8e2f6b4660355b16e726e3783cc1758f15701f2cbbb2c",
+        "chars": 12
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "shipping"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 506.369,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.7591919243197319
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.7591919243197319
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.7591919243197319
+        }
+      },
+      "expected": [
+        "P1031",
+        "P1034",
+        "P1006"
+      ],
+      "retrieved": [
+        "P1034",
+        "P1006",
+        "P1031",
+        "P1019",
+        "P1009",
+        "P1037",
+        "P1035",
+        "P1033",
+        "P1057",
+        "P1032"
+      ]
+    },
+    {
+      "case_id": "product-055",
+      "query": {
+        "sha256": "5ce5554007a5b69f42cd0c93eb11f9c2e98f045eaad973c00b1a88cd0cfef328",
+        "chars": 16
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price",
+        "shipping"
+      ],
+      "reciprocal_rank": 0.0,
+      "latency_ms": 523.936,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        "P1039",
+        "P1042",
+        "P1048",
+        "P1044"
+      ],
+      "retrieved": [
+        "P1010",
+        "P1002",
+        "P1018",
+        "P1003",
+        "P1009",
+        "P1001",
+        "P1021",
+        "P1013",
+        "P1007",
+        "P1038"
+      ]
+    },
+    {
+      "case_id": "product-056",
+      "query": {
+        "sha256": "33649075176696f09c0b38f04005b292ebc03f30d648033276b5c27bd143034a",
+        "chars": 15
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 509.491,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1012",
+        "P1011",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1012",
+        "P1011",
+        "P1001",
+        "P1053",
+        "P1004",
+        "P1023",
+        "P1054",
+        "P1002",
+        "P1013",
+        "P1060"
+      ]
+    },
+    {
+      "case_id": "product-057",
+      "query": {
+        "sha256": "acc17ddc13427f6168e14cd27c9e11ce7b87d172dfefc2e0b389079bd2e84b66",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 502.758,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        "P1013",
+        "P1058"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1011",
+        "P1058",
+        "P1037",
+        "P1001",
+        "P1009",
+        "P1057",
+        "P1053",
+        "P1034",
+        "P1012"
+      ]
+    },
+    {
+      "case_id": "product-058",
+      "query": {
+        "sha256": "498938e384dd2b36ff87e80660f8d18da5a5ec314220bee3221d2aa951a0776b",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 510.755,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        "P1052"
+      ],
+      "retrieved": [
+        "P1002",
+        "P1052",
+        "P1003",
+        "P1016",
+        "P1001",
+        "P1015",
+        "P1060",
+        "P1050",
+        "P1014",
+        "P1017"
+      ]
+    },
+    {
+      "case_id": "product-059",
+      "query": {
+        "sha256": "f881010bdbb026c23ec72ec71b2df28ccaff68bebb6cc49cb211cac66b99cb6b",
+        "chars": 14
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 512.109,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1032",
+        "P1031"
+      ],
+      "retrieved": [
+        "P1031",
+        "P1032",
+        "P1036",
+        "P1006",
+        "P1021",
+        "P1050",
+        "P1033",
+        "P1045",
+        "P1003",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-060",
+      "query": {
+        "sha256": "ff8610a955906d98ef2146120c837af0c447d3c6be15033fc47ff5f7e481dea4",
+        "chars": 14
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 512.331,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.6666666666666666,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.7984848580994974
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.9360403422435027
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.9360403422435027
+        }
+      },
+      "expected": [
+        "P1010",
+        "P1047",
+        "P1040"
+      ],
+      "retrieved": [
+        "P1010",
+        "P1044",
+        "P1040",
+        "P1047",
+        "P1042",
+        "P1017",
+        "P1037",
+        "P1015",
+        "P1001",
+        "P1003"
+      ]
+    },
+    {
+      "case_id": "product-061",
+      "query": {
+        "sha256": "bb8f91d5089f14940902e95497cb405e82338081cff5fdeb8e99ccdf47c17bcf",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 512.713,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1042"
+      ],
+      "retrieved": [
+        "P1042",
+        "P1043",
+        "P1009",
+        "P1037",
+        "P1041",
+        "P1012",
+        "P1046",
+        "P1001",
+        "P1034",
+        "P1007"
+      ]
+    },
+    {
+      "case_id": "product-062",
+      "query": {
+        "sha256": "cb61b6cb1048b324d280db8e74efac5f30fba09983da9516d7645501312fd2ab",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 509.689,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        "P1026"
+      ],
+      "retrieved": [
+        "P1005",
+        "P1026",
+        "P1024",
+        "P1008",
+        "P1038",
+        "P1054",
+        "P1025",
+        "P1028",
+        "P1016",
+        "P1027"
+      ]
+    },
+    {
+      "case_id": "product-063",
+      "query": {
+        "sha256": "42eee23ba2dfa1924abd45453a5955a848faaf2fb8da018a00360d9506e0ddb8",
+        "chars": 15
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 517.273,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1028"
+      ],
+      "retrieved": [
+        "P1028",
+        "P1005",
+        "P1025",
+        "P1024",
+        "P1002",
+        "P1003",
+        "P1004",
+        "P1053",
+        "P1050",
+        "P1027"
+      ]
+    },
+    {
+      "case_id": "product-064",
+      "query": {
+        "sha256": "053ebc73237087b28845175f59024925da9fd9ef34773d9d06e73cf56f87a460",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.0,
+      "latency_ms": 519.468,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        "P1055"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1019",
+        "P1046",
+        "P1059",
+        "P1011",
+        "P1014",
+        "P1012",
+        "P1009",
+        "P1037",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-065",
+      "query": {
+        "sha256": "b0922a81f102b0f5c4c63918a7151dddad449db5162029ed701e53d7da1c54fa",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 515.438,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.5
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.5
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.5
+        }
+      },
+      "expected": [
+        "P1057"
+      ],
+      "retrieved": [
+        "P1003",
+        "P1017",
+        "P1057",
+        "P1018",
+        "P1046",
+        "P1001",
+        "P1013",
+        "P1056",
+        "P1042",
+        "P1054"
+      ]
+    },
+    {
+      "case_id": "product-066",
+      "query": {
+        "sha256": "1bad6d84eab6f3e8aaded53f022048f19ad47e82ca57fe76d3e9bb76ed705354",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 383.841,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1007"
+      ],
+      "retrieved": [
+        "P1007",
+        "P1055",
+        "P1009",
+        "P1034",
+        "P1037",
+        "P1031",
+        "P1019",
+        "P1042",
+        "P1003",
+        "P1054"
+      ]
+    },
+    {
+      "case_id": "product-067",
+      "query": {
+        "sha256": "5c207409dcf9a5885517e9c53d6ca66674567232e8c41a38dac9f73b6f41283a",
+        "chars": 15
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 429.867,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1009"
+      ],
+      "retrieved": [
+        "P1009",
+        "P1019",
+        "P1055",
+        "P1001",
+        "P1059",
+        "P1014",
+        "P1033",
+        "P1017",
+        "P1006",
+        "P1003"
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "case_id": "product-052",
+      "query": {
+        "sha256": "6d1dfa837bdbfbedf686d70b2fdf61cf1af3ff3cfdba2d342ba27b4f9df55105",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price"
+      ],
+      "reciprocal_rank": 0.125,
+      "latency_ms": 372.527,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.5,
+          "precision": 0.1,
+          "ndcg": 0.24831962984386616
+        }
+      },
+      "expected": [
+        "P1014",
+        "P1059"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1003",
+        "P1011",
+        "P1019",
+        "P1012",
+        "P1049",
+        "P1009",
+        "P1014",
+        "P1017",
+        "P1002"
+      ]
+    },
+    {
+      "case_id": "product-055",
+      "query": {
+        "sha256": "5ce5554007a5b69f42cd0c93eb11f9c2e98f045eaad973c00b1a88cd0cfef328",
+        "chars": 16
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price",
+        "shipping"
+      ],
+      "reciprocal_rank": 0.0,
+      "latency_ms": 523.936,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        "P1039",
+        "P1042",
+        "P1048",
+        "P1044"
+      ],
+      "retrieved": [
+        "P1010",
+        "P1002",
+        "P1018",
+        "P1003",
+        "P1009",
+        "P1001",
+        "P1021",
+        "P1013",
+        "P1007",
+        "P1038"
+      ]
+    },
+    {
+      "case_id": "product-064",
+      "query": {
+        "sha256": "053ebc73237087b28845175f59024925da9fd9ef34773d9d06e73cf56f87a460",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.0,
+      "latency_ms": 519.468,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        }
+      },
+      "expected": [
+        "P1055"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1019",
+        "P1046",
+        "P1059",
+        "P1011",
+        "P1014",
+        "P1012",
+        "P1009",
+        "P1037",
+        "P1001"
+      ]
+    }
+  ],
+  "stdout": "��ʼ��Ʒ�ٻ����⣺67 ����max_k=10\n[  1/67] case=product-001 query=\"����������\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[  2/67] case=product-002 query=\"���첻�����ϵ�����������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[  3/67] case=product-003 query=\"�����޾�����������װ\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[  4/67] case=product-004 query=\"����\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=0.9721\n[  5/67] case=product-005 query=\"�ڹ�����\" retrieved=10 R@10=1.0000 P@10=0.4000 MRR=1.0000 NDCG@10=0.9592\n[  6/67] case=product-006 query=\"��Ȼ���ʲ�Ҫ���ϵ�����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[  7/67] case=product-007 query=\"�ǻ���\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[  8/67] case=product-008 query=\"24������������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[  9/67] case=product-009 query=\"���������� ��ʵ��ˤ\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=1.0000\n[ 10/67] case=product-010 query=\"���˵�����Ӳ�ǵǻ���\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 11/67] case=product-011 query=\"ѹ�����ɴ� �����װ\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[ 12/67] case=product-012 query=\"�۵�˫���\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 13/67] case=product-013 query=\"��ˮ���ڱ��� ��ˮ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 14/67] case=product-014 query=\"������ʵ�����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 15/67] case=product-015 query=\"ɣ��˿˯���ڵ�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 16/67] case=product-016 query=\"¶Ӫ�õ�����˯��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 17/67] case=product-017 query=\"�ٸ�ë��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 18/67] case=product-018 query=\"�������� ˯����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 19/67] case=product-019 query=\"RFID ����ˢ֤����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 20/67] case=product-020 query=\"�����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 21/67] case=product-021 query=\"���������� ��TSA��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 22/67] case=product-022 query=\"�۵�ˮ�� �轺��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 23/67] case=product-023 query=\"����ˮ�� ��Ҫ�����ڵ�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 24/67] case=product-024 query=\"�������\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=0.8340\n[ 25/67] case=product-025 query=\"Ԥ���ڵ�������������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 26/67] case=product-026 query=\"�����س���� ȫ����\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[ 27/67] case=product-027 query=\"100W ��ڿ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 28/67] case=product-028 query=\"���㵥�ڳ����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 29/67] case=product-029 query=\"�ƶ���Դ �ܴ��Ϸɻ���\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 30/67] case=product-030 query=\"ȫ��ͨ��ת����ͷ\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 31/67] case=product-031 query=\"����һ������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 32/67] case=product-032 query=\"�ֻ����ż� ����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 33/67] case=product-033 query=\"������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 34/67] case=product-034 query=\"�������ʵĿ��ȱ�\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[ 35/67] case=product-035 query=\"�ֹ����� ���ŷ�\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[ 36/67] case=product-036 query=\"���в����װ\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 37/67] case=product-037 query=\"���Ʋ;� ����������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 38/67] case=product-038 query=\"��ľ���ȵ�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 39/67] case=product-039 query=\"�ֳ忧�Ⱥ�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 40/67] case=product-040 query=\"��Я���̻� ������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 41/67] case=product-041 query=\"��������ɡ\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 42/67] case=product-042 query=\"¶Ӫ�� �ɳ���ˮ\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=1.0000\n[ 43/67] case=product-043 query=\"̫���ܳ���Ӫ�ص�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 44/67] case=product-044 query=\"��ɽ��\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=0.9721\n[ 45/67] case=product-045 query=\"̼��ά�����ɽ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 46/67] case=product-046 query=\"���ż�λ�����Ͻ��ɽ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 47/67] case=product-047 query=\"�Զ�����������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 48/67] case=product-048 query=\"�۵�¶Ӫ�� ����Ҫ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 49/67] case=product-049 query=\"�ѺϽ𴶾� ��Ϳ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 50/67] case=product-050 query=\"�����������\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 51/67] case=product-051 query=\"300Ԫ���ڿ����ֲ������ϵ�����װ��\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=0.9558\n[ 52/67] case=product-052 query=\"Ԥ��100Ԫ���ڵ�������Ʒ\" retrieved=10 R@10=0.5000 P@10=0.1000 MRR=0.1250 NDCG@10=0.2483\n[ 53/67] case=product-053 query=\"�ܼĵ������ĵ�ɽ��\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=0.8428\n[ 54/67] case=product-054 query=\"�ܼĵ��ձ�����Ȼ���ʼҾ�\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=0.7592\n[ 55/67] case=product-055 query=\"500Ԫ�����ܼĵ�ŷ�޵Ļ���װ��\" retrieved=10 R@10=0.0000 P@10=0.0000 MRR=0.0000 NDCG@10=0.0000\n[ 56/67] case=product-056 query=\"���ɻ��������Ǻ�������ʲô�취\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=1.0000\n[ 57/67] case=product-057 query=\"˯���¹�����۾�������\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=0.9558\n[ 58/67] case=product-058 query=\"������̫�ر�������Ǯ\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=0.5000 NDCG@10=0.6309\n[ 59/67] case=product-059 query=\"������ȿ��ȵı��ӵ���̫����\" retrieved=10 R@10=1.0000 P@10=0.2000 MRR=1.0000 NDCG@10=0.8340\n[ 60/67] case=product-060 query=\"��ɽϥ�ǲ�̫����Ҫ�ж���֧��\" retrieved=10 R@10=1.0000 P@10=0.3000 MRR=1.0000 NDCG@10=0.9360\n[ 61/67] case=product-061 query=\"��������˯������Ӳ����\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 62/67] case=product-062 query=\"���������ֻ�û����鷳\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=0.5000 NDCG@10=0.6309\n[ 63/67] case=product-063 query=\"ȥ������������ڲ�һ���岻��ȥ\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 64/67] case=product-064 query=\"�·�ѹ��������û������\" retrieved=10 R@10=0.0000 P@10=0.0000 MRR=0.0000 NDCG@10=0.0000\n[ 65/67] case=product-065 query=\"������������ɹ���һ���͹�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=0.3333 NDCG@10=0.5000\n[ 66/67] case=product-066 query=\"ϴ���������Ķ���Ҫ�ɵÿ�\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\n[ 67/67] case=product-067 query=\"ס�����Ӵ������ɾ����Լ���һ��\" retrieved=10 R@10=1.0000 P@10=0.1000 MRR=1.0000 NDCG@10=1.0000\ncases=67\nK\tRecall\tPrecision\tNDCG\n1\t0.7475\t0.9104\t0.8763\n3\t0.9465\t0.4478\t0.9187\n5\t0.9552\t0.2746\t0.9221\n10\t0.9627\t0.1388\t0.9258\nMRR@10\t0.9322\nreport\t[LOCAL_PATH]\n",
+  "stderr": "You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.\n\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 946.02it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 17.70it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 24.33it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 27.09it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 691.40it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 18.09it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 23.98it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 26.16it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 757.16it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 15.41it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 21.68it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 24.42it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 746.37it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 19.80it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 25.41it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 27.99it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 843.08it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 19.42it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 24.20it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 26.67it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 795.52it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 17.63it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 23.09it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 25.55it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 817.54it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 18.43it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 21.73it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 24.70it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 23.50it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 784.39it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 13.96it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00, 16.91it/s]\nCompute Scores:  88%|������������������ | 7/8 [00:00<00:00, 18.94it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.31it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 795.17it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.17it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.71it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.93it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.45it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 727.28it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.12it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.62it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.67it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.35it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.76it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.72it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.44it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.76it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.36it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 816.41it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.69it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.20it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.18it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.93it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 799.89it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.97it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.72it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.15it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.73it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 753.90it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.19it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.89it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.85it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.40it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 887.05it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.06it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.81it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 16.92it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 20.28it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.23it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 964.26it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.01it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.85it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.99it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.59it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 882.48it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.13it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.92it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.19it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.84it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.84it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.75it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.65it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.81it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.37it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 939.14it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.38it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.15it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.16it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.79it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 1000.04it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.45it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.24it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.41it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.02it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 839.51it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.53it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.25it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.56it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.96it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 934.98it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.82it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.46it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.72it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.30it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 880.07it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.69it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.41it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.57it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.98it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.25it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.27it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.05it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.35it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.98it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 919.22it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.74it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.39it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.49it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.09it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 934.35it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.59it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.37it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.63it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.07it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.91it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.28it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.14it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.11it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.89it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.79it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.22it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.22it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.38it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.07it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 836.71it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.70it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.40it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.48it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 15.96it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 15.55it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 231.99it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 10.05it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00,  8.91it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00,  8.17it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00,  7.86it/s]\nCompute Scores:  88%|������������������ | 7/8 [00:00<00:00,  8.12it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  8.17it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  8.33it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 219.88it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.90it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00,  9.49it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00, 10.15it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00,  9.47it/s]\nCompute Scores:  88%|������������������ | 7/8 [00:00<00:00,  9.47it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  9.14it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  9.36it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 219.68it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.16it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00,  9.53it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00,  8.80it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00,  8.38it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 10.87it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 12.47it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 10.97it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 259.85it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 11.29it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00, 12.52it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 11.46it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 11.76it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 11.75it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 239.52it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 15.03it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00, 12.56it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 12.01it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 11.83it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 12.12it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 225.40it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 11.62it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00, 11.07it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 10.77it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 10.83it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 10.91it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 226.28it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.49it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00,  9.45it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00,  9.00it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00,  8.72it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00,  9.59it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 10.39it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  9.86it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 228.57it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.12it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00,  9.47it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00,  9.70it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 10.96it/s]\nCompute Scores:  88%|������������������ | 7/8 [00:00<00:00, 11.13it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 10.40it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 223.17it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00,  9.66it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00,  9.47it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00,  9.36it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00,  9.19it/s]\nCompute Scores:  88%|������������������ | 7/8 [00:00<00:00,  9.33it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  8.90it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  9.14it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 209.17it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 12.01it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00, 10.30it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 11.64it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 12.87it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 12.19it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 260.74it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 10.01it/s]\nCompute Scores:  50%|����������     | 4/8 [00:00<00:00,  9.85it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00,  9.66it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00,  9.31it/s]\nCompute Scores:  88%|������������������ | 7/8 [00:00<00:00,  9.20it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  8.65it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00,  9.15it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 386.95it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 13.31it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 17.63it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 21.12it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.61it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 1000.10it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.08it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.90it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.93it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.52it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 887.03it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.47it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.12it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.16it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.79it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 989.81it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.08it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.09it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.75it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.27it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.95it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.41it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.14it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.08it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.77it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 799.49it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.87it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.46it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.84it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.30it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 823.77it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.51it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 15.22it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.18it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.91it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 852.87it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.00it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.85it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.05it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.55it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 840.86it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.32it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.75it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.73it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.29it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.88it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.10it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.97it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 18.15it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.85it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 800.02it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.96it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.50it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 16.65it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.81it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.84it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 829.96it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 16.90it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 23.91it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 26.55it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 799.83it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 14.15it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 18.71it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 22.34it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 20.72it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 887.99it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.87it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.55it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.56it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.14it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 841.15it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.68it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 13.97it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 16.51it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.83it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.71it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 876.16it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.77it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.37it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.56it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.10it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.74it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.13it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.01it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.45it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.98it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 799.71it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.96it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.56it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.71it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.31it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 799.96it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.60it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.13it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.43it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.92it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 800.21it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  9.04it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.60it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.62it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.15it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.86it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.62it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.32it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.56it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.01it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 926.41it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.64it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.33it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.51it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.10it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.86it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.70it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.33it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.49it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.86it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 797.85it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.69it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.35it/s]\nCompute Scores:  75%|����������������  | 6/8 [00:00<00:00, 17.63it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 18.08it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.88it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  12%|����        | 1/8 [00:00<00:00,  8.63it/s]\nCompute Scores:  38%|��������      | 3/8 [00:00<00:00, 14.14it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 16.64it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 19.99it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 17.84it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 799.96it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 16.62it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 23.67it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 26.04it/s]\n\npre tokenize:   0%|          | 0/8 [00:00<?, ?it/s]\npre tokenize: 100%|��������������������| 8/8 [00:00<00:00, 888.86it/s]\n\nCompute Scores:   0%|          | 0/8 [00:00<?, ?it/s]\nCompute Scores:  25%|������       | 2/8 [00:00<00:00, 15.33it/s]\nCompute Scores:  62%|��������������   | 5/8 [00:00<00:00, 20.23it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 23.78it/s]\nCompute Scores: 100%|��������������������| 8/8 [00:00<00:00, 22.21it/s]\n",
+  "limitations": [
+    "固定 60 商品快照不代表真实电商平台全量库存。"
+  ],
+  "passed": true
+}

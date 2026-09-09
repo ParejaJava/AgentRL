@@ -1,0 +1,3509 @@
+{
+  "dataset": {
+    "cases": 67,
+    "indexes": [
+      "evaluation-products"
+    ]
+  },
+  "summary": {
+    "at_k": {
+      "1": {
+        "recall": 0.677861,
+        "precision": 0.820896,
+        "ndcg": 0.731343
+      },
+      "3": {
+        "recall": 0.895522,
+        "precision": 0.422886,
+        "ndcg": 0.83208
+      },
+      "5": {
+        "recall": 0.957711,
+        "precision": 0.274627,
+        "ndcg": 0.862305
+      },
+      "10": {
+        "recall": 0.982587,
+        "precision": 0.141791,
+        "ndcg": 0.874938
+      }
+    },
+    "mrr_at_10": 0.886194,
+    "latency_ms": {
+      "p50": 2.749,
+      "p95": 3.594
+    }
+  },
+  "by_tag": {
+    "constraint-in-query": {
+      "cases": 5,
+      "recall": 0.9,
+      "precision": 0.24,
+      "ndcg": 0.643277,
+      "mrr": 0.766667
+    },
+    "lexical": {
+      "cases": 55,
+      "recall": 0.990909,
+      "precision": 0.143636,
+      "ndcg": 0.919163,
+      "mrr": 0.951515
+    },
+    "price": {
+      "cases": 3,
+      "recall": 0.833333,
+      "precision": 0.2,
+      "ndcg": 0.649236,
+      "mrr": 0.611111
+    },
+    "semantic": {
+      "cases": 12,
+      "recall": 0.944444,
+      "precision": 0.133333,
+      "ndcg": 0.672239,
+      "mrr": 0.586806
+    },
+    "shipping": {
+      "cases": 3,
+      "recall": 0.833333,
+      "precision": 0.266667,
+      "ndcg": 0.531746,
+      "mrr": 0.777778
+    }
+  },
+  "cases": [
+    {
+      "case_id": "product-001",
+      "query": {
+        "sha256": "85f9489da1cf43a32c975df3f73376127f652b31342c1222c8458e05ce38fb67",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 110.747,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1011"
+      ],
+      "retrieved": [
+        "P1011",
+        "P1001",
+        "P1014",
+        "P1007",
+        "P1027",
+        "P1019",
+        "P1053",
+        "P1051",
+        "P1033",
+        "P1028"
+      ]
+    },
+    {
+      "case_id": "product-002",
+      "query": {
+        "sha256": "574f8c9d5598d4bb229b68d0581429ad732535b3652a3d0aefb42aca3390b7d4",
+        "chars": 12
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.675,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1001"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1011",
+        "P1019",
+        "P1033",
+        "P1018",
+        "P1013",
+        "P1007",
+        "P1006",
+        "P1016",
+        "P1014"
+      ]
+    },
+    {
+      "case_id": "product-003",
+      "query": {
+        "sha256": "c3ad5bd3ed28da8daebba3b360685e4cf82efc77162abfbd3b5854798b12ebb9",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.733,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1011"
+      ],
+      "retrieved": [
+        "P1011",
+        "P1001",
+        "P1033",
+        "P1012",
+        "P1014",
+        "P1006",
+        "P1019",
+        "P1060",
+        "P1059",
+        "P1058"
+      ]
+    },
+    {
+      "case_id": "product-004",
+      "query": {
+        "sha256": "cf33cdce276a266431ff78da10e8dff2c84e8dbd4f0f45a559120c1ef375d352",
+        "chars": 2
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.424,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1012",
+        "P1011",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1012",
+        "P1011",
+        "P1001",
+        "P1054",
+        "P1034"
+      ]
+    },
+    {
+      "case_id": "product-005",
+      "query": {
+        "sha256": "c1729bb92c785371250f49e75119d76a3e250d78f12dafa6744e4d2c54f566d7",
+        "chars": 4
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.368,
+      "metrics": {
+        "1": {
+          "recall": 0.25,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.75,
+          "precision": 1.0,
+          "ndcg": 0.9721212198129313
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.8,
+          "ndcg": 0.9733434704234325
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.9733434704234325
+        }
+      },
+      "expected": [
+        "P1013",
+        "P1058",
+        "P1011",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1011",
+        "P1058",
+        "P1001",
+        "P1038",
+        "P1008",
+        "P1004"
+      ]
+    },
+    {
+      "case_id": "product-006",
+      "query": {
+        "sha256": "4ee87699f35254ded7fab80339e6865399ddb7d7d47d0babfa6c4182e6518d76",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.597,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1013"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1037",
+        "P1033",
+        "P1031",
+        "P1019",
+        "P1009",
+        "P1006",
+        "P1001",
+        "P1035",
+        "P1034"
+      ]
+    },
+    {
+      "case_id": "product-007",
+      "query": {
+        "sha256": "27b7c61558eca237b6a06fd662f1b97bf6cdbc626c99a9ff0bdd8609d71057a5",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.388,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1002",
+        "P1016"
+      ],
+      "retrieved": [
+        "P1016",
+        "P1002",
+        "P1051",
+        "P1026",
+        "P1060",
+        "P1055",
+        "P1053",
+        "P1050",
+        "P1047",
+        "P1044"
+      ]
+    },
+    {
+      "case_id": "product-008",
+      "query": {
+        "sha256": "3df7fb276be530b7f7b0e23d2bed7ee7c0db04413b6e9126dcac9dfa6e146804",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.461,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1015"
+      ],
+      "retrieved": [
+        "P1015",
+        "P1002",
+        "P1060",
+        "P1059",
+        "P1056",
+        "P1052",
+        "P1050",
+        "P1016",
+        "P1014",
+        "P1058"
+      ]
+    },
+    {
+      "case_id": "product-009",
+      "query": {
+        "sha256": "396843283d1e29102895ab7a778390ca2a7e2ae881c002fee86ad1eb88054ce8",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.518,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.8428282648809379
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.8428282648809379
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.8428282648809379
+        }
+      },
+      "expected": [
+        "P1002",
+        "P1015",
+        "P1050"
+      ],
+      "retrieved": [
+        "P1015",
+        "P1002",
+        "P1050",
+        "P1041",
+        "P1018",
+        "P1060",
+        "P1044",
+        "P1010",
+        "P1001",
+        "P1029"
+      ]
+    },
+    {
+      "case_id": "product-010",
+      "query": {
+        "sha256": "9f911ad73d60ed1588bfb84d3463934b368a06055067d812aebcdfbfddd2205a",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.489,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1016"
+      ],
+      "retrieved": [
+        "P1016",
+        "P1033",
+        "P1013",
+        "P1009",
+        "P1006",
+        "P1002",
+        "P1001",
+        "P1051",
+        "P1045",
+        "P1037"
+      ]
+    },
+    {
+      "case_id": "product-011",
+      "query": {
+        "sha256": "4b02729565c9904af5df70794299e392c7b64cf71a1df4b60d2bdb5216084122",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.749,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1014",
+        "P1059"
+      ],
+      "retrieved": [
+        "P1014",
+        "P1059",
+        "P1056",
+        "P1019",
+        "P1011",
+        "P1001",
+        "P1046",
+        "P1012",
+        "P1053",
+        "P1051"
+      ]
+    },
+    {
+      "case_id": "product-012",
+      "query": {
+        "sha256": "ef3f8ce5eaea5f7ef51e7b402a153a19a13967019c5de1a8304341f7862968d9",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.559,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1003"
+      ],
+      "retrieved": [
+        "P1003",
+        "P1039",
+        "P1020",
+        "P1041",
+        "P1040",
+        "P1024",
+        "P1021",
+        "P1019",
+        "P1010",
+        "P1004"
+      ]
+    },
+    {
+      "case_id": "product-013",
+      "query": {
+        "sha256": "09bbf90108d0acf18493d8e8333bd0d9ced5c9b61dc7904365e8cf626f6c2699",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.38,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1018"
+      ],
+      "retrieved": [
+        "P1018",
+        "P1056",
+        "P1057",
+        "P1049",
+        "P1039",
+        "P1017",
+        "P1008",
+        "P1003",
+        "P1051",
+        "P1046"
+      ]
+    },
+    {
+      "case_id": "product-014",
+      "query": {
+        "sha256": "2a41c8b752744a466ee199f30101bdb2b8526c38df3984aa254169e44e3b84d7",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.447,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1019"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1034",
+        "P1011",
+        "P1001",
+        "P1009",
+        "P1059",
+        "P1053",
+        "P1051",
+        "P1048",
+        "P1046"
+      ]
+    },
+    {
+      "case_id": "product-015",
+      "query": {
+        "sha256": "01bfcc74ef68af6863b3587063898fe5685b863b1456f16c1095d36db021e88a",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.413,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1009"
+      ],
+      "retrieved": [
+        "P1009",
+        "P1013",
+        "P1045",
+        "P1043",
+        "P1058",
+        "P1057",
+        "P1056",
+        "P1053",
+        "P1033",
+        "P1028"
+      ]
+    },
+    {
+      "case_id": "product-016",
+      "query": {
+        "sha256": "634b7d0abb7a5d8312bd5d51bcfa6277b23e77e737eabcb8a7a064a9aaae63e8",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.398,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1043"
+      ],
+      "retrieved": [
+        "P1043",
+        "P1009",
+        "P1048",
+        "P1046",
+        "P1042",
+        "P1041",
+        "P1039",
+        "P1008",
+        "P1057",
+        "P1056"
+      ]
+    },
+    {
+      "case_id": "product-017",
+      "query": {
+        "sha256": "4c259f4858b08ca8db7085a2865fd4df624295da6dc36846097a174187b73218",
+        "chars": 4
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.088,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1007"
+      ],
+      "retrieved": [
+        "P1007",
+        "P1054",
+        "P1030"
+      ]
+    },
+    {
+      "case_id": "product-018",
+      "query": {
+        "sha256": "dfee3375193540adff784d9573c7cc50f7a643c34d108741cbf4f1a1bc363dc2",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.84,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1053"
+      ],
+      "retrieved": [
+        "P1053",
+        "P1023",
+        "P1043",
+        "P1009",
+        "P1058",
+        "P1057",
+        "P1056",
+        "P1037",
+        "P1036",
+        "P1028"
+      ]
+    },
+    {
+      "case_id": "product-019",
+      "query": {
+        "sha256": "1e4aad93d218086e365b8625dedd24014badfe347b045c007f518c81206d0347",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.491,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1051"
+      ],
+      "retrieved": [
+        "P1051",
+        "P1018",
+        "P1017",
+        "P1014",
+        "P1003",
+        "P1060",
+        "P1057",
+        "P1056",
+        "P1054",
+        "P1049"
+      ]
+    },
+    {
+      "case_id": "product-020",
+      "query": {
+        "sha256": "81018aa93ffe2c74334d3319566ed35364ccedcb4dc5ce894eaf58733f5bb0bf",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 0.25,
+      "latency_ms": 2.357,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        "P1052"
+      ],
+      "retrieved": [
+        "P1060",
+        "P1059",
+        "P1056",
+        "P1052",
+        "P1015",
+        "P1014",
+        "P1002",
+        "P1058",
+        "P1055",
+        "P1053"
+      ]
+    },
+    {
+      "case_id": "product-021",
+      "query": {
+        "sha256": "cf6c67737a61f54afc11a28eb89bebfdbb915d8dc1549f735b57224d3910244a",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.397,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1060"
+      ],
+      "retrieved": [
+        "P1060",
+        "P1015",
+        "P1002",
+        "P1052",
+        "P1059",
+        "P1056",
+        "P1014",
+        "P1053",
+        "P1058",
+        "P1055"
+      ]
+    },
+    {
+      "case_id": "product-022",
+      "query": {
+        "sha256": "e97abe2bfc24ef1e75da0c130b6793f1a5182eaf59bfad83898b28778333e7c9",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.585,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1021"
+      ],
+      "retrieved": [
+        "P1021",
+        "P1053",
+        "P1039",
+        "P1020",
+        "P1003",
+        "P1045",
+        "P1041",
+        "P1040",
+        "P1024",
+        "P1019"
+      ]
+    },
+    {
+      "case_id": "product-023",
+      "query": {
+        "sha256": "4beb8b4ca27c6febe2f293ae132c158efca1f59ed1e6112a2b0d55a6314c0458",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.638,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1045"
+      ],
+      "retrieved": [
+        "P1045",
+        "P1009",
+        "P1033",
+        "P1019",
+        "P1013",
+        "P1006",
+        "P1043",
+        "P1042",
+        "P1037",
+        "P1032"
+      ]
+    },
+    {
+      "case_id": "product-024",
+      "query": {
+        "sha256": "fda89588b16c469c791a51b77d9ffa42a976947c4a141fc0805e1cf463577c65",
+        "chars": 4
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.361,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.7309292742059024
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.7309292742059024
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.7309292742059024
+        }
+      },
+      "expected": [
+        "P1004",
+        "P1023"
+      ],
+      "retrieved": [
+        "P1023",
+        "P1022",
+        "P1004",
+        "P1053",
+        "P1055",
+        "P1051",
+        "P1029",
+        "P1026",
+        "P1024",
+        "P1021"
+      ]
+    },
+    {
+      "case_id": "product-025",
+      "query": {
+        "sha256": "45792e2841ec7ef835515200b5f81515aa4ae3a9b9f07a314d42ebc5db7563b6",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.636,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1022"
+      ],
+      "retrieved": [
+        "P1022",
+        "P1004",
+        "P1029",
+        "P1023",
+        "P1049",
+        "P1040",
+        "P1055",
+        "P1053",
+        "P1028",
+        "P1026"
+      ]
+    },
+    {
+      "case_id": "product-026",
+      "query": {
+        "sha256": "c6d6621a8ae7f3b4df37d81fd32acda1fa6a8fe73b100ef408060d508eb02835",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.499,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1005",
+        "P1025"
+      ],
+      "retrieved": [
+        "P1025",
+        "P1005",
+        "P1024",
+        "P1028",
+        "P1039",
+        "P1038",
+        "P1008",
+        "P1052",
+        "P1051",
+        "P1050"
+      ]
+    },
+    {
+      "case_id": "product-027",
+      "query": {
+        "sha256": "55e8b4727bb3d4cc587e9648c879dd1f8ab128bdb48e177a981e431afeacbd1f",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 0.25,
+      "latency_ms": 2.757,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        "P1025"
+      ],
+      "retrieved": [
+        "P1005",
+        "P1027",
+        "P1024",
+        "P1025",
+        "P1057",
+        "P1055",
+        "P1051",
+        "P1042",
+        "P1040",
+        "P1039"
+      ]
+    },
+    {
+      "case_id": "product-028",
+      "query": {
+        "sha256": "34592901c7054b21f0449e981b9f3b94bae2099e41bcb17cd1432e3382a3a279",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.811,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1024"
+      ],
+      "retrieved": [
+        "P1024",
+        "P1025",
+        "P1005",
+        "P1039",
+        "P1038",
+        "P1008",
+        "P1042",
+        "P1027",
+        "P1057",
+        "P1056"
+      ]
+    },
+    {
+      "case_id": "product-029",
+      "query": {
+        "sha256": "86ea2210dafc9481c854bfae7fe5c4123abeabef46a1d57634c3d515b4dcd4bf",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.888,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1026"
+      ],
+      "retrieved": [
+        "P1026",
+        "P1053",
+        "P1023",
+        "P1039",
+        "P1021",
+        "P1020",
+        "P1013",
+        "P1012",
+        "P1004",
+        "P1052"
+      ]
+    },
+    {
+      "case_id": "product-030",
+      "query": {
+        "sha256": "8bf0eece2f285f3566d0107d5d1eb667746b41a7fe8ed4a2d52f724842f65682",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.71,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1028"
+      ],
+      "retrieved": [
+        "P1028",
+        "P1005",
+        "P1025",
+        "P1004",
+        "P1057",
+        "P1056",
+        "P1051",
+        "P1050",
+        "P1049",
+        "P1044"
+      ]
+    },
+    {
+      "case_id": "product-031",
+      "query": {
+        "sha256": "a7755b3aac3d4d63b27d60cfa2f6cc7c57a6c24fee6a615972bf57530c5c7481",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.58,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1027"
+      ],
+      "retrieved": [
+        "P1027",
+        "P1029",
+        "P1054",
+        "P1047",
+        "P1040",
+        "P1026",
+        "P1010",
+        "P1001",
+        "P1058",
+        "P1053"
+      ]
+    },
+    {
+      "case_id": "product-032",
+      "query": {
+        "sha256": "959f7d3925b98d989adf35fa45639d680a3ea9eefb1c898d596cac353a228394",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.413,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1029"
+      ],
+      "retrieved": [
+        "P1029",
+        "P1024",
+        "P1055",
+        "P1053",
+        "P1002",
+        "P1051",
+        "P1027",
+        "P1025",
+        "P1021",
+        "P1020"
+      ]
+    },
+    {
+      "case_id": "product-033",
+      "query": {
+        "sha256": "556830b556b3ca7bc6b3db665455d08d4654c7708ef87f701eb7f4369e0503f3",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.611,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1030"
+      ],
+      "retrieved": [
+        "P1030",
+        "P1051",
+        "P1035",
+        "P1025",
+        "P1024",
+        "P1005"
+      ]
+    },
+    {
+      "case_id": "product-034",
+      "query": {
+        "sha256": "dcf7c7c400fc03e5de9fd3a77a7334931d7136f520e2121829fb9270176478d3",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.506,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1032",
+        "P1031"
+      ],
+      "retrieved": [
+        "P1031",
+        "P1032",
+        "P1034",
+        "P1036",
+        "P1019",
+        "P1006",
+        "P1048",
+        "P1042",
+        "P1040",
+        "P1037"
+      ]
+    },
+    {
+      "case_id": "product-035",
+      "query": {
+        "sha256": "3ed7ac3b22e2463d485d00ff248f47b5890f4bd416836d158f8ab3ba2bcdba53",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.617,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1031",
+        "P1006"
+      ],
+      "retrieved": [
+        "P1031",
+        "P1006",
+        "P1032",
+        "P1055",
+        "P1054",
+        "P1046",
+        "P1038",
+        "P1036",
+        "P1035",
+        "P1029"
+      ]
+    },
+    {
+      "case_id": "product-036",
+      "query": {
+        "sha256": "ad76df4d7b90e20937f8492c893e825b13573691499c0d20630b44243d778c4b",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.534,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1006"
+      ],
+      "retrieved": [
+        "P1006",
+        "P1033",
+        "P1014",
+        "P1060",
+        "P1048",
+        "P1019",
+        "P1011",
+        "P1001",
+        "P1059",
+        "P1058"
+      ]
+    },
+    {
+      "case_id": "product-037",
+      "query": {
+        "sha256": "420d71fd1cac249c2b6244c3f79f9883f28a54e079b738a7d1c890b87e812aba",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.809,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1033"
+      ],
+      "retrieved": [
+        "P1033",
+        "P1019",
+        "P1045",
+        "P1037",
+        "P1006",
+        "P1032",
+        "P1031",
+        "P1013",
+        "P1009",
+        "P1001"
+      ]
+    },
+    {
+      "case_id": "product-038",
+      "query": {
+        "sha256": "6d1a5a90a2c5d0c5358ba0a78118ae62dd820bdf25ca60a58caf1a80eb30b170",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.39,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1037"
+      ],
+      "retrieved": [
+        "P1037",
+        "P1036",
+        "P1058",
+        "P1055",
+        "P1053",
+        "P1042",
+        "P1009"
+      ]
+    },
+    {
+      "case_id": "product-039",
+      "query": {
+        "sha256": "43417cb0041b79b1d318af6aba69ac555519c6b613e890a97a32d3f557bee9a6",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.519,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1036"
+      ],
+      "retrieved": [
+        "P1036",
+        "P1031",
+        "P1032",
+        "P1006",
+        "P1055",
+        "P1045",
+        "P1038",
+        "P1029",
+        "P1024",
+        "P1021"
+      ]
+    },
+    {
+      "case_id": "product-040",
+      "query": {
+        "sha256": "1c06d5c1dfb244add1c6d9c2f7ffa5533a99e34f4e6f512ace21aa977e36a8fc",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.413,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1055"
+      ],
+      "retrieved": [
+        "P1055",
+        "P1054",
+        "P1029",
+        "P1020",
+        "P1011",
+        "P1008",
+        "P1004",
+        "P1052",
+        "P1038",
+        "P1033"
+      ]
+    },
+    {
+      "case_id": "product-041",
+      "query": {
+        "sha256": "288c2fcc3eb9856cda8ce137833646bfbccd758f1ffeea63f7ac2f4a408fb8bb",
+        "chars": 5
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.763,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1057"
+      ],
+      "retrieved": [
+        "P1057",
+        "P1048",
+        "P1047",
+        "P1046",
+        "P1041",
+        "P1009",
+        "P1003",
+        "P1007",
+        "P1059",
+        "P1052"
+      ]
+    },
+    {
+      "case_id": "product-042",
+      "query": {
+        "sha256": "0b6aadb2606f42be000436fafc92c98e0748b839f6c50408091d8806d08f5e7a",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.006,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.8339912323981488
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.8339912323981488
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.8339912323981488
+        }
+      },
+      "expected": [
+        "P1008",
+        "P1039"
+      ],
+      "retrieved": [
+        "P1039",
+        "P1008",
+        "P1046",
+        "P1042",
+        "P1056",
+        "P1048",
+        "P1043",
+        "P1041",
+        "P1038",
+        "P1025"
+      ]
+    },
+    {
+      "case_id": "product-043",
+      "query": {
+        "sha256": "2e7f77624e11bcc31243c7739040bcabf6080393c778163736a5e4fe371e188a",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 4.224,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1039"
+      ],
+      "retrieved": [
+        "P1039",
+        "P1008",
+        "P1038",
+        "P1025",
+        "P1024",
+        "P1005",
+        "P1042",
+        "P1052",
+        "P1048",
+        "P1046"
+      ]
+    },
+    {
+      "case_id": "product-044",
+      "query": {
+        "sha256": "ce80530d40705511a05d4568197d14a95e9eb2277bc1d89f41d623d3fd3a52e5",
+        "chars": 3
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.011,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.7591919243197319
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.7591919243197319
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.7591919243197319
+        }
+      },
+      "expected": [
+        "P1010",
+        "P1047",
+        "P1040"
+      ],
+      "retrieved": [
+        "P1047",
+        "P1040",
+        "P1010",
+        "P1044",
+        "P1051",
+        "P1026",
+        "P1016",
+        "P1002"
+      ]
+    },
+    {
+      "case_id": "product-045",
+      "query": {
+        "sha256": "2ab7b1b15c1f3de7837933cb490f32518b3d33ff9c64bbcc8652a83d94a653e3",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.944,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1047"
+      ],
+      "retrieved": [
+        "P1047",
+        "P1010",
+        "P1040",
+        "P1007",
+        "P1057",
+        "P1051",
+        "P1048",
+        "P1046",
+        "P1044",
+        "P1041"
+      ]
+    },
+    {
+      "case_id": "product-046",
+      "query": {
+        "sha256": "dafa580b2134b80fcb22beb014b5c149c3f15fb3c5c2a60155fcd3036a10c4b1",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.215,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1040"
+      ],
+      "retrieved": [
+        "P1040",
+        "P1010",
+        "P1050",
+        "P1029",
+        "P1022",
+        "P1049",
+        "P1047",
+        "P1041",
+        "P1002",
+        "P1015"
+      ]
+    },
+    {
+      "case_id": "product-047",
+      "query": {
+        "sha256": "9eaa41a9e43ed4c12b3d77c76fa2537a25d1a738fe3b46fd91531cdb83a98154",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.334,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1042"
+      ],
+      "retrieved": [
+        "P1042",
+        "P1039",
+        "P1014",
+        "P1012",
+        "P1008",
+        "P1046",
+        "P1038",
+        "P1026",
+        "P1060",
+        "P1057"
+      ]
+    },
+    {
+      "case_id": "product-048",
+      "query": {
+        "sha256": "7a0393f8793b255c9a400ad3c880d02a155fc9e8ce4420154a5b067324f8e451",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.364,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1041"
+      ],
+      "retrieved": [
+        "P1041",
+        "P1039",
+        "P1046",
+        "P1020",
+        "P1009",
+        "P1003",
+        "P1048",
+        "P1044",
+        "P1043",
+        "P1042"
+      ]
+    },
+    {
+      "case_id": "product-049",
+      "query": {
+        "sha256": "2d5b068f05e8d5d1619fc03d9e463d39dcbdecb39cda3075e300f00cea0852c5",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 4.041,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1048"
+      ],
+      "retrieved": [
+        "P1048",
+        "P1010",
+        "P1050",
+        "P1041",
+        "P1040",
+        "P1029",
+        "P1018",
+        "P1015",
+        "P1002",
+        "P1033"
+      ]
+    },
+    {
+      "case_id": "product-050",
+      "query": {
+        "sha256": "7a9264fe2b722f2800f5a5b951a71e5e086c6666bc0c0e50092fbb5c051b37b4",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.935,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1046"
+      ],
+      "retrieved": [
+        "P1046",
+        "P1057",
+        "P1048",
+        "P1047",
+        "P1041",
+        "P1011",
+        "P1003",
+        "P1014",
+        "P1009",
+        "P1007"
+      ]
+    },
+    {
+      "case_id": "product-051",
+      "query": {
+        "sha256": "53dc797b4ec7b40e457da87544d373e1805f057eba0ed528ecb2da30b77e851b",
+        "chars": 18
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.897,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1013"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1018",
+        "P1013",
+        "P1009",
+        "P1019",
+        "P1016",
+        "P1002",
+        "P1050",
+        "P1049",
+        "P1015"
+      ]
+    },
+    {
+      "case_id": "product-052",
+      "query": {
+        "sha256": "6d1dfa837bdbfbedf686d70b2fdf61cf1af3ff3cfdba2d342ba27b4f9df55105",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.774,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.6653152460429406
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.6653152460429406
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6653152460429406
+        }
+      },
+      "expected": [
+        "P1014",
+        "P1059"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1014",
+        "P1059",
+        "P1053",
+        "P1051",
+        "P1046",
+        "P1027",
+        "P1021",
+        "P1012",
+        "P1011"
+      ]
+    },
+    {
+      "case_id": "product-053",
+      "query": {
+        "sha256": "fb945e15c071c7a052d12edca85c6e80abe003758c43f8d765fa96a01d039e23",
+        "chars": 9
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "shipping"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.771,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 0.42857142857142855
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 0.7591919243197319
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.7591919243197319
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.7591919243197319
+        }
+      },
+      "expected": [
+        "P1010",
+        "P1047",
+        "P1040"
+      ],
+      "retrieved": [
+        "P1047",
+        "P1040",
+        "P1010",
+        "P1044",
+        "P1051",
+        "P1039",
+        "P1026",
+        "P1016",
+        "P1005",
+        "P1002"
+      ]
+    },
+    {
+      "case_id": "product-054",
+      "query": {
+        "sha256": "e593de00ee6b7dd345a8e2f6b4660355b16e726e3783cc1758f15701f2cbbb2c",
+        "chars": 12
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "shipping"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.032,
+      "metrics": {
+        "1": {
+          "recall": 0.3333333333333333,
+          "precision": 1.0,
+          "ndcg": 0.14285714285714285
+        },
+        "3": {
+          "recall": 0.3333333333333333,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.10646464774659967
+        },
+        "5": {
+          "recall": 0.6666666666666666,
+          "precision": 0.4,
+          "ndcg": 0.244020131890605
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.5094844407924438
+        }
+      },
+      "expected": [
+        "P1031",
+        "P1034",
+        "P1006"
+      ],
+      "retrieved": [
+        "P1006",
+        "P1037",
+        "P1035",
+        "P1034",
+        "P1033",
+        "P1031",
+        "P1019",
+        "P1009",
+        "P1013",
+        "P1032"
+      ]
+    },
+    {
+      "case_id": "product-055",
+      "query": {
+        "sha256": "5ce5554007a5b69f42cd0c93eb11f9c2e98f045eaad973c00b1a88cd0cfef328",
+        "chars": 16
+      },
+      "index_id": "evaluation-products",
+      "kind": "lexical",
+      "tags": [
+        "lexical",
+        "constraint-in-query",
+        "price",
+        "shipping"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 3.378,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.25,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.05323232387329983
+        },
+        "5": {
+          "recall": 0.5,
+          "precision": 0.4,
+          "ndcg": 0.32656189880626685
+        },
+        "10": {
+          "recall": 0.5,
+          "precision": 0.2,
+          "ndcg": 0.32656189880626685
+        }
+      },
+      "expected": [
+        "P1039",
+        "P1042",
+        "P1048",
+        "P1044"
+      ],
+      "retrieved": [
+        "P1018",
+        "P1007",
+        "P1048",
+        "P1045",
+        "P1039",
+        "P1011",
+        "P1009",
+        "P1060",
+        "P1059",
+        "P1058"
+      ]
+    },
+    {
+      "case_id": "product-056",
+      "query": {
+        "sha256": "33649075176696f09c0b38f04005b292ebc03f30d648033276b5c27bd143034a",
+        "chars": 15
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.16666666666666666,
+      "latency_ms": 2.769,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 0.3333333333333333,
+          "precision": 0.1,
+          "ndcg": 0.26546430890183886
+        }
+      },
+      "expected": [
+        "P1012",
+        "P1011",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1023",
+        "P1053",
+        "P1021",
+        "P1020",
+        "P1013",
+        "P1012",
+        "P1004",
+        "P1055",
+        "P1052",
+        "P1051"
+      ]
+    },
+    {
+      "case_id": "product-057",
+      "query": {
+        "sha256": "acc17ddc13427f6168e14cd27c9e11ce7b87d172dfefc2e0b389079bd2e84b66",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.587,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        "P1013",
+        "P1058"
+      ],
+      "retrieved": [
+        "P1013",
+        "P1011",
+        "P1058",
+        "P1053",
+        "P1043",
+        "P1038",
+        "P1012",
+        "P1009",
+        "P1008",
+        "P1004"
+      ]
+    },
+    {
+      "case_id": "product-058",
+      "query": {
+        "sha256": "498938e384dd2b36ff87e80660f8d18da5a5ec314220bee3221d2aa951a0776b",
+        "chars": 10
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 3.013,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        "P1052"
+      ],
+      "retrieved": [
+        "P1056",
+        "P1052",
+        "P1014",
+        "P1002",
+        "P1060",
+        "P1059",
+        "P1020",
+        "P1015",
+        "P1055",
+        "P1053"
+      ]
+    },
+    {
+      "case_id": "product-059",
+      "query": {
+        "sha256": "f881010bdbb026c23ec72ec71b2df28ccaff68bebb6cc49cb211cac66b99cb6b",
+        "chars": 14
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.716,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1032",
+        "P1031"
+      ],
+      "retrieved": [
+        "P1032",
+        "P1031",
+        "P1036",
+        "P1052",
+        "P1039",
+        "P1023",
+        "P1006"
+      ]
+    },
+    {
+      "case_id": "product-060",
+      "query": {
+        "sha256": "ff8610a955906d98ef2146120c837af0c447d3c6be15033fc47ff5f7e481dea4",
+        "chars": 14
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 3.224,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.6666666666666666,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.25474746577380225
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.6,
+          "ndcg": 0.5757102621098147
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.3,
+          "ndcg": 0.5757102621098147
+        }
+      },
+      "expected": [
+        "P1010",
+        "P1047",
+        "P1040"
+      ],
+      "retrieved": [
+        "P1012",
+        "P1047",
+        "P1040",
+        "P1010",
+        "P1045",
+        "P1044",
+        "P1039",
+        "P1028",
+        "P1018",
+        "P1013"
+      ]
+    },
+    {
+      "case_id": "product-061",
+      "query": {
+        "sha256": "bb8f91d5089f14940902e95497cb405e82338081cff5fdeb8e99ccdf47c17bcf",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 2.942,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1042"
+      ],
+      "retrieved": [
+        "P1042",
+        "P1058",
+        "P1053",
+        "P1043",
+        "P1016",
+        "P1013",
+        "P1012",
+        "P1009",
+        "P1060",
+        "P1059"
+      ]
+    },
+    {
+      "case_id": "product-062",
+      "query": {
+        "sha256": "cb61b6cb1048b324d280db8e74efac5f30fba09983da9516d7645501312fd2ab",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.125,
+      "latency_ms": 3.329,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.31546487678572877
+        }
+      },
+      "expected": [
+        "P1026"
+      ],
+      "retrieved": [
+        "P1029",
+        "P1024",
+        "P1055",
+        "P1038",
+        "P1040",
+        "P1039",
+        "P1028",
+        "P1026",
+        "P1025",
+        "P1022"
+      ]
+    },
+    {
+      "case_id": "product-063",
+      "query": {
+        "sha256": "42eee23ba2dfa1924abd45453a5955a848faaf2fb8da018a00360d9506e0ddb8",
+        "chars": 15
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 3.553,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        "P1028"
+      ],
+      "retrieved": [
+        "P1045",
+        "P1028",
+        "P1047",
+        "P1040",
+        "P1026",
+        "P1018",
+        "P1010",
+        "P1058",
+        "P1054",
+        "P1048"
+      ]
+    },
+    {
+      "case_id": "product-064",
+      "query": {
+        "sha256": "053ebc73237087b28845175f59024925da9fd9ef34773d9d06e73cf56f87a460",
+        "chars": 11
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 2.694,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        "P1055"
+      ],
+      "retrieved": [
+        "P1059",
+        "P1055",
+        "P1052",
+        "P1046",
+        "P1043",
+        "P1042",
+        "P1028",
+        "P1025",
+        "P1023",
+        "P1019"
+      ]
+    },
+    {
+      "case_id": "product-065",
+      "query": {
+        "sha256": "b0922a81f102b0f5c4c63918a7151dddad449db5162029ed701e53d7da1c54fa",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 3.091,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1057"
+      ],
+      "retrieved": [
+        "P1057",
+        "P1060",
+        "P1058",
+        "P1053",
+        "P1052",
+        "P1047",
+        "P1040",
+        "P1030",
+        "P1027",
+        "P1026"
+      ]
+    },
+    {
+      "case_id": "product-066",
+      "query": {
+        "sha256": "1bad6d84eab6f3e8aaded53f022048f19ad47e82ca57fe76d3e9bb76ed705354",
+        "chars": 13
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.25,
+      "latency_ms": 2.909,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.43067655807339306
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.43067655807339306
+        }
+      },
+      "expected": [
+        "P1007"
+      ],
+      "retrieved": [
+        "P1050",
+        "P1029",
+        "P1024",
+        "P1007",
+        "P1059",
+        "P1055",
+        "P1053",
+        "P1040",
+        "P1036",
+        "P1034"
+      ]
+    },
+    {
+      "case_id": "product-067",
+      "query": {
+        "sha256": "5c207409dcf9a5885517e9c53d6ca66674567232e8c41a38dac9f73b6f41283a",
+        "chars": 15
+      },
+      "index_id": "evaluation-products",
+      "kind": "semantic",
+      "tags": [
+        "semantic"
+      ],
+      "reciprocal_rank": 0.5,
+      "latency_ms": 3.076,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.6309297535714575
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.6309297535714575
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 0.6309297535714575
+        }
+      },
+      "expected": [
+        "P1009"
+      ],
+      "retrieved": [
+        "P1018",
+        "P1009",
+        "P1060",
+        "P1058",
+        "P1056",
+        "P1053",
+        "P1052",
+        "P1051",
+        "P1047",
+        "P1042"
+      ]
+    }
+  ]
+}

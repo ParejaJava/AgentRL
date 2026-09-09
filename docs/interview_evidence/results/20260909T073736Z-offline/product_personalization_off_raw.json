@@ -1,0 +1,605 @@
+{
+  "dataset": {
+    "cases": 10,
+    "indexes": [
+      "evaluation-products"
+    ]
+  },
+  "summary": {
+    "at_k": {
+      "1": {
+        "recall": 0.5,
+        "precision": 0.9,
+        "ndcg": 0.9
+      },
+      "3": {
+        "recall": 0.85,
+        "precision": 0.533333,
+        "ndcg": 0.865465
+      },
+      "5": {
+        "recall": 0.95,
+        "precision": 0.36,
+        "ndcg": 0.913894
+      },
+      "10": {
+        "recall": 1.0,
+        "precision": 0.19,
+        "ndcg": 0.92405
+      }
+    },
+    "mrr_at_10": 0.933333,
+    "latency_ms": {
+      "p50": 380.933,
+      "p95": 4784.166
+    }
+  },
+  "by_tag": {
+    "material": {
+      "cases": 2,
+      "recall": 1.0,
+      "precision": 0.15,
+      "ndcg": 0.944354,
+      "mrr": 1.0
+    },
+    "negative-preference": {
+      "cases": 1,
+      "recall": 1.0,
+      "precision": 0.2,
+      "ndcg": 0.955831,
+      "mrr": 1.0
+    },
+    "personalization": {
+      "cases": 10,
+      "recall": 1.0,
+      "precision": 0.19,
+      "ndcg": 0.92405,
+      "mrr": 0.933333
+    },
+    "style": {
+      "cases": 2,
+      "recall": 1.0,
+      "precision": 0.2,
+      "ndcg": 1.0,
+      "mrr": 1.0
+    },
+    "sustainable": {
+      "cases": 5,
+      "recall": 1.0,
+      "precision": 0.2,
+      "ndcg": 0.879192,
+      "mrr": 0.866667
+    }
+  },
+  "cases": [
+    {
+      "case_id": "personalization-001",
+      "query": {
+        "sha256": "e813f90d4149e4d544307d239513f3ef200fd1f86b5537334924d5877fbdaec2",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "sustainable"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 8300.949,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1019"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1019",
+        "P1014",
+        "P1011",
+        "P1059",
+        "P1051",
+        "P1003",
+        "P1033",
+        "P1049",
+        "P1006"
+      ]
+    },
+    {
+      "case_id": "personalization-002",
+      "query": {
+        "sha256": "76a8dc42ca1dfee832f9ae1d0be24908047c06448025de52a29008e465b72b8d",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "sustainable"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 363.394,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.7871546029909718
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.9324441894571632
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.9324441894571632
+        }
+      },
+      "expected": [
+        "P1019",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1059",
+        "P1014",
+        "P1001",
+        "P1003",
+        "P1015",
+        "P1051",
+        "P1056",
+        "P1011",
+        "P1017"
+      ]
+    },
+    {
+      "case_id": "personalization-003",
+      "query": {
+        "sha256": "f414513d8d82a9396def576f6cc8b4160bddaa4e27eba4d39e696564d75690a7",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "sustainable"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 411.314,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1019"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1011",
+        "P1019",
+        "P1014",
+        "P1015",
+        "P1009",
+        "P1059",
+        "P1003",
+        "P1021",
+        "P1012"
+      ]
+    },
+    {
+      "case_id": "personalization-004",
+      "query": {
+        "sha256": "fd03c73fe8502066096888e31de5a96645b3a38445ef82b6c904d8e46269cad8",
+        "chars": 8
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "style"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 355.892,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1019"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1019",
+        "P1006",
+        "P1009",
+        "P1017",
+        "P1033",
+        "P1003",
+        "P1050",
+        "P1011",
+        "P1013"
+      ]
+    },
+    {
+      "case_id": "personalization-005",
+      "query": {
+        "sha256": "2974ebb3c8a0be725babb9ff6dfc0ba308efe19d8a5a8cde7e0c42bafcc5dcc8",
+        "chars": 6
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "sustainable"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 365.35,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1019",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1001",
+        "P1003",
+        "P1059",
+        "P1014",
+        "P1051",
+        "P1011",
+        "P1050",
+        "P1033",
+        "P1018"
+      ]
+    },
+    {
+      "case_id": "personalization-006",
+      "query": {
+        "sha256": "e01041e5f4f9ef9efecc9f40298dc209fe7c399f98bbe4a87f89345962562e95",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "material"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 393.021,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.7871546029909718
+        },
+        "5": {
+          "recall": 0.5,
+          "precision": 0.2,
+          "ndcg": 0.7871546029909718
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.888707665873224
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1019"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1014",
+        "P1003",
+        "P1051",
+        "P1011",
+        "P1059",
+        "P1017",
+        "P1049",
+        "P1019",
+        "P1009"
+      ]
+    },
+    {
+      "case_id": "personalization-007",
+      "query": {
+        "sha256": "be09e1fc597ea4c94cf5a67fd62acd4b9653874b096f8389850f934d885d53bf",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "negative-preference"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 354.784,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 0.95583058934618
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.95583058934618
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.95583058934618
+        }
+      },
+      "expected": [
+        "P1019",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1009",
+        "P1001",
+        "P1033",
+        "P1006",
+        "P1013",
+        "P1003",
+        "P1011",
+        "P1017",
+        "P1018"
+      ]
+    },
+    {
+      "case_id": "personalization-008",
+      "query": {
+        "sha256": "449164f552e1a10991cc348b4748433b2859184c4de1f5d27d9222acad14385a",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "material"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 380.051,
+      "metrics": {
+        "1": {
+          "recall": 1.0,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.3333333333333333,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.1,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1019"
+      ],
+      "retrieved": [
+        "P1019",
+        "P1018",
+        "P1056",
+        "P1017",
+        "P1001",
+        "P1014",
+        "P1003",
+        "P1009",
+        "P1011",
+        "P1046"
+      ]
+    },
+    {
+      "case_id": "personalization-009",
+      "query": {
+        "sha256": "38c8f8438b0eb0bc50d26755fdf6b71288ad48c2b63b19cf9c98081c739c72a8",
+        "chars": 7
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "style"
+      ],
+      "reciprocal_rank": 1.0,
+      "latency_ms": 381.814,
+      "metrics": {
+        "1": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "ndcg": 1.0
+        },
+        "3": {
+          "recall": 1.0,
+          "precision": 0.6666666666666666,
+          "ndcg": 1.0
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 1.0
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 1.0
+        }
+      },
+      "expected": [
+        "P1001",
+        "P1019"
+      ],
+      "retrieved": [
+        "P1001",
+        "P1019",
+        "P1003",
+        "P1014",
+        "P1059",
+        "P1011",
+        "P1051",
+        "P1050",
+        "P1017",
+        "P1009"
+      ]
+    },
+    {
+      "case_id": "personalization-010",
+      "query": {
+        "sha256": "4b3e30631daf77722d0ee020fd37d0c1c1cea0b545b97e3e4fc757f1fd411ba7",
+        "chars": 12
+      },
+      "index_id": "evaluation-products",
+      "kind": "personalization",
+      "tags": [
+        "personalization",
+        "sustainable"
+      ],
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 485.875,
+      "metrics": {
+        "1": {
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0
+        },
+        "3": {
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "ndcg": 0.16867598635520825
+        },
+        "5": {
+          "recall": 1.0,
+          "precision": 0.4,
+          "ndcg": 0.5076850214429881
+        },
+        "10": {
+          "recall": 1.0,
+          "precision": 0.2,
+          "ndcg": 0.5076850214429881
+        }
+      },
+      "expected": [
+        "P1019",
+        "P1001"
+      ],
+      "retrieved": [
+        "P1014",
+        "P1056",
+        "P1001",
+        "P1019",
+        "P1003",
+        "P1009",
+        "P1011",
+        "P1059",
+        "P1007",
+        "P1021"
+      ]
+    }
+  ]
+}

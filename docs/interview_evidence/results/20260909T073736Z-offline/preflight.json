@@ -1,0 +1,236 @@
+{
+  "claim_id": "ENV-001",
+  "capability": "可复现运行环境",
+  "status": "verified",
+  "started_at": "2026-09-09T07:37:36.938665+00:00",
+  "duration_seconds": 0.36024,
+  "command": "uv run python -m scripts.evidence preflight",
+  "passed": true,
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "checks": [
+    {
+      "name": "eval/category_recall.jsonl",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "d297aebfb47791ff0e9fd916f19eef958805a5f4b782d7d408caecf5c4871a7a",
+        "bytes": 27048
+      }
+    },
+    {
+      "name": "eval/product_recall.jsonl",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "bdd6b48d950df2b5edcfb33c69bc1cdde752355bfbf90a9e507e4aef357799a4",
+        "bytes": 16357
+      }
+    },
+    {
+      "name": "eval/evidence/category_threshold_dev.jsonl",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "88e293475b0cbe7bd1d5b82e4dc268fdbfa9e81553ab931ea6608d2db7f44775",
+        "bytes": 6245
+      }
+    },
+    {
+      "name": "eval/evidence/product_personalization.jsonl",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "1cae8935597b56664d2385f01b83b1b4e2e8bbc0f32cf4d04c9ee39ee0c81dfc",
+        "bytes": 2702
+      }
+    },
+    {
+      "name": "eval/evidence/live_cases.jsonl",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "531af52e7834a9b79d1f33f950f780ce778e30ee910caa112a93152a8aa9dc71",
+        "bytes": 2288
+      }
+    },
+    {
+      "name": "eval/evidence/context_cases.json",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "b282f2a635b75ba907fc686c0c350ea10294870ed48b793c3a34b008d2501a54",
+        "bytes": 1993
+      }
+    },
+    {
+      "name": "eval/evidence/claims.json",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "af0717affa6ddc5e70c6e973a38d42cbf9679cc3f50c2ce2aa6ffd608f27c2d8",
+        "bytes": 5214
+      }
+    },
+    {
+      "name": "eval/evidence/thresholds.json",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "ebd924f548e37e7720610d1c9d44bb3139dfa6f81df05a3bb1ba7495e58de1cc",
+        "bytes": 410
+      }
+    },
+    {
+      "name": "pyproject.toml",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+        "bytes": 1449
+      }
+    },
+    {
+      "name": "uv.lock",
+      "ok": true,
+      "required": true,
+      "details": {
+        "sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+        "bytes": 919990
+      }
+    },
+    {
+      "name": "python-package:langchain",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:langgraph",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:pytest",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:coverage",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:FlagEmbedding",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:faiss",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:opensearchpy",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "python-package:redis",
+      "ok": true,
+      "required": true,
+      "details": null
+    },
+    {
+      "name": "embedding-model",
+      "ok": true,
+      "required": true,
+      "details": {
+        "available": true,
+        "source": "huggingface_cache",
+        "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+      }
+    },
+    {
+      "name": "reranker-model",
+      "ok": true,
+      "required": true,
+      "details": {
+        "available": true,
+        "source": "huggingface_cache",
+        "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+      }
+    },
+    {
+      "name": "docker-services",
+      "ok": true,
+      "required": true,
+      "details": {
+        "compose_file": "docker/docker-compose.yml",
+        "redis_healthy": true,
+        "opensearch_healthy": true
+      }
+    },
+    {
+      "name": "opensearch",
+      "ok": true,
+      "required": true,
+      "details": {
+        "reachable": true,
+        "index_ready": true,
+        "pipeline_ready": true,
+        "cluster_green": true,
+        "cluster_status": "green",
+        "error": null
+      }
+    },
+    {
+      "name": "redis",
+      "ok": true,
+      "required": true,
+      "details": {
+        "reachable": true
+      }
+    },
+    {
+      "name": "langfuse-config",
+      "ok": true,
+      "required": false,
+      "details": {
+        "enabled": true,
+        "credentials_present": true
+      }
+    },
+    {
+      "name": "llm-config",
+      "ok": true,
+      "required": false,
+      "details": {
+        "model": "kimi-k2.6",
+        "configured": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "claim_id": "REL-001",
+  "capability": "检索降级、模型限额、Redis/OpenSearch 故障与上下文保护",
+  "status": "verified",
+  "started_at": "2026-09-09T07:38:09.707866+00:00",
+  "duration_seconds": 5.845672,
+  "command": "[LOCAL_PATH] -m pytest -q --junitxml=[LOCAL_PATH] tests/test_platform_extensions.py::test_model_gateway_enforces_evidence_request_limit tests/test_platform_extensions.py::test_model_gateway_retries_transient_failure_and_records_usage tests/test_platform_extensions.py::test_model_gateway_retries_timeout_and_temporary_errors tests/test_platform_extensions.py::test_tool_resilience_returns_structured_timeout_without_side_effect tests/test_platform_extensions.py::test_tool_exception_opens_circuit_and_prevents_second_execution tests/test_platform_extensions.py::test_redis_shared_breaker_fails_open_when_redis_is_unavailable tests/test_platform_extensions.py::test_tool_harness_rejects_order_without_search_evidence tests/test_item_search.py::test_item_search_falls_back_to_embedding_order_when_reranker_fails tests/test_item_search.py::test_item_search_falls_back_to_keyword_when_embedding_fails tests/test_opensearch_category_insight.py::test_search_keeps_hybrid_order_when_reranker_fails tests/test_opensearch_category_insight.py::test_search_uses_local_keyword_fallback_when_embedding_fails tests/test_evidence_infrastructure.py::test_opensearch_probe_reports_unreachable_without_false_positive tests/test_context_governance.py::test_governance_keeps_original_events_when_compressor_fails tests/test_context_governance.py::test_context_overflow_retries_once_with_emergency_projection tests/test_context_governance.py::test_tool_middleware_offloads_large_result_without_changing_call_id tests/test_fork_sub_agents.py::test_forked_agent_loop_uses_independent_threads tests/test_tasking.py::test_deterministic_dispatch_claims_and_writes_back_results",
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "metrics": {
+    "scenarios": 17,
+    "passed_scenarios": 17,
+    "pass_rate": 1.0
+  },
+  "matrix": [
+    {
+      "scenario": "model_request_cap",
+      "test": "tests/test_platform_extensions.py::test_model_gateway_enforces_evidence_request_limit",
+      "passed": true,
+      "duration_seconds": 0.002,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "model_429_retry",
+      "test": "tests/test_platform_extensions.py::test_model_gateway_retries_transient_failure_and_records_usage",
+      "passed": true,
+      "duration_seconds": 0.286,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "model_timeout_and_temporary_retry",
+      "test": "tests/test_platform_extensions.py::test_model_gateway_retries_timeout_and_temporary_errors",
+      "passed": true,
+      "duration_seconds": 0.656,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "tool_timeout_no_side_effect",
+      "test": "tests/test_platform_extensions.py::test_tool_resilience_returns_structured_timeout_without_side_effect",
+      "passed": true,
+      "duration_seconds": 0.015,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "tool_exception_circuit_breaker",
+      "test": "tests/test_platform_extensions.py::test_tool_exception_opens_circuit_and_prevents_second_execution",
+      "passed": true,
+      "duration_seconds": 0.003,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "redis_breaker_unavailable",
+      "test": "tests/test_platform_extensions.py::test_redis_shared_breaker_fails_open_when_redis_is_unavailable",
+      "passed": true,
+      "duration_seconds": 0.001,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "order_without_search_evidence",
+      "test": "tests/test_platform_extensions.py::test_tool_harness_rejects_order_without_search_evidence",
+      "passed": true,
+      "duration_seconds": 0.002,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "product_reranker_failure",
+      "test": "tests/test_item_search.py::test_item_search_falls_back_to_embedding_order_when_reranker_fails",
+      "passed": true,
+      "duration_seconds": 0.001,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "product_embedding_failure",
+      "test": "tests/test_item_search.py::test_item_search_falls_back_to_keyword_when_embedding_fails",
+      "passed": true,
+      "duration_seconds": 0.001,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "category_reranker_failure",
+      "test": "tests/test_opensearch_category_insight.py::test_search_keeps_hybrid_order_when_reranker_fails",
+      "passed": true,
+      "duration_seconds": 0.001,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "category_embedding_failure",
+      "test": "tests/test_opensearch_category_insight.py::test_search_uses_local_keyword_fallback_when_embedding_fails",
+      "passed": true,
+      "duration_seconds": 0.001,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "opensearch_unreachable",
+      "test": "tests/test_evidence_infrastructure.py::test_opensearch_probe_reports_unreachable_without_false_positive",
+      "passed": true,
+      "duration_seconds": 0.002,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "context_compressor_failure_boundary",
+      "test": "tests/test_context_governance.py::test_governance_keeps_original_events_when_compressor_fails",
+      "passed": true,
+      "duration_seconds": 0.009,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "context_overflow_emergency_projection",
+      "test": "tests/test_context_governance.py::test_context_overflow_retries_once_with_emergency_projection",
+      "passed": true,
+      "duration_seconds": 0.001,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "large_tool_result_offload",
+      "test": "tests/test_context_governance.py::test_tool_middleware_offloads_large_result_without_changing_call_id",
+      "passed": true,
+      "duration_seconds": 0.009,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "child_context_isolation",
+      "test": "tests/test_fork_sub_agents.py::test_forked_agent_loop_uses_independent_threads",
+      "passed": true,
+      "duration_seconds": 0.041,
+      "outcome": "passed"
+    },
+    {
+      "scenario": "single_worker_failure_settled",
+      "test": "tests/test_tasking.py::test_deterministic_dispatch_claims_and_writes_back_results",
+      "passed": true,
+      "duration_seconds": 0.026,
+      "outcome": "passed"
+    }
+  ],
+  "failures": [],
+  "stdout": ".................                                                        [100%]\n- generated xml file: [LOCAL_PATH] -\n17 passed in 4.14s\n",
+  "stderr": "",
+  "limitations": [
+    "故障注入使用确定性替身，不等价于公网服务的生产故障率。",
+    "Redis 故障场景验证共享熔断 fail-open；事件总线本身不承诺自动切换后端。"
+  ],
+  "passed": true
+}

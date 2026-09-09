@@ -1,0 +1,6119 @@
+{
+  "claim_id": "RAG-THRESHOLD-001",
+  "capability": "品类域外拒答阈值校准",
+  "started_at": "2026-09-09T07:38:15.732618+00:00",
+  "duration_seconds": 30.786514,
+  "command": "uv run python -m scripts.evidence run --suite offline",
+  "environment": {
+    "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "models": {
+    "embedding": {
+      "name": "BAAI/bge-m3",
+      "available": true,
+      "source": "huggingface_cache",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181"
+    },
+    "reranker": {
+      "name": "BAAI/bge-reranker-v2-m3",
+      "available": true,
+      "source": "huggingface_cache",
+      "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+    }
+  },
+  "retrieval_infrastructure": {
+    "image": "opensearchproject/opensearch:3.8.0",
+    "index": "globex_category_kb",
+    "pipeline": "globex-category-rrf"
+  },
+  "dataset": {
+    "path": "eval/evidence/category_threshold_dev.jsonl",
+    "sha256": "88e293475b0cbe7bd1d5b82e4dc268fdbfa9e81553ab931ea6608d2db7f44775",
+    "cases": 30
+  },
+  "minimum_recall_at_10": 0.93,
+  "minimum_negative_rejection_accuracy": 0.8,
+  "candidates": [
+    {
+      "threshold": 0.0,
+      "recall_at_10": 1.0,
+      "mrr_at_10": 0.942857,
+      "ndcg_at_10": 0.955556,
+      "negative_rejection_accuracy": 0.0,
+      "failed_case_ids": [
+        "dev-016",
+        "dev-017",
+        "dev-018",
+        "dev-019",
+        "dev-020",
+        "dev-021",
+        "dev-022",
+        "dev-023",
+        "dev-024",
+        "dev-025",
+        "dev-026",
+        "dev-027",
+        "dev-028",
+        "dev-029",
+        "dev-030"
+      ]
+    },
+    {
+      "threshold": 0.001,
+      "recall_at_10": 1.0,
+      "mrr_at_10": 0.942857,
+      "ndcg_at_10": 0.955556,
+      "negative_rejection_accuracy": 0.466667,
+      "failed_case_ids": [
+        "dev-016",
+        "dev-019",
+        "dev-020",
+        "dev-021",
+        "dev-022",
+        "dev-023",
+        "dev-024",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.002,
+      "recall_at_10": 1.0,
+      "mrr_at_10": 0.942857,
+      "ndcg_at_10": 0.955556,
+      "negative_rejection_accuracy": 0.6,
+      "failed_case_ids": [
+        "dev-019",
+        "dev-020",
+        "dev-021",
+        "dev-022",
+        "dev-024",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.003,
+      "recall_at_10": 1.0,
+      "mrr_at_10": 0.942857,
+      "ndcg_at_10": 0.955556,
+      "negative_rejection_accuracy": 0.6,
+      "failed_case_ids": [
+        "dev-019",
+        "dev-020",
+        "dev-021",
+        "dev-022",
+        "dev-024",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.005,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.733333,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-020",
+        "dev-021",
+        "dev-022",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.0075,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.733333,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-020",
+        "dev-021",
+        "dev-022",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.01,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.866667,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-021",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.02,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.866667,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-021",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.03,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.933333,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.04,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.933333,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.05,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 0.933333,
+      "failed_case_ids": [
+        "dev-015",
+        "dev-027"
+      ]
+    },
+    {
+      "threshold": 0.1,
+      "recall_at_10": 0.933333,
+      "mrr_at_10": 0.933333,
+      "ndcg_at_10": 0.933333,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.15,
+      "recall_at_10": 0.866667,
+      "mrr_at_10": 0.866667,
+      "ndcg_at_10": 0.866667,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.2,
+      "recall_at_10": 0.866667,
+      "mrr_at_10": 0.866667,
+      "ndcg_at_10": 0.866667,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.3,
+      "recall_at_10": 0.8,
+      "mrr_at_10": 0.8,
+      "ndcg_at_10": 0.8,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-007",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.4,
+      "recall_at_10": 0.733333,
+      "mrr_at_10": 0.733333,
+      "ndcg_at_10": 0.733333,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-007",
+        "dev-010",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.5,
+      "recall_at_10": 0.733333,
+      "mrr_at_10": 0.733333,
+      "ndcg_at_10": 0.733333,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-007",
+        "dev-010",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.6,
+      "recall_at_10": 0.666667,
+      "mrr_at_10": 0.666667,
+      "ndcg_at_10": 0.666667,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-004",
+        "dev-007",
+        "dev-010",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.7,
+      "recall_at_10": 0.666667,
+      "mrr_at_10": 0.666667,
+      "ndcg_at_10": 0.666667,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-004",
+        "dev-007",
+        "dev-010",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.8,
+      "recall_at_10": 0.6,
+      "mrr_at_10": 0.6,
+      "ndcg_at_10": 0.6,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-002",
+        "dev-004",
+        "dev-007",
+        "dev-010",
+        "dev-014",
+        "dev-015"
+      ]
+    },
+    {
+      "threshold": 0.9,
+      "recall_at_10": 0.4,
+      "mrr_at_10": 0.4,
+      "ndcg_at_10": 0.4,
+      "negative_rejection_accuracy": 1.0,
+      "failed_case_ids": [
+        "dev-001",
+        "dev-002",
+        "dev-004",
+        "dev-007",
+        "dev-008",
+        "dev-010",
+        "dev-013",
+        "dev-014",
+        "dev-015"
+      ]
+    }
+  ],
+  "selected": {
+    "threshold": 0.01,
+    "recall_at_10": 0.933333,
+    "mrr_at_10": 0.933333,
+    "ndcg_at_10": 0.933333,
+    "negative_rejection_accuracy": 0.866667,
+    "failed_case_ids": [
+      "dev-015",
+      "dev-021",
+      "dev-027"
+    ]
+  },
+  "observations": [
+    {
+      "case_id": "dev-001",
+      "is_negative": false,
+      "top_score": 0.821474,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.8214741684796966
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.15662018336345096
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.14104462694148667
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.07544843552886106
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.07211220541293051
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.041617797774438206
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.03897507053921153
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.032589744766025344
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.027742891882617367
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.02006180244042778
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.014172366191301682
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.013848610215564574
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.011869121046339474
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.008711384457705508
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.007518718061432194
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00517971277035707
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.004736748955776684
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.004248079086738752
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.003538086057088537
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.003247676499188751
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0030396496140834887
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.002641946843331163
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.002501696740264292
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0015011822567369917
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.001356401797461394
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0012303582820496156
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0006719278067448447
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0003225072119868323
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0003125878098696676
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00028240807799315707
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00020662982488383407
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0001420236402299791
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 7.254361823018916e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 7.031184266914956e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 4.101373634453307e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.0785170435063725e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.9073577192252488e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-002",
+      "is_negative": false,
+      "top_score": 0.12603,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.12603029065187174
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.027014790337834466
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.015483987303625263
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.014392336369436931
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.008478401934677455
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.008478401934677455
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.003765413784673874
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.003063416848803464
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.002844909664979501
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00138852327569001
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0012644219446392272
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.001116014259843091
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0010691263618290232
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0007041515890570883
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0004936049895909173
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0004916815522926534
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0003785036562443653
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0003053489321118595
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00026738261286171253
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00021318756129065197
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00018093576989406792
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00017813112047189374
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00017674513810355872
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00017674513810355872
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0001376546336890011
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 8.156224673856543e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 8.092757566536091e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 4.4694071442156975e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 3.822911232549001e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.863255694172923e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.7535691114583473e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.3552618543037957e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.01456908529364e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-003",
+      "is_negative": false,
+      "top_score": 0.978794,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.9787938797980108
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.1326268549355219
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.1129910084485674
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.10932483007763893
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.04977344860541247
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.02224366758387693
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.020527788240143965
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00600359579657149
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.005957153763749635
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.004314687956362679
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.002123966441797725
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0019342611032703307
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.001761469680073981
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0014837189029090864
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0013406204230996855
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0011786720362815634
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 0.0009850082967450694
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0005658799865413885
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00044248728198402416
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.0004205874321516123
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0004124558901102128
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00037702856669512123
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.00033274128340681067
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00031999824407395836
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.0002571419797957771
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00025514139559523356
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00022516824185623812
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00018961741228916415
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00018235460794662427
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00018093576989406792
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00012436225128319384
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00010391067562761452
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00010150383174795513
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00010150383174795513
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 5.5622062736470347e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 3.321419494792514e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.77516502232539e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-004",
+      "is_negative": false,
+      "top_score": 0.561906,
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.561906071460626
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.11858909657632805
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.10800065320372512
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.1037486268663797
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.09534946489910949
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.09009299396195182
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.06441766541349403
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.05802474899879611
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.05686154864494637
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.03649376622902781
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.03488088693667929
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.032589744766025344
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.028544151696160366
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.025565213923269593
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.022414216463636873
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.019345103914589518
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.018797073078136207
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.016403032516163058
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.015130728307193727
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.014672034915237492
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.008187909901696233
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.006388320909721285
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.003607616803253527
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.003063416848803464
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0023688742552270873
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0011247574231557356
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0008426423087564058
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0007824140590241951
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0007379195929147702
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.000509265714385189
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00034599160317821547
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0003353501304664781
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 0.0002758679066337912
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00015476661605996511
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 6.205049602300743e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 5.874842286516319e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 2.6274773144808218e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-005",
+      "is_negative": false,
+      "top_score": 0.940353,
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.9403530570548787
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.016029147365901313
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.0007180297626119062
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00041406952838583545
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00012339457598623172
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00011591934318633098
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0001063745841626834
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 7.782753021574925e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 5.694102683483241e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 4.165958180576519e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.4876490010363496e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.3737339634846014e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.0785170435063725e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.952588520864222e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.8777874339495478e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.8200150397513547e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-006",
+      "is_negative": false,
+      "top_score": 0.962321,
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.9623206087688783
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.10932483007763893
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.03102617939183979
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.029816541143800022
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.005240449620258945
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.003099415515509448
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.001356401797461394
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0009436192455752618
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 0.0007152324320315967
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0005815576348560962
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0004601058612790196
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00041731576067772006
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00031999824407395836
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00026738261286171253
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0002115288734611408
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00020988308820313111
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00012148175280558357
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00011501735545699999
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00010229985472581486
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 9.535461188204107e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 7.311254328107719e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 4.331903899346328e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 4.006369222920724e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 3.2444813913887076e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.668852957262856e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.5666134302273185e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.5071593847983193e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.4111139329084935e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.265035233314773e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.9073577192252488e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.7917988275182845e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.606161070132327e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-007",
+      "is_negative": false,
+      "top_score": 0.24599,
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.24598954712008753
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.11357959169117389
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.10594828713637978
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.10502680874233815
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.09929539778264558
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.07477004290796137
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0662060240416688
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.03514484640079327
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.03339982193331559
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.03296124005378131
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.029201290245781282
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.02337531504012681
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.019832710804008783
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.01784873844998899
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.013636835281429878
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.013121271126550958
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.012383784637260331
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.01124456072066409
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.010860331013277533
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.008380453351026064
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.007317397471212289
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.004627530047867153
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0044510412268872835
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.004365326111393966
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0038393947800118167
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0023781237181166506
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0021827164453451808
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.001874861720261248
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0014381353210925951
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00131472456761498
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.0008263575992788699
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.000469176378583938
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00041731576067772006
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00040606395082589986
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 7.967300986103147e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.265035233314773e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.9073577192252488e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-008",
+      "is_negative": false,
+      "top_score": 0.817137,
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.8171371170938969
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.05541279438176918
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.051941561501226155
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.012007350547633841
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00600359579657149
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0020269000804638295
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.001874861720261248
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.001700722411435288
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00098117188120718
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00028240807799315707
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0001177445922838707
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 8.81892315989113e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 8.220189478350844e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 7.54332094672397e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 6.922183404468203e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 6.10885510164857e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 4.98595821272702e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 3.913565411910919e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 3.426849054255501e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.347468838730701e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 3.144662332245053e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 3.095910371044124e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.818866280462178e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.7321412520836726e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.0303692256510018e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.01456908529364e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.8925148246037342e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.8925148246037342e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.8631746484712008e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.8058518261159955e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-009",
+      "is_negative": false,
+      "top_score": 0.994636,
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.99463594330938
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.23510838921999314
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.12973314184491747
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.09947021388210706
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.07613247677115975
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0666906545157953
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.061424040054670184
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.032040078058081095
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.02333076880848049
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.011072160183234295
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0076658746886459446
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.006121281290728531
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.005774929853444153
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.003960787530209757
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0033374049451905213
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0021657671990027
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0016040892528226653
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0014895173647107272
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0013993983588144944
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0009697519677825861
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0008072304985619872
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0006959536838949576
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0003740956047302422
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0003682979260160596
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0002571419797957771
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00022516824185623812
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00015000566214994787
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00011959857805023158
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 8.284655882222745e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 7.967300986103147e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 7.031184266914956e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 6.402006410383949e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 5.433364904897485e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 4.9471590976326484e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 4.5397868702434395e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 2.9541425014420593e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.848675576370609e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-010",
+      "is_negative": false,
+      "top_score": 0.323166,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.3231664610482007
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.2101172597064404
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.05899302973563795
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.04655127521213429
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.046291901103840336
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.01155267033522081
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.010408314101072437
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.004382336640730745
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.004117917643959035
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0033115190602696636
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.003160352815071338
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.002406088839117293
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.002050743539917378
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0011559008071517437
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0010944522145565668
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0008360902969426322
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0007793660930208434
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.0007643033095615912
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0006538155503558285
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0004821761556921275
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0003250358452365473
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00023231418862275664
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.0002234163601827719
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0002148592528014818
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00018667821557931117
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00018235460794662427
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00010554685795431097
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00010554685795431097
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 6.061318495608067e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 5.7387595214376774e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.76364471809744e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 3.59130106794994e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 2.0623422291335766e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.8058518261159955e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-011",
+      "is_negative": false,
+      "top_score": 0.977328,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.9773275621685958
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.10894504720170402
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.003483424193080668
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.002123966441797725
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0009004466838907789
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0006589401102677215
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00022871331472111624
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0002148592528014818
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 9.915273115920183e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 9.838119439583208e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 8.682210299865953e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 4.757645425657628e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 4.575391230849984e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 4.4346274842960604e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 4.069457790466838e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.975192649653812e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 3.944258675190877e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 3.852893541726541e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.6478537675800285e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 3.4808121961114686e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 2.6070306568642525e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.3007035274670075e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.01456908529364e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9223170236538176e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9073577192252488e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.8342893327886845e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.606161070132327e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-012",
+      "is_negative": false,
+      "top_score": 0.999504,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.9995044640524365
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.4683042775692009
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.21337717541660495
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0058426051752048505
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0055982486146598995
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00511967623806183
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.004609572179374208
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0044510412268872835
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.004022909935729149
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0033766123817395004
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.002011158341826152
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0018602985728957025
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0011925492802088101
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 0.0004878571227822659
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00041894840410412504
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0003755592236470212
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00030061635882429376
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00028021097671886315
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0001941131867789626
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00018378457000952213
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.00018235460794662427
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00013446629631566167
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 9.761566060239503e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 9.685608308164991e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 8.220189478350844e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 7.905303859378796e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 6.156764496180697e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 5.7387595214376774e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 4.8325638187255363e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 3.852893541726541e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.705296977158347e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 3.295572855043323e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.7108801365572047e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.3007035274670075e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.2827997192887966e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.2827997192887966e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.670142184809518e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-013",
+      "is_negative": false,
+      "top_score": 0.846324,
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.8463238585599343
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.16224725549485666
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0751764027608316
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.03055986285813286
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0015548133490423032
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0010322310367548194
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0008072304985619872
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0007014082876992124
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0006361912109467576
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0006337125082498781
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0006047102482557324
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 0.0005013742398679934
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00033015272509780104
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0002936546333159843
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00027803096387751553
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00022693385749600553
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00022516824185623812
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0001881420755049546
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00017265154827585875
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00014313738600443555
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0001376546336890011
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.000125337514256461
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00011501735545699999
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 9.610241549947396e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 9.387641443080781e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 9.028039015031105e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 9.028039015031105e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 6.761842041375471e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.5356250741744315e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.4111139329084935e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.144494842091395e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.01456908529364e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.01456908529364e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-014",
+      "is_negative": false,
+      "top_score": 0.789396,
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.7893960929828403
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.07250525242471809
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.07107366938018354
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.014728613849722676
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.003469890732315233
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0029121782831143337
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0015978454940173438
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00044945231089806243
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00014539114412297376
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0001224344293469562
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 0.00011501735545699999
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 6.502816785764437e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 6.061318495608067e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.024195853395102e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.9083440990898244e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.5466403947055452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.1613139600748423e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.9988918976691774e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.7917988275182845e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-015",
+      "is_negative": false,
+      "top_score": 0.004265,
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0042646346921872726
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0041662561210387946
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0030160662173845665
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0021742253421720634
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.001761469680073981
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.001206589712246389
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0007672924128587181
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0007152324320315967
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0004897656064061081
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00039511539619015043
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0003935755935111022
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0003625900662832244
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.000234135824776394
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0002234163601827719
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0002115288734611408
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.0001852257432653108
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 9.915273115920183e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 9.685608308164991e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 6.657016376053811e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 6.156764496180697e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 5.4759769804494653e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 5.266206644227075e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 5.104190769226477e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 5.025061602588551e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 4.8704642404957646e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 4.198630823683514e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 3.347468838730701e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.863255694172923e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.9833367060283615e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.9073577192252488e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.8777874339495478e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-016",
+      "is_negative": true,
+      "top_score": 0.001341,
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0013406204230996855
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0004728544345203107
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00040448149784208087
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.000295957113513077
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00024536948054262246
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0002396868650226788
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00022871331472111624
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0001753699377377387
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00016219281637167373
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00015720345248929426
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 9.098840359922044e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 8.957788551478938e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 8.81892315989113e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 7.311254328107719e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 5.649793328376293e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 5.4759769804494653e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 5.307507822667364e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 5.1845659107128626e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 4.8704642404957646e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 4.575391230849984e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 4.231559699903632e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.8831109868779e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.7931622297824375e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 3.453725236238312e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 2.1613139600748423e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.0785170435063725e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9988918976691774e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.9679025610662346e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.952588520864222e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.8925148246037342e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.8342893327886845e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-017",
+      "is_negative": true,
+      "top_score": 0.000496,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0004955359475635505
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0004601058612790196
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00039204178923762814
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0003250358452365473
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0002653023768982879
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00017813112047189374
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0001535623976496012
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00014653129390717958
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0001387341225792179
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.00013446629631566167
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.00013446629631566167
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00012339457598623172
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0001177445922838707
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00011323437855834611
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 9.761566060239503e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 8.682210299865953e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 4.4694071442156975e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 4.4346274842960604e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.840974294610978e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.818866280462178e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.4682904407607285e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.4682904407607285e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.4682904407607285e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 2.229919899951376e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.1278066059305977e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.0623422291335766e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.8777874339495478e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.8342893327886845e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-018",
+      "is_negative": true,
+      "top_score": 0.000477,
+      "retrieved": [
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00047656131041884527
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0003053489321118595
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00025514139559523356
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00014539114412297376
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00012830942637841788
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00011591934318633098
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.00010391067562761452
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 9.915273115920183e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 9.461262661302226e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 7.086326620752597e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 6.402006410383949e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 5.829126566113865e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 5.025061602588551e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 4.7206228829964175e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 4.6838884249524555e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.76364471809744e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.619466971831003e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 3.5633543371896295e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 3.2444813913887076e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.095910371044124e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.818866280462178e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.4876490010363496e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.3923509443082864e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.3552618543037957e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.0785170435063725e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.0462932829931794e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.848675576370609e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-019",
+      "is_negative": true,
+      "top_score": 0.003337,
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.0033374049451905213
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0017891591615951197
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.001073306312909629
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0010566838241698937
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0009773503931428146
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0007069056122424317
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0007014082876992124
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00048029723188631633
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0003726376876619113
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0002148592528014818
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.00018093576989406792
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0001740054355270893
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00015843621910252592
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00014653129390717958
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0001224344293469562
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00011501735545699999
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 4.757645425657628e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 4.331903899346328e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 4.198630823683514e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 3.7931622297824375e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.5633543371896295e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.7535691114583473e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.7108801365572047e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.3737339634846014e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.212566909570261e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.8631746484712008e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.8200150397513547e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.7917988275182845e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6187581436151334e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-020",
+      "is_negative": true,
+      "top_score": 0.007666,
+      "retrieved": [
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0076658746886459446
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0007208380258812108
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0003053489321118595
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.00011866796497892348
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 9.461262661302226e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 6.814872211615988e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 6.10885510164857e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 6.014151777699533e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 5.025061602588551e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.120191139396651e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.7969303025826768e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.6070306568642525e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.526822782693578e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.229919899951376e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.9679025610662346e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.848675576370609e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.848675576370609e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.8200150397513547e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.8200150397513547e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.7917988275182845e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-021",
+      "is_negative": true,
+      "top_score": 0.029817,
+      "retrieved": [
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.029816541143800022
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.024987794590900315
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.008779108866911802
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.008124708778180903
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.0020348170007479763
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.001964661439513743
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0016293088253926625
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0015247863912257493
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 0.00131472456761498
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0011030266413981568
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.0009510131046937041
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.0008295891883591028
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0008199321062135582
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0008072304985619872
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0005658799865413885
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00044421835892143437
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00028240807799315707
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00023597174148291185
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00022516824185623812
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0001535623976496012
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0001387341225792179
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.0001177445922838707
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.00011591934318633098
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 9.242113003743326e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 7.426381280268496e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 7.426381280268496e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 5.7387595214376774e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 4.198630823683514e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.619466971831003e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.453725236238312e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.9541425014420593e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.863255694172923e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 2.668852957262856e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 2.5466403947055452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.229919899951376e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.0785170435063725e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.68324105182435e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-022",
+      "is_negative": true,
+      "top_score": 0.008511,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.008511303026562552
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 0.005322535451112772
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.004215159621187134
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.003765413784673874
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.002501696740264292
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.0023688742552270873
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.00226946865448694
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0016549242441240368
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.0016549242441240368
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0014325365947100792
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00048029723188631633
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00043393251701919963
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00043224150570179065
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 0.00034196205732869996
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0003175087886569813
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00023597174148291185
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00019871553360735275
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0001224344293469562
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.00011147903794271353
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 9.242113003743326e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 7.254361823018916e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 6.014151777699533e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 5.064471653194113e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 3.453725236238312e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 3.426849054255501e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.77516502232539e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.01456908529364e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.7778551863194697e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-023",
+      "is_negative": true,
+      "top_score": 0.001427,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0014269596332777224
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.0005152656843015681
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 4.575391230849984e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 4.4346274842960604e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 2.97731143841062e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.931153855960119e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 2.863255694172923e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.863255694172923e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.5071593847983193e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.3007035274670075e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.2827997192887966e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.9988918976691774e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9988918976691774e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.8777874339495478e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.8200150397513547e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.8200150397513547e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.8058518261159955e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.8058518261159955e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-024",
+      "is_negative": true,
+      "top_score": 0.004054,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0040543340867600355
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0012160416047592268
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0011695102650555148
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0006641048094249013
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 0.00034062932773341
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.00028240807799315707
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.000234135824776394
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00012148175280558357
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.00010229985472581486
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 8.888084683809127e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 6.761842041375471e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 6.10885510164857e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 4.794958311981737e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 4.3658779593871325e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.4808121961114686e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.144662332245053e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.7321412520836726e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.4111139329084935e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.3923509443082864e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9679025610662346e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.8342893327886845e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.8058518261159955e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.7778551863194697e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-025",
+      "is_negative": true,
+      "top_score": 0.000918,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0009181900965849467
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0003785036562443653
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.0002234163601827719
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 9.3145930425751e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 8.547616611085637e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 7.602479448313689e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 6.761842041375471e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 5.025061602588551e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 4.331903899346328e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 3.822911232549001e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 3.2444813913887076e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 2.6070306568642525e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.449082522588366e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.265035233314773e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.144494842091395e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.9988918976691774e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.9223170236538176e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.848675576370609e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-026",
+      "is_negative": true,
+      "top_score": 0.000131,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 0.00013135179706526775
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 0.00010889691002655445
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 9.387641443080781e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 9.028039015031105e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 7.905303859378796e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 7.197911994931084e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 5.4759769804494653e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 3.144662332245053e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.0718185454758056e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.3552618543037957e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 2.144494842091395e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.952588520864222e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.952588520864222e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.8631746484712008e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.848675576370609e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.7778551863194697e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.7640200515540418e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-027",
+      "is_negative": true,
+      "top_score": 0.071591,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.07159119944455247
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 0.004645557549716042
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0024154832575663415
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0002758679066337912
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 0.0001740054355270893
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 8.481104172358075e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 7.602479448313689e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 6.605214485464791e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 4.6112748142641196e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.7535691114583473e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 2.43002407432796e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.144494842091395e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.9679025610662346e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.7778551863194697e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.696442651054333e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-028",
+      "is_negative": true,
+      "top_score": 0.000915,
+      "retrieved": [
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0009146136866700927
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0007379195929147702
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 0.0005976693711028653
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.000572546581632441
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.00026947915555885544
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 0.0002653023768982879
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 0.0002216781056925593
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.0001740054355270893
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 0.00013658354314419533
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 7.086326620752597e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 6.709224499600876e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 6.605214485464791e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 6.452214729219313e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 5.7837665669557245e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 4.037790297412686e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.619466971831003e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 3.453725236238312e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 3.169325442919291e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 3.047914192507958e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 3.047914192507958e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.863255694172923e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.77516502232539e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.7535691114583473e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 2.668852957262856e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.6480843287604657e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 2.43002407432796e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.3552618543037957e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.265035233314773e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 2.2474089854291754e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.1613139600748423e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 2.0948187132262702e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 2.0948187132262702e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-029",
+      "is_negative": true,
+      "top_score": 5.9e-05,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 5.920916517463733e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 4.231559699903632e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 4.165958180576519e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 3.975192649653812e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 3.8831109868779e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 2.9541425014420593e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.7321412520836726e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 2.3007035274670075e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 2.1112482331487176e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9679025610662346e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.9373936508326677e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.9223170236538176e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.9073577192252488e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.8058518261159955e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.7917988275182845e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.7366719305164412e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.68324105182435e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    },
+    {
+      "case_id": "dev-030",
+      "is_negative": true,
+      "top_score": 0.000251,
+      "retrieved": [
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 0.000251186788490731
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 6.253713366019793e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.8831109868779e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 3.705296977158347e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "attribute",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "attribute",
+          "score": 1.750292578877821e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "attribute",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.723157275214239e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.709747788183539e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.670142184809518e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "bestseller",
+          "score": 1.6571452505948057e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.644249455985452e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "attribute",
+          "score": 1.6314540139585704e-05
+        },
+        {
+          "source_document": "digital-accessories.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.6187581436151334e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "travel-gear.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "bestseller",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "cross-border-guide.md",
+          "card_type": "price_range",
+          "score": 1.606161070132327e-05
+        },
+        {
+          "source_document": "outdoor-sports.md",
+          "card_type": "price_range",
+          "score": 1.5936620247162785e-05
+        },
+        {
+          "source_document": "home-living.md",
+          "card_type": "attribute",
+          "score": 1.5936620247162785e-05
+        }
+      ]
+    }
+  ],
+  "status": "verified",
+  "passed": true,
+  "limitations": [
+    "阈值只在独立开发集上选择；冻结测试集仅用于一次最终评估。"
+  ]
+}
