@@ -11,6 +11,7 @@ from app.infrastructure.context_governance.config import GovernanceConfig
 from app.infrastructure.context_governance.factory import create_context_middleware
 from app.infrastructure.health import OpenSearchReadinessProbe
 from app.infrastructure.settings import Settings
+from scripts.evidence.context_live import _incremental_summary_verified
 from scripts.evidence.live import _evaluate_case
 from scripts.evidence.observability import collect_langfuse_trace_evidence
 from scripts.evidence.offline import _coverage_thresholds
@@ -45,6 +46,34 @@ def test_context_governance_modes_select_expected_middleware(tmp_path: Path) -> 
 
     assert off == []
     assert len(deterministic) == len(full) == 3
+
+
+def test_context_evidence_requires_real_incremental_summary_success() -> None:
+    """只有计数、没有摘要 Token 或存在回退失败时不得发布 verified 证据。"""
+
+    failed = {
+        "cases": [
+            {
+                "incremental_summary_successes": 0,
+                "incremental_summary_failures": 2,
+                "compression_input_tokens": 0,
+                "compression_output_tokens": 0,
+            }
+        ]
+    }
+    verified = {
+        "cases": [
+            {
+                "incremental_summary_successes": 2,
+                "incremental_summary_failures": 0,
+                "compression_input_tokens": 900,
+                "compression_output_tokens": 120,
+            }
+        ]
+    }
+
+    assert _incremental_summary_verified(failed) is False
+    assert _incremental_summary_verified(verified) is True
 
 
 def test_publish_refuses_dirty_worktree(tmp_path: Path, monkeypatch) -> None:
@@ -339,7 +368,9 @@ def test_observability_export_requires_complete_main_sub_trace_and_redacts_io(
     report = collect_langfuse_trace_evidence(
         tmp_path,
         live_report,
-        context_report={"modes": {"full": {"compression_calls": 2}}},
+        context_report={
+            "modes": {"full": {"incremental_summary_successes": 2}}
+        },
         client=client,
     )
     serialized = json.dumps(report, ensure_ascii=False)
@@ -393,7 +424,7 @@ def test_context_observability_uses_context_trace_without_requiring_sub_agent(
     context_report = {
         "modes": {
             "full": {
-                "compression_calls": 2,
+                "incremental_summary_successes": 2,
                 "cases": [
                     {
                         "case_id": "context-1",

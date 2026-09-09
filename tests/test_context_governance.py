@@ -27,12 +27,14 @@ from app.application.context_governance import (
 from app.application.runtime import AgentExecutionContext
 from app.infrastructure.context_governance.artifact_store import FileArtifactStore
 from app.infrastructure.context_governance.breakpoint import CacheBreakpointManager
+from app.infrastructure.context_governance.compressor import StructuredLLMCompressor
 from app.infrastructure.context_governance.config import GovernanceConfig
 from app.infrastructure.context_governance.event_store import (
     EventRecord,
     SQLiteEventStore,
 )
 from app.infrastructure.context_governance.messages import (
+    IndexedMessage,
     collect_protected_event_ids,
     index_messages,
 )
@@ -114,6 +116,62 @@ class FailingCompressor(FakeCompressor):
         del task_state, working_memory, candidates, target_tokens
         self.summary_calls += 1
         raise RuntimeError("injected compressor failure")
+
+
+class _StructuredRunnable:
+    """返回固定结构化载荷的异步 Runnable。"""
+
+    def __init__(self, payload: dict[str, Any]) -> None:
+        self._payload = payload
+
+    async def ainvoke(self, _messages: list[Any]) -> dict[str, Any]:
+        """返回测试载荷。"""
+
+        return self._payload
+
+
+class _IncompleteCompressionModel:
+    """模拟复杂 Schema 漏掉摘要、最小 Schema 正常返回的供应商。"""
+
+    def with_structured_output(
+        self,
+        schema: type[Any],
+        *,
+        include_raw: bool,
+    ) -> _StructuredRunnable:
+        """按 Schema 返回对应的固定 Runnable。"""
+
+        del include_raw
+        if schema.__name__ == "CompressionDelta":
+            return _StructuredRunnable({"cold_event_ids": ["event-1"]})
+        if schema.__name__ == "CompressionSummary":
+            return _StructuredRunnable(
+                {"compressed_summary": "保留预算、目的地和已验证工具结论。"}
+            )
+        return _StructuredRunnable({})
+
+
+def test_structured_compressor_recovers_missing_summary_field() -> None:
+    """复杂结构化输出漏字段时，使用最小 Schema 恢复且不扩大归档范围。"""
+
+    compressor = StructuredLLMCompressor(_IncompleteCompressionModel())  # type: ignore[arg-type]
+    result = asyncio.run(
+        compressor.summarize_incrementally(
+            task_state=TaskState(goal="购买旅行箱", constraints=["预算600元"]),
+            working_memory={},
+            candidates=[
+                IndexedMessage(
+                    position=0,
+                    event_id="event-1",
+                    message=HumanMessage(content="目的地日本"),
+                )
+            ],
+            target_tokens=128,
+        )
+    )
+
+    assert result.cold_event_ids == ["event-1"]
+    assert result.compressed_summary == "保留预算、目的地和已验证工具结论。"
 
 
 class ToolCapableFakeModel(BaseChatModel):

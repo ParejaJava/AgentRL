@@ -242,7 +242,7 @@ def collect_langfuse_trace_evidence(
             or "agent.dispatch" in item.get("event_types", [])
             for item in live_cases
         ),
-        "compression": int(full_context.get("compression_calls", 0)) > 0,
+        "compression": int(full_context.get("incremental_summary_successes", 0)) > 0,
         "final_result": any(
             "final.result" in item.get("event_types", []) for item in live_cases
         ),

@@ -85,6 +85,20 @@ def _prefix_stability(snapshots: list[dict[str, Any]]) -> float:
     return round(stable / observed, 6) if observed else 1.0
 
 
+def _incremental_summary_verified(full: dict[str, Any]) -> bool:
+    """确认 full 模式每个场景都真实完成了无失败的有损增量摘要。"""
+
+    full_cases = full.get("cases", [])
+    return bool(full_cases) and all(
+        int(item.get("incremental_summary_successes", 0)) > 0
+        and int(item.get("incremental_summary_failures", 0)) == 0
+        and int(item.get("compression_input_tokens", 0))
+        > int(item.get("compression_output_tokens", 0))
+        > 0
+        for item in full_cases
+    )
+
+
 def _empty_report(
     root: Path,
     dataset_path: Path,
@@ -294,6 +308,9 @@ async def _run_mode(
         )
         compression_input = int(ledger.get("compression_input_tokens", 0))
         compression_output = int(ledger.get("compression_output_tokens", 0))
+        summary_attempts = int(ledger.get("incremental_summary_attempts", 0))
+        summary_successes = int(ledger.get("incremental_summary_successes", 0))
+        summary_failures = int(ledger.get("incremental_summary_failures", 0))
         mode_cases.append(
             {
                 "case_id": case["case_id"],
@@ -314,6 +331,12 @@ async def _run_mode(
                     default=0,
                 ),
                 "compression_calls": int(ledger.get("compression_calls", 0)),
+                "incremental_summary_attempts": summary_attempts,
+                "incremental_summary_successes": summary_successes,
+                "incremental_summary_failures": summary_failures,
+                "baseline_consolidation_calls": int(
+                    ledger.get("baseline_consolidation_calls", 0)
+                ),
                 "compression_input_tokens": compression_input,
                 "compression_output_tokens": compression_output,
                 "compression_ratio": (
@@ -340,6 +363,18 @@ async def _run_mode(
             ),
             "compression_calls": sum(
                 int(item["compression_calls"]) for item in mode_cases
+            ),
+            "incremental_summary_attempts": sum(
+                int(item["incremental_summary_attempts"]) for item in mode_cases
+            ),
+            "incremental_summary_successes": sum(
+                int(item["incremental_summary_successes"]) for item in mode_cases
+            ),
+            "incremental_summary_failures": sum(
+                int(item["incremental_summary_failures"]) for item in mode_cases
+            ),
+            "baseline_consolidation_calls": sum(
+                int(item["baseline_consolidation_calls"]) for item in mode_cases
             ),
             "tool_offload_count": sum(
                 int(item["tool_offload_count"]) for item in mode_cases
@@ -426,12 +461,15 @@ async def run_context_live(
         (off_input - full_input) / off_input if off_input and full_input else 0.0
     )
     full = modes.get("full", {})
+    full_cases = full.get("cases", [])
+    incremental_summary_verified = _incremental_summary_verified(full)
     passed = (
         stopped_reason is None
         and len(modes) == 3
         and reduction >= 0.25
         and float(full.get("retention_rate", 0)) >= 0.95
         and float(full.get("prefix_stability", 0)) == 1.0
+        and incremental_summary_verified
     )
     limitations = [
         "供应商返回 cached_input_tokens 时才可声明真实 Prompt Cache 命中率；否则只报告稳定前缀率。",
@@ -466,6 +504,7 @@ async def run_context_live(
             "total_model_requests": total_requests,
             "total_observed_tokens": total_tokens,
             "stopped_reason": stopped_reason,
+            "incremental_summary_verified": incremental_summary_verified,
         },
         "modes": modes,
         "failures": [
@@ -473,6 +512,21 @@ async def run_context_live(
             for mode, result in modes.items()
             for item in result["cases"]
             if not item["retained"]
+        ]
+        + [
+            {
+                "mode": "full",
+                "case_id": item["case_id"],
+                "reason": "incremental_summary_not_verified",
+            }
+            for item in full_cases
+            if not (
+                int(item.get("incremental_summary_successes", 0)) > 0
+                and int(item.get("incremental_summary_failures", 0)) == 0
+                and int(item.get("compression_input_tokens", 0))
+                > int(item.get("compression_output_tokens", 0))
+                > 0
+            )
         ],
         "limitations": limitations,
         "passed": passed,

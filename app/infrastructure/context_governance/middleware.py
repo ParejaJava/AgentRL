@@ -335,6 +335,7 @@ class ContextGovernanceMiddleware(AgentMiddleware):
             and candidates
             and self._compressor is not None
         ):
+            token_ledger.incremental_summary_attempts += 1
             try:
                 delta = await self._compressor.summarize_incrementally(
                     task_state=task_state,
@@ -375,6 +376,7 @@ class ContextGovernanceMiddleware(AgentMiddleware):
                 compressed_ids.update(newly_compressed)
                 repeated_compactions += 1
                 compression_succeeded = True
+                token_ledger.incremental_summary_successes += 1
                 await self._record_governance_event(
                     event_store,
                     context.thread_id,
@@ -390,6 +392,7 @@ class ContextGovernanceMiddleware(AgentMiddleware):
                     },
                 )
             except Exception as exc:  # noqa: BLE001 - 压缩失败必须回退原状态。
+                token_ledger.incremental_summary_failures += 1
                 decision = replace(
                     decision,
                     reason=f"{decision.reason}；增量摘要失败并已回退：{exc}",
@@ -412,6 +415,7 @@ class ContextGovernanceMiddleware(AgentMiddleware):
             epoch += 1
             if baseline_llm_used:
                 token_ledger.compression_calls += 1
+                token_ledger.baseline_consolidation_calls += 1
             task_delta = TaskDelta()
             repeated_compactions = 0
             epoch_started_call = token_ledger.model_calls

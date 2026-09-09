@@ -114,6 +114,10 @@ class TokenLedger(BaseModel):
     compression_calls: int = 0
     compression_input_tokens: int = 0
     compression_output_tokens: int = 0
+    incremental_summary_attempts: int = 0
+    incremental_summary_successes: int = 0
+    incremental_summary_failures: int = 0
+    baseline_consolidation_calls: int = 0
 
 
 class GovernanceSnapshot(BaseModel):

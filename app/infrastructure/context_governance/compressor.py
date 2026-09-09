@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Any, Protocol
+from typing import Any, Protocol, TypeVar
 
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import HumanMessage, SystemMessage
+from pydantic import BaseModel, Field, ValidationError
 
 from app.infrastructure.evidence_budget import EvidenceUsageBudget, message_usage
 
@@ -17,6 +18,17 @@ from .schemas import (
     TaskDelta,
     TaskState,
 )
+
+TStructured = TypeVar("TStructured", bound=BaseModel)
+
+
+class CompressionSummary(BaseModel):
+    """供应商未完整遵循复杂 Schema 时使用的最小摘要输出。"""
+
+    compressed_summary: str = Field(
+        min_length=1,
+        description="对候选闭合事件的紧凑摘要，保留目标、约束、事实和结论。",
+    )
 
 
 class ContextCompressor(Protocol):
@@ -59,6 +71,10 @@ class StructuredLLMCompressor:
             CompressionDelta,
             include_raw=include_raw,
         )
+        self._summary_only_model = model.with_structured_output(
+            CompressionSummary,
+            include_raw=include_raw,
+        )
         self._baseline_model = model.with_structured_output(
             EpochBaseline,
             include_raw=include_raw,
@@ -68,8 +84,8 @@ class StructuredLLMCompressor:
         self,
         runnable: Any,
         messages: list[SystemMessage | HumanMessage],
-        schema: type[CompressionDelta | EpochBaseline],
-    ) -> CompressionDelta | EpochBaseline:
+        schema: type[TStructured],
+    ) -> TStructured:
         """调用结构化模型，并把压缩请求纳入共享证据预算。"""
 
         if self._evidence_budget is not None:
@@ -127,12 +143,33 @@ class StructuredLLMCompressor:
                 }
             )
         )
-        result = await self._invoke_structured(
-            self._summary_model,
-            [system, human],
-            CompressionDelta,
-        )
-        return CompressionDelta.model_validate(result)
+        try:
+            result = await self._invoke_structured(
+                self._summary_model,
+                [system, human],
+                CompressionDelta,
+            )
+            return CompressionDelta.model_validate(result)
+        except ValidationError:
+            # 部分 OpenAI-compatible 供应商会遗漏复杂 Schema 的必填摘要字段。
+            # 此时只重试最小语义任务；归档范围仍由确定性候选 ID 决定，
+            # 不接受模型自行扩大 cold_event_ids，避免压缩越过 D1/Breakpoint。
+            recovery_system = SystemMessage(
+                content=(
+                    "你是会话上下文压缩器。只返回 compressed_summary。"
+                    "摘要必须保留候选事件中的目标、有效约束、已验证事实、"
+                    "失败路径、关键工具结论和引用，不得添加输入中不存在的事实。"
+                )
+            )
+            recovered = await self._invoke_structured(
+                self._summary_only_model,
+                [recovery_system, human],
+                CompressionSummary,
+            )
+            return CompressionDelta(
+                cold_event_ids=candidate_ids,
+                compressed_summary=recovered.compressed_summary,
+            )
 
     async def consolidate_baseline(
         self,
