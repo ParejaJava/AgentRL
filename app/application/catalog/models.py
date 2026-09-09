@@ -12,6 +12,9 @@ RecallStrategy: TypeAlias = Literal[
     "embedding_rerank",
     "embedding_only",
     "keyword_2gram",
+    "bm25",
+    "knn",
+    "hybrid_rrf",
 ]
 
 

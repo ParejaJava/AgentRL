@@ -179,7 +179,7 @@ Cache Breakpoint 仍由 `infrastructure/context_governance/breakpoint.py` 构建
 
 品类知识工具已经按照相同边界实现：`domain/catalog` 保存知识模型，Application 通过
 `CategoryKnowledgeRetriever` 端口聚合，Infrastructure 负责 Markdown 结构化、JSONL
-缓存和 LangChain `@tool`。OpenSearch 尚未配置，当前使用可替换的本地检索适配器；详见
+缓存和 LangChain `@tool`。OpenSearch 已配置 Hybrid RRF Search Pipeline、BGE-M3 KNN 与 BGE 重排，同时保留可替换的本地检索降级适配器；详见
 [`category_insight.md`](category_insight.md)。
 
 ## 10. 约束与验证

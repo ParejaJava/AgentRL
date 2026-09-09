@@ -8,7 +8,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
-from langchain.agents.middleware.types import ToolCallRequest
+from langchain.agents.middleware.types import (
+    ModelRequest,
+    ModelResponse,
+    ToolCallRequest,
+)
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
@@ -24,7 +28,10 @@ from app.application.runtime import AgentExecutionContext
 from app.infrastructure.context_governance.artifact_store import FileArtifactStore
 from app.infrastructure.context_governance.breakpoint import CacheBreakpointManager
 from app.infrastructure.context_governance.config import GovernanceConfig
-from app.infrastructure.context_governance.event_store import SQLiteEventStore
+from app.infrastructure.context_governance.event_store import (
+    EventRecord,
+    SQLiteEventStore,
+)
 from app.infrastructure.context_governance.messages import (
     collect_protected_event_ids,
     index_messages,
@@ -43,7 +50,9 @@ from app.infrastructure.context_governance.schemas import (
     TaskDelta,
     TaskState,
 )
+from app.infrastructure.evidence_budget import EvidenceUsageBudget
 from app.infrastructure.langchain.main_agent import MainAgent
+from app.infrastructure.langchain.reliability_middleware import ModelGatewayMiddleware
 
 TEST_SESSION_ROOT = Path("data/test-output/context-governance-tests").resolve()
 
@@ -89,6 +98,22 @@ class FakeCompressor:
             constraints=task_state.constraints,
             stable_artifact_refs=artifact_refs,
         )
+
+
+class FailingCompressor(FakeCompressor):
+    """模拟摘要模型故障，验证治理层不会丢弃尚未压缩的原始事件。"""
+
+    async def summarize_incrementally(
+        self,
+        *,
+        task_state: TaskState,
+        working_memory: dict[str, dict[str, Any]],
+        candidates: list[Any],
+        target_tokens: int,
+    ) -> CompressionDelta:
+        del task_state, working_memory, candidates, target_tokens
+        self.summary_calls += 1
+        raise RuntimeError("injected compressor failure")
 
 
 class ToolCapableFakeModel(BaseChatModel):
@@ -197,6 +222,30 @@ def test_thread_id_is_safe_for_windows_session_directories() -> None:
     assert sanitize_thread_id("task-42:child:a") == "task-42_child_a"
 
 
+def test_event_store_releases_sqlite_handle_after_each_operation(
+    tmp_path: Path,
+) -> None:
+    """异步 SQLite 操作结束后必须释放句柄，Windows 才能清理运行目录。"""
+
+    store = SQLiteEventStore(tmp_path)
+    event = EventRecord(
+        event_id="event-1",
+        thread_id="thread-1",
+        agent_id="main-agent",
+        sequence=1,
+        event_type="test.event",
+        payload={"ok": True},
+        cache_epoch=0,
+    )
+
+    asyncio.run(store.append(event))
+    assert asyncio.run(store.list_events())[0]["event_id"] == "event-1"
+
+    database = tmp_path / "events.db"
+    database.unlink()
+    assert not database.exists()
+
+
 def test_policy_uses_llm_summary_only_after_threshold() -> None:
     config = _config(TEST_SESSION_ROOT)
     policy = DeterministicCompressionPolicy(config)
@@ -266,6 +315,40 @@ def test_governance_invokes_structured_compressor_and_archives_events() -> None:
     assert rebuilt["compressed_event_ids"] == update["compressed_event_ids"]
 
 
+def test_governance_keeps_original_events_when_compressor_fails() -> None:
+    """LLM 摘要失败时不得把候选事件错误标记为已压缩。"""
+
+    compressor = FailingCompressor()
+    middleware = ContextGovernanceMiddleware(
+        compressor=compressor,
+        config=_config(
+            TEST_SESSION_ROOT,
+            context_window_tokens=1_000,
+            summary_trigger_ratio=0.02,
+            forced_summary_ratio=0.80,
+            emergency_ratio=0.99,
+            target_ratio=0.01,
+        ),
+        static_system_prompt="系统",
+        agent_id="test-agent",
+    )
+    state = {
+        "messages": [
+            HumanMessage(content="必须保留的早期约束 " * 20),
+            AIMessage(content="已确认该约束 " * 20),
+            HumanMessage(content="当前请求"),
+        ]
+    }
+    runtime = Runtime(context=AgentExecutionContext(thread_id="thread-summary-failure"))
+
+    update = asyncio.run(middleware.abefore_model(state, runtime))
+
+    assert update is not None
+    assert compressor.summary_calls == 1
+    assert update["compressed_event_ids"] == []
+    assert "增量摘要失败并已回退" in update["last_governance"]["reason"]
+
+
 def test_governance_does_not_call_llm_below_threshold() -> None:
     compressor = FakeCompressor()
     middleware = ContextGovernanceMiddleware(
@@ -289,6 +372,45 @@ def test_governance_does_not_call_llm_below_threshold() -> None:
     assert compressor.summary_calls == 0
     assert compressor.baseline_calls == 0
     assert update["last_governance"]["strategies"] == ["none"]
+
+
+def test_context_overflow_retries_once_with_emergency_projection() -> None:
+    """供应商报告窗口溢出时，只能用更小投影重试一次并保留当前热消息。"""
+
+    middleware = ContextGovernanceMiddleware(
+        compressor=FakeCompressor(),
+        config=_config(TEST_SESSION_ROOT, context_window_tokens=100_000),
+        static_system_prompt="系统",
+        agent_id="test-agent",
+    )
+    runtime = Runtime(context=AgentExecutionContext(thread_id="overflow-retry"))
+    messages = [
+        HumanMessage(content=f"历史问题 {index} " * 20)
+        if index % 2 == 0
+        else AIMessage(content=f"历史回答 {index} " * 20)
+        for index in range(8)
+    ]
+    messages.append(HumanMessage(content="当前请求必须保留"))
+    request = ModelRequest(
+        model=None,  # type: ignore[arg-type]
+        messages=messages,
+        state={},
+        runtime=runtime,
+    )
+    observed_sizes: list[int] = []
+
+    async def handler(current: ModelRequest) -> ModelResponse:
+        observed_sizes.append(len(current.messages))
+        if len(observed_sizes) == 1:
+            raise RuntimeError("maximum context length exceeded")
+        assert any("当前请求必须保留" in message.text for message in current.messages)
+        return ModelResponse(result=[AIMessage(content="recovered")])
+
+    result = asyncio.run(middleware.awrap_model_call(request, handler))
+
+    assert result.result[0].text == "recovered"
+    assert len(observed_sizes) == 2
+    assert observed_sizes[1] < observed_sizes[0]
 
 
 def test_semantic_invalidation_rolls_epoch_with_llm_baseline() -> None:
@@ -391,6 +513,40 @@ def test_main_agent_runs_create_agent_with_context_governance() -> None:
     assert events[0]["type"] == "run_started"
     assert {event.get("content") for event in events} >= {"治理循环正常"}
     assert events[-1]["type"] == "run_finished"
+
+
+def test_main_agent_continues_same_thread_across_multiple_invocations() -> None:
+    """相同 thread_id 的第二轮输入必须从最新 checkpoint 继续执行。"""
+
+    evidence_budget = EvidenceUsageBudget()
+    gateway = ModelGatewayMiddleware(
+        max_concurrency=1,
+        min_interval_seconds=0,
+        max_retries=0,
+        evidence_budget=evidence_budget,
+    )
+    agent = MainAgent(
+        model=ToolCapableFakeModel(),
+        tools=[],
+        compressor=FakeCompressor(),
+        governance_config=_config(TEST_SESSION_ROOT),
+        shared_middleware=(gateway,),
+    )
+    context = AgentExecutionContext(thread_id="multi-turn-regression")
+
+    async def exercise() -> dict[str, Any]:
+        _ = [event async for event in agent.stream("第一轮", context)]
+        _ = [event async for event in agent.stream("第二轮", context)]
+        return await agent.state_snapshot(context.thread_id)
+
+    state = asyncio.run(exercise())
+    human_texts = [
+        message.text
+        for message in state["messages"]
+        if isinstance(message, HumanMessage)
+    ]
+    assert human_texts == ["第一轮", "第二轮"]
+    assert evidence_budget.snapshot()["started_requests"] == 2
 
 
 def test_main_agent_does_not_give_main_only_tools_to_children() -> None:

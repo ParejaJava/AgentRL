@@ -217,7 +217,7 @@ Kimi K2.5/K2.6 不接受任意 temperature，模型工厂会自动省略该参�
 ### 运行防护
 
 ```dotenv
-MODEL_MAX_CONCURRENCY=50
+MODEL_MAX_CONCURRENCY=12
 MODEL_MAX_RETRIES=2
 FALLBACK_LLM_MODEL=
 TOOL_TIMEOUT_SECONDS=30
@@ -298,7 +298,7 @@ uv run python scripts/evaluate_category_recall.py --backend opensearch --k 1 3 5
 本轮实际完成：
 
 - `ruff check app scripts tests`：通过；
-- `pytest`：86 项通过（包含 Harness 前置链、四档预算和漂移隔离测试）；
+- `pytest`：当前最终代码 170 项通过；正式数量以 `TEST-001` 发布快照为准（包含 Harness 前置链、四档预算、任务租约恢复、故障注入、Trace 脱敏和漂移隔离测试）；
 - Composition Root：可构建 `MainAgent`、默认内存事件总线；
 - 品类知识摄取：5 份 Markdown 并发结构化，生成 37 张卡片；第二次执行 5 份全部按哈希跳过，证明增量复用生效；
 - 真实 LLM + FastAPI SSE：收到 `run.started -> token.delta -> final.result -> run.finished`；

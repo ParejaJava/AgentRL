@@ -34,6 +34,8 @@ class Settings:
     model_max_concurrency: int
     model_min_interval_seconds: float
     model_max_retries: int
+    model_run_max_requests: int
+    model_run_max_observed_tokens: int
     fallback_llm_model: str | None
     lite_llm_model: str | None
     token_budget_total: int
@@ -78,6 +80,7 @@ class Settings:
     category_embedding_dimension: int
     category_reranker_model: str
     category_hybrid_recall_k: int
+    category_min_relevance_score: float
     opensearch_url: str
     opensearch_username: str | None
     opensearch_password: str | None
@@ -85,6 +88,7 @@ class Settings:
     opensearch_timeout_seconds: float
     opensearch_category_index: str
     opensearch_category_pipeline: str
+    opensearch_number_of_replicas: int
     opensearch_bm25_weight: float
     opensearch_knn_weight: float
     preference_database_path: Path
@@ -109,12 +113,16 @@ class Settings:
                 os.getenv("COMPRESSION_LLM_MAX_TOKENS", "2048")
             ),
             context_llm_enabled=_env_bool("CONTEXT_LLM_ENABLED", True),
-            sub_agent_max_concurrency=int(os.getenv("SUB_AGENT_MAX_CONCURRENCY", "50")),
-            model_max_concurrency=int(os.getenv("MODEL_MAX_CONCURRENCY", "50")),
+            sub_agent_max_concurrency=int(os.getenv("SUB_AGENT_MAX_CONCURRENCY", "10")),
+            model_max_concurrency=int(os.getenv("MODEL_MAX_CONCURRENCY", "12")),
             model_min_interval_seconds=float(
                 os.getenv("MODEL_MIN_INTERVAL_SECONDS", "0")
             ),
             model_max_retries=int(os.getenv("MODEL_MAX_RETRIES", "2")),
+            model_run_max_requests=int(os.getenv("MODEL_RUN_MAX_REQUESTS", "0")),
+            model_run_max_observed_tokens=int(
+                os.getenv("MODEL_RUN_MAX_OBSERVED_TOKENS", "0")
+            ),
             fallback_llm_model=os.getenv("FALLBACK_LLM_MODEL") or None,
             lite_llm_model=os.getenv("LITE_LLM_MODEL") or None,
             token_budget_total=int(os.getenv("TOKEN_BUDGET_TOTAL", "0")),
@@ -218,6 +226,9 @@ class Settings:
             category_hybrid_recall_k=int(
                 os.getenv("CATEGORY_HYBRID_RECALL_K", "50")
             ),
+            category_min_relevance_score=float(
+                os.getenv("CATEGORY_MIN_RELEVANCE_SCORE", "0.01")
+            ),
             opensearch_url=os.getenv(
                 "OPENSEARCH_URL",
                 "http://localhost:9200",
@@ -235,6 +246,9 @@ class Settings:
             opensearch_category_pipeline=os.getenv(
                 "OPENSEARCH_CATEGORY_PIPELINE",
                 "globex-category-rrf",
+            ),
+            opensearch_number_of_replicas=int(
+                os.getenv("OPENSEARCH_NUMBER_OF_REPLICAS", "0")
             ),
             opensearch_bm25_weight=float(
                 os.getenv("OPENSEARCH_BM25_WEIGHT", "0.4")
@@ -263,6 +277,11 @@ class Settings:
             raise ValueError("MODEL_MAX_CONCURRENCY 必须大于 0")
         if settings.model_min_interval_seconds < 0 or settings.model_max_retries < 0:
             raise ValueError("模型请求间隔和重试次数不能小于 0")
+        if min(
+            settings.model_run_max_requests,
+            settings.model_run_max_observed_tokens,
+        ) < 0:
+            raise ValueError("证据运行请求和 Token 硬上限不能小于 0")
         if settings.token_budget_total < 0:
             raise ValueError("TOKEN_BUDGET_TOTAL 不能小于 0")
         if settings.tool_timeout_seconds <= 0:
@@ -327,12 +346,16 @@ class Settings:
             raise ValueError(
                 "CATEGORY_HYBRID_RECALL_K 不能小于 CATEGORY_DEEP_RECALL_K"
             )
+        if not 0.0 <= settings.category_min_relevance_score <= 1.0:
+            raise ValueError("CATEGORY_MIN_RELEVANCE_SCORE 必须位于 0 到 1 之间")
         if settings.opensearch_timeout_seconds <= 0:
             raise ValueError("OPENSEARCH_TIMEOUT_SECONDS 必须大于 0")
         if not settings.opensearch_category_index.strip():
             raise ValueError("OPENSEARCH_CATEGORY_INDEX 不能为空")
         if not settings.opensearch_category_pipeline.strip():
             raise ValueError("OPENSEARCH_CATEGORY_PIPELINE 不能为空")
+        if settings.opensearch_number_of_replicas < 0:
+            raise ValueError("OPENSEARCH_NUMBER_OF_REPLICAS 不能小于 0")
         weights = (
             settings.opensearch_bm25_weight,
             settings.opensearch_knn_weight,

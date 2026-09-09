@@ -1,6 +1,13 @@
 """商品检索用例及其适配器共享的启动配置。"""
 
 from dataclasses import dataclass
+from typing import Literal, TypeAlias
+
+ItemRetrievalMode: TypeAlias = Literal[
+    "lexical",
+    "embedding",
+    "embedding_rerank",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -17,6 +24,7 @@ class ItemSearchConfig:
     hnsw_m: int = 32
     hnsw_ef_construction: int = 200
     hnsw_ef_search: int = 128
+    retrieval_mode: ItemRetrievalMode = "embedding_rerank"
 
     def __post_init__(self) -> None:
         if self.embedding_dimension < 1:
@@ -33,3 +41,9 @@ class ItemSearchConfig:
             raise ValueError("hnsw_m must be at least 2")
         if self.hnsw_ef_construction < 1 or self.hnsw_ef_search < 1:
             raise ValueError("HNSW ef values must be positive")
+        if self.retrieval_mode not in {
+            "lexical",
+            "embedding",
+            "embedding_rerank",
+        }:
+            raise ValueError("retrieval_mode is invalid")

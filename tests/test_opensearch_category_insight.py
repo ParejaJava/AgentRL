@@ -164,6 +164,7 @@ def _repository(
     encoder: FakeEncoder | None = None,
     reranker: FakeReranker | None = None,
     keyword_fallback: FakeKeywordFallback | None = None,
+    min_relevance_score: float = 0.1,
 ) -> OpenSearchCategoryCardRepository:
     """使用测试替身装配被测适配器。"""
 
@@ -175,6 +176,7 @@ def _repository(
         pipeline_name="category-rrf",
         embedding_dimension=2,
         hybrid_recall_k=20,
+        min_relevance_score=min_relevance_score,
         bm25_weight=0.4,
         knn_weight=0.6,
         keyword_fallback=keyword_fallback,
@@ -272,3 +274,46 @@ def test_search_uses_local_keyword_fallback_when_embedding_fails() -> None:
     assert [item.card.card_id for item in results] == ["keyword"]
     assert results[0].recall_strategy == "keyword_2gram"
     assert client.search_calls == []
+
+
+def test_search_rejects_when_all_reranker_scores_are_below_threshold() -> None:
+    """域外查询不能因为全局规则存在而始终返回知识卡。"""
+
+    client = FakeOpenSearch(
+        (
+            _card("ordinary", "普通候选"),
+            _card("global", "通用避坑", general=True),
+        )
+    )
+    repository = _repository(client, min_relevance_score=0.5)
+
+    assert repository.search("完全无关的问题", 3) == ()
+
+
+def test_relevant_global_rule_can_pass_the_same_relevance_gate() -> None:
+    """全局规则与普通卡使用同一阈值，可单独回答到手价类问题。"""
+
+    client = FakeOpenSearch((_card("global", "最佳到手价规则", general=True),))
+    repository = _repository(client, min_relevance_score=0.5)
+
+    results = repository.search("到手价如何计算", 3)
+
+    assert [item.card.card_id for item in results] == ["global"]
+    assert results[0].score == 0.95
+
+
+def test_ablation_queries_do_not_trigger_hidden_fallbacks() -> None:
+    """BM25、KNN 和 Hybrid 消融分别发出可辨识的 OpenSearch 查询。"""
+
+    client = FakeOpenSearch((_card("best", "最佳候选"),))
+    repository = _repository(client)
+
+    assert repository.search_with_strategy("旅行装备", 2, "bm25")
+    assert "multi_match" in client.search_calls[-2]["body"]["query"]
+    assert repository.search_with_strategy("旅行装备", 2, "knn")
+    assert "knn" in client.search_calls[-2]["body"]["query"]
+    assert repository.search_with_strategy("旅行装备", 2, "hybrid_rrf")
+    assert "hybrid" in client.search_calls[-2]["body"]["query"]
+    assert client.search_calls[-2]["params"] == {
+        "search_pipeline": "category-rrf"
+    }

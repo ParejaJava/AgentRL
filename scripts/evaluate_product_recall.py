@@ -3,16 +3,30 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 from pathlib import Path
 
 from app.composition import build_item_search_service
-from app.infrastructure.settings import Settings
-from scripts.product_recall_evaluator import (
-    EvaluatedProductCase,
-    evaluate_product_recall,
-    load_product_recall_cases,
-    write_product_evaluation_report,
+from app.infrastructure.retrieval.item_search.user_tower import (
+    InMemoryUserProfileSource,
 )
+from app.infrastructure.settings import Settings
+
+# 同时支持 `python scripts/...` 和 `python -m scripts...` 两种启动方式。
+if __package__:
+    from .product_recall_evaluator import (
+        EvaluatedProductCase,
+        evaluate_product_recall,
+        load_product_recall_cases,
+        write_product_evaluation_report,
+    )
+else:
+    from product_recall_evaluator import (
+        EvaluatedProductCase,
+        evaluate_product_recall,
+        load_product_recall_cases,
+        write_product_evaluation_report,
+    )
 
 
 def _one_line(text: str, limit: int = 80) -> str:
@@ -57,6 +71,14 @@ def _parse_args() -> argparse.Namespace:
         default=Path("eval/reports/product_recall.json"),
     )
     parser.add_argument("--k", nargs="+", type=int, default=[1, 3, 5, 10])
+    parser.add_argument(
+        "--strategy",
+        choices=("lexical", "embedding", "embedding_rerank"),
+        default="embedding_rerank",
+        help="选择单一召回链路，用于可重复的消融实验。",
+    )
+    parser.add_argument("--buyer-id", help="为全部用例注入同一测试买家。")
+    parser.add_argument("--profile", help="为测试买家注入 User Tower 画像文本。")
     return parser.parse_args()
 
 
@@ -65,7 +87,22 @@ def main() -> None:
 
     args = _parse_args()
     cases = load_product_recall_cases(args.dataset)
-    service = build_item_search_service(Settings.from_env())
+    if bool(args.buyer_id) != bool(args.profile):
+        raise ValueError("--buyer-id 与 --profile 必须同时提供")
+    profile_source = None
+    if args.buyer_id and args.profile:
+        cases = tuple(replace(case, buyer_id=args.buyer_id) for case in cases)
+        profile_source = InMemoryUserProfileSource(
+            {
+                (args.buyer_id, case.index_id): args.profile
+                for case in cases
+            }
+        )
+    service = build_item_search_service(
+        Settings.from_env(),
+        profile_source=profile_source,
+        retrieval_mode=args.strategy,
+    )
     max_k = max(args.k)
     print(f"开始商品召回评测：{len(cases)} 条，max_k={max_k}", flush=True)
     report = evaluate_product_recall(

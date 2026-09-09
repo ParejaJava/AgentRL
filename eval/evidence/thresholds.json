@@ -1,0 +1,16 @@
+{
+  "coverage": {
+    "total_line_percent": 70.0,
+    "domain_line_percent": 86.0,
+    "application_line_percent": 85.0,
+    "reliability_line_percent": 55.0,
+    "critical_domain_branch_percent": 90.0
+  },
+  "retrieval": {
+    "category_recall_at_10": 0.93,
+    "category_negative_rejection_accuracy": 0.8,
+    "product_recall_at_10": 0.95,
+    "product_mrr_at_10": 0.92,
+    "product_ndcg_at_10": 0.92
+  }
+}

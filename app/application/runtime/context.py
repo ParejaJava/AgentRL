@@ -28,6 +28,7 @@ class AgentExecutionContext:
     thread_id: str
     shopping: ShoppingContextSnapshot | None = None
     run_id: str | None = None
+    trace_id: str | None = None
     session_dir: str | None = None
 
     def __post_init__(self) -> None:

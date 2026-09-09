@@ -7,13 +7,26 @@ from dataclasses import replace
 from pathlib import Path
 
 from app.composition import build_category_retriever
-from app.infrastructure.settings import Settings
-from scripts.category_recall_evaluator import (
-    EvaluatedCase,
-    evaluate_category_recall,
-    load_category_recall_cases,
-    write_evaluation_report,
+from app.infrastructure.retrieval.category_insight import (
+    OpenSearchCategoryCardRepository,
 )
+from app.infrastructure.settings import Settings
+
+# 同时支持 `python scripts/...` 和 `python -m scripts...` 两种启动方式。
+if __package__:
+    from .category_recall_evaluator import (
+        EvaluatedCase,
+        evaluate_category_recall,
+        load_category_recall_cases,
+        write_evaluation_report,
+    )
+else:
+    from category_recall_evaluator import (
+        EvaluatedCase,
+        evaluate_category_recall,
+        load_category_recall_cases,
+        write_evaluation_report,
+    )
 
 
 def _one_line(text: str, limit: int = 80) -> str:
@@ -68,6 +81,17 @@ def _parse_args() -> argparse.Namespace:
         help="覆盖 CATEGORY_RETRIEVER_BACKEND",
     )
     parser.add_argument("--k", nargs="+", type=int, default=[1, 3, 5, 10])
+    parser.add_argument(
+        "--strategy",
+        choices=("keyword", "bm25", "knn", "hybrid_rrf", "hybrid_rerank"),
+        default="hybrid_rerank",
+        help="选择单一召回链路，用于可重复的消融实验。",
+    )
+    parser.add_argument(
+        "--min-score",
+        type=float,
+        help="覆盖 reranker 拒答阈值；只影响 hybrid_rerank。",
+    )
     return parser.parse_args()
 
 
@@ -78,8 +102,31 @@ def main() -> None:
     settings = Settings.from_env()
     if args.backend is not None:
         settings = replace(settings, category_retriever_backend=args.backend)
+    if args.min_score is not None:
+        settings = replace(settings, category_min_relevance_score=args.min_score)
     cases = load_category_recall_cases(args.dataset)
     retriever = build_category_retriever(settings)
+    if args.backend == "opensearch" and not isinstance(
+        retriever,
+        OpenSearchCategoryCardRepository,
+    ):
+        raise RuntimeError("OpenSearch 消融需要 OpenSearchCategoryCardRepository")
+    if isinstance(retriever, OpenSearchCategoryCardRepository):
+        repository = retriever
+
+        class StrategyRetriever:
+            """把指定消融策略适配为统一的品类检索端口。"""
+
+            def search(self, category: str, limit: int):
+                """执行一次不带隐式降级的策略检索。"""
+
+                return repository.search_with_strategy(
+                    category,
+                    limit,
+                    args.strategy,
+                )
+
+        retriever = StrategyRetriever()
     max_k = max(args.k)
     print(f"开始品类召回评测：{len(cases)} 条，max_k={max_k}", flush=True)
     report = evaluate_category_recall(

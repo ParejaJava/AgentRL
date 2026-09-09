@@ -38,8 +38,9 @@ def create_chat_model(
     settings: Settings,
     *,
     model_name: str | None = None,
+    disable_thinking: bool = False,
 ) -> ChatOpenAI:
-    """创建主、子 Agent 共用的聊天模型。"""
+    """创建聊天模型；受控实验可关闭 Kimi 思考模式以节省预算。"""
 
     resolved_model = model_name or settings.llm_model_name
     return ChatOpenAI(
@@ -47,6 +48,7 @@ def create_chat_model(
             settings,
             model_name=resolved_model,
             temperature=settings.llm_temperature,
+            disable_thinking=disable_thinking,
         )
     )
 

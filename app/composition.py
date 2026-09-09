@@ -4,7 +4,7 @@ import hashlib
 from dataclasses import dataclass
 
 from app.application.agents import DriftDetector, RunAgent
-from app.application.catalog import CategoryInsightConfig
+from app.application.catalog import CategoryInsightConfig, ItemRetrievalMode
 from app.application.catalog.category_insight_ports import (
     CategoryKnowledgeRetriever,
 )
@@ -21,6 +21,8 @@ from app.infrastructure.cache import (
 from app.infrastructure.checkpoint import LazyAsyncSqliteSaver
 from app.infrastructure.context_governance.compressor import StructuredLLMCompressor
 from app.infrastructure.eventbus import InMemoryTradeEventBus, RedisTradeEventBus
+from app.infrastructure.evidence_budget import EvidenceUsageBudget
+from app.infrastructure.health import OpenSearchReadinessProbe
 from app.infrastructure.langchain import MainAgent
 from app.infrastructure.langchain.preference_middleware import (
     PreferenceMemoryMiddleware,
@@ -86,6 +88,8 @@ class ApplicationContainer:
     event_bus: InMemoryTradeEventBus | RedisTradeEventBus
     orders: OrderService
     task_queue: RedisStreamTaskQueue | None
+    opensearch_probe: OpenSearchReadinessProbe | None
+    model_gateway: ModelGatewayMiddleware
 
 
 def build_container(settings: Settings | None = None) -> ApplicationContainer:
@@ -103,8 +107,17 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         if resolved.lite_llm_model
         else None
     )
+    # 主/子 Agent 与压缩 LLM 必须共享总请求数和 Token 上限。
+    evidence_budget = EvidenceUsageBudget(
+        max_total_requests=resolved.model_run_max_requests,
+        max_observed_tokens=resolved.model_run_max_observed_tokens,
+        min_interval_seconds=resolved.model_min_interval_seconds,
+    )
     compressor = (
-        StructuredLLMCompressor(create_compression_model(resolved))
+        StructuredLLMCompressor(
+            create_compression_model(resolved),
+            evidence_budget=evidence_budget,
+        )
         if resolved.context_llm_enabled
         else None
     )
@@ -182,6 +195,9 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         max_concurrency=resolved.model_max_concurrency,
         min_interval_seconds=resolved.model_min_interval_seconds,
         max_retries=resolved.model_max_retries,
+        max_total_requests=resolved.model_run_max_requests,
+        max_observed_tokens=resolved.model_run_max_observed_tokens,
+        evidence_budget=evidence_budget,
         fallback_model=fallback_model,
         lite_model=lite_model,
     )
@@ -280,6 +296,12 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         event_bus=event_bus,
         orders=order_service,
         task_queue=task_queue,
+        opensearch_probe=(
+            OpenSearchReadinessProbe(resolved)
+            if resolved.category_retriever_backend == "opensearch"
+            else None
+        ),
+        model_gateway=model_gateway,
     )
 
 
@@ -326,6 +348,7 @@ def build_item_search_service(
     indexes: IndexRegistry | None = None,
     vector_cache: VectorCache | None = None,
     encoder: EmbeddingEncoder | None = None,
+    retrieval_mode: ItemRetrievalMode | None = None,
 ) -> ItemSearchService:
     """为在线工具和离线评测装配同一套商品搜索服务。"""
 
@@ -340,6 +363,7 @@ def build_item_search_service(
         indexes=indexes,
         vector_cache=vector_cache,
         encoder=encoder,
+        retrieval_mode=retrieval_mode,
     )
 
 

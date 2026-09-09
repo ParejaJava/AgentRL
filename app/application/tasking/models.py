@@ -41,6 +41,7 @@ class TaskRecord:
     description: str
     status: TaskStatus = TaskStatus.PENDING
     owner: str | None = None
+    lease_expires_at: str | None = None
     blocked_by: list[str] = field(default_factory=list)
     result: str | None = None
     error: str | None = None
@@ -69,6 +70,7 @@ class TaskView:
     status: TaskStatus
     effective_status: EffectiveTaskStatus
     owner: str | None
+    lease_expires_at: str | None
     blocked_by: tuple[str, ...]
     active_blocked_by: tuple[str, ...]
     blocks: tuple[str, ...]
@@ -89,6 +91,7 @@ class TaskView:
             "status": self.status.value,
             "effective_status": self.effective_status,
             "owner": self.owner,
+            "lease_expires_at": self.lease_expires_at,
             "blocked_by": list(self.blocked_by),
             "active_blocked_by": list(self.active_blocked_by),
             "blocks": list(self.blocks),

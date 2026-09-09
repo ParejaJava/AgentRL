@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import sqlite3
+from contextlib import closing
 from datetime import datetime
 from pathlib import Path
 
@@ -29,7 +30,7 @@ class SQLiteOrderRepository(OrderRepository):
         return connection
 
     def _initialize(self) -> None:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS order_intents (
@@ -49,7 +50,7 @@ class SQLiteOrderRepository(OrderRepository):
         return await asyncio.to_thread(self._create_or_get_sync, order)
 
     def _create_or_get_sync(self, order: Order) -> Order:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             connection.execute("BEGIN IMMEDIATE")
             existing = connection.execute(
                 """
@@ -86,7 +87,7 @@ class SQLiteOrderRepository(OrderRepository):
         return await asyncio.to_thread(self._get_sync, order_id)
 
     def _get_sync(self, order_id: str) -> Order | None:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             row = connection.execute(
                 "SELECT payload FROM order_intents WHERE order_id = ?",
                 (order_id,),
@@ -99,7 +100,7 @@ class SQLiteOrderRepository(OrderRepository):
         await asyncio.to_thread(self._save_sync, order)
 
     def _save_sync(self, order: Order) -> None:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             cursor = connection.execute(
                 """
                 UPDATE order_intents SET status = ?, payload = ?

@@ -102,29 +102,33 @@ class ItemSearchService:
         if recall_limit < 1:
             return self._empty_response(command, "keyword_2gram")
 
-        try:
-            encoded = self._encoder.embed_queries([retrieval_query])
-            if len(encoded) != 1 or len(encoded[0]) != self._encoder.dimension:
-                raise RuntimeError(
-                    "query encoder returned an unexpected vector shape"
-                )
-            request_vector = fuse_request_vector(
-                encoded[0],
-                user_signal.vector if user_signal else None,
-                query_weight=self._config.query_weight,
-            )
-            hits = list(index.search(request_vector, recall_limit))
-        except Exception:
-            logger.warning(
-                "商品 embedding 召回失败，降级到 keyword_2gram",
-                exc_info=True,
-            )
+        if self._config.retrieval_mode == "lexical":
             strategy = "keyword_2gram"
             hits = list(index.keyword_search(retrieval_query, recall_limit))
         else:
-            if not hits:
+            try:
+                encoded = self._encoder.embed_queries([retrieval_query])
+                if len(encoded) != 1 or len(encoded[0]) != self._encoder.dimension:
+                    raise RuntimeError(
+                        "query encoder returned an unexpected vector shape"
+                    )
+                request_vector = fuse_request_vector(
+                    encoded[0],
+                    user_signal.vector if user_signal else None,
+                    query_weight=self._config.query_weight,
+                )
+                hits = list(index.search(request_vector, recall_limit))
+            except Exception:
+                logger.warning(
+                    "商品 embedding 召回失败，降级到 keyword_2gram",
+                    exc_info=True,
+                )
                 strategy = "keyword_2gram"
                 hits = list(index.keyword_search(retrieval_query, recall_limit))
+            else:
+                if not hits:
+                    strategy = "keyword_2gram"
+                    hits = list(index.keyword_search(retrieval_query, recall_limit))
 
         if not hits:
             return self._empty_response(command, strategy)
@@ -191,6 +195,15 @@ class ItemSearchService:
                     for hit in hits
                 ],
                 strategy,
+            )
+
+        if self._config.retrieval_mode == "embedding":
+            return (
+                [
+                    _Candidate(hit.item_id, hit.score, hit.score)
+                    for hit in hits
+                ],
+                "embedding_only",
             )
 
         products = [index.get_product(hit.item_id) for hit in hits]

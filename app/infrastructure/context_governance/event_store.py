@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import sqlite3
+from contextlib import closing
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -167,11 +168,11 @@ class SQLiteEventStore:
         return connection
 
     def _append_sync(self, event: EventRecord) -> None:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             self._insert(connection, event)
 
     def _append_many_sync(self, events: list[EventRecord]) -> None:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             for event in events:
                 self._insert(connection, event)
 
@@ -203,7 +204,7 @@ class SQLiteEventStore:
     def _list_events_sync(self) -> list[dict[str, Any]]:
         if not self._path.exists():
             return []
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             rows = connection.execute(
                 """
                 SELECT event_id, thread_id, agent_id, sequence, event_type,

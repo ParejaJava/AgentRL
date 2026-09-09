@@ -6,7 +6,7 @@ from .category_insight_models import (
     CategoryInsightResult,
     InsightDepth,
 )
-from .config import ItemSearchConfig
+from .config import ItemRetrievalMode, ItemSearchConfig
 from .get_category_insight import CategoryInsightNotFound, GetCategoryInsight
 from .models import (
     FilteredItem,
@@ -25,6 +25,7 @@ __all__ = [
     "FilteredItem",
     "GetCategoryInsight",
     "InsightDepth",
+    "ItemRetrievalMode",
     "ItemSearchCommand",
     "ItemSearchConfig",
     "ItemSearchRequest",

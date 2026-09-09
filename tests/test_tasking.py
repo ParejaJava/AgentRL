@@ -14,6 +14,7 @@ from app.application.tasking import (
     TaskDependencyError,
     TaskDispatchService,
     TaskExecutionOutcome,
+    TaskTransitionError,
     TaskWorkItem,
 )
 from app.infrastructure.context import reset_context, set_context
@@ -190,6 +191,104 @@ def test_deterministic_dispatch_claims_and_writes_back_results() -> None:
         assert report.tasks[0].result == "任务一完成"
         assert report.tasks[1].error == "任务二失败"
         assert all(task.owner and task.owner.startswith("fork:") for task in report.tasks)
+
+    asyncio.run(scenario())
+
+
+def test_expired_claim_is_recovered_and_can_be_dispatched_again() -> None:
+    """Worker 中断后，过期租约应释放任务且不遗留旧 owner。"""
+
+    repository = SQLiteTaskBoardRepository(TEST_ROOT / "lease-recovery.db")
+    short_lease_service = TaskBoardService(repository, claim_lease_seconds=0)
+    recovery_service = TaskBoardService(repository)
+
+    async def scenario() -> None:
+        task = await short_lease_service.create(
+            "thread",
+            subject="可恢复任务",
+            description="模拟 Worker 认领后进程中断",
+        )
+        claimed = await short_lease_service.claim_runnable(
+            "thread",
+            [task.id],
+            dispatch_id="interrupted-worker",
+            require_parallel=False,
+        )
+        assert len(claimed) == 1
+        in_progress = await recovery_service.get("thread", task.id)
+        assert in_progress.status.value == "in_progress"
+        assert in_progress.lease_expires_at is not None
+
+        recovered = await recovery_service.recover_expired_claims("thread")
+        assert recovered == (task.id,)
+        pending = await recovery_service.get("thread", task.id)
+        assert pending.status.value == "pending"
+        assert pending.owner is None
+        assert pending.lease_expires_at is None
+        assert pending.runnable
+
+        report = await TaskDispatchService(
+            recovery_service,
+            DelayedSingleSuccessExecutor(),
+        ).dispatch("thread", [task.id], reason="context_isolation")
+        assert report.tasks[0].status.value == "completed"
+
+    asyncio.run(scenario())
+
+
+class DelayedSingleSuccessExecutor:
+    """为租约恢复测试返回确定性的单任务成功结果。"""
+
+    async def execute_many(
+        self,
+        tasks: list[TaskWorkItem] | tuple[TaskWorkItem, ...],
+    ) -> tuple[TaskExecutionOutcome, ...]:
+        return tuple(
+            TaskExecutionOutcome(task.task_id, True, result="recovered")
+            for task in tasks
+        )
+
+
+def test_finish_dispatch_is_idempotent_for_identical_outcome() -> None:
+    """网络重试可重复回写相同结果，但不得用不同结果覆盖既有事实。"""
+
+    service = _service("idempotent-writeback")
+
+    async def scenario() -> None:
+        task = await service.create(
+            "thread",
+            subject="幂等任务",
+            description="验证重复结果提交",
+        )
+        work_items = await service.claim_runnable(
+            "thread",
+            [task.id],
+            dispatch_id="stable-dispatch",
+            require_parallel=False,
+        )
+        outcomes = (
+            TaskExecutionOutcome(task.id, True, result="stable-result"),
+        )
+        first = await service.finish_dispatch(
+            "thread",
+            work_items=work_items,
+            outcomes=outcomes,
+        )
+        second = await service.finish_dispatch(
+            "thread",
+            work_items=work_items,
+            outcomes=outcomes,
+        )
+        assert first[0].to_dict() == second[0].to_dict()
+
+        with pytest.raises(TaskTransitionError):
+            await service.finish_dispatch(
+                "thread",
+                work_items=work_items,
+                outcomes=(
+                    TaskExecutionOutcome(task.id, True, result="conflicting-result"),
+                ),
+            )
 
     asyncio.run(scenario())
 

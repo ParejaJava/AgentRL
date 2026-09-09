@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import time
 from collections import defaultdict
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import asdict, dataclass
@@ -36,6 +37,7 @@ class ProductRecallCase:
     relevance: tuple[ProductRelevanceLabel, ...]
     tags: tuple[str, ...]
     note: str
+    buyer_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -60,6 +62,7 @@ class EvaluatedProductCase:
     metrics: dict[int, RankingAtK]
     expected: tuple[str, ...]
     retrieved: tuple[str, ...]
+    latency_ms: float = 0.0
 
 
 def load_product_recall_cases(path: Path) -> tuple[ProductRecallCase, ...]:
@@ -103,6 +106,7 @@ def evaluate_product_recall(
     evaluated: list[EvaluatedProductCase] = []
     total = len(cases)
     for current, case in enumerate(cases, start=1):
+        started = time.perf_counter()
         response = service.search(
             ItemSearchCommand(
                 spec=ProductSearchSpec(
@@ -110,6 +114,7 @@ def evaluate_product_recall(
                     top_k=max_k,
                 ),
                 index_id=case.index_id,
+                buyer_id=case.buyer_id,
             )
         )
         ranked_ids = tuple(item.product.item_id for item in response.items)
@@ -127,6 +132,7 @@ def evaluate_product_recall(
             },
             expected=tuple(grades),
             retrieved=ranked_ids,
+            latency_ms=round((time.perf_counter() - started) * 1000, 3),
         )
         evaluated.append(item)
         if progress is not None:
@@ -151,6 +157,10 @@ def evaluate_product_recall(
             f"mrr_at_{max_k}": _mean(
                 item.reciprocal_rank for item in evaluated
             ),
+            "latency_ms": {
+                "p50": _percentile([item.latency_ms for item in evaluated], 50),
+                "p95": _percentile([item.latency_ms for item in evaluated], 95),
+            },
         },
         "by_tag": _aggregate_by_tag(evaluated, max_k),
         "cases": [_case_to_dict(item) for item in evaluated],
@@ -208,6 +218,9 @@ def _parse_case(raw: dict[str, Any]) -> ProductRecallCase:
         relevance=labels,
         tags=tuple(str(tag) for tag in raw.get("tags", [])),
         note=str(raw.get("note", "")),
+        buyer_id=(
+            str(raw["buyer_id"]).strip() if raw.get("buyer_id") else None
+        ),
     )
 
 
@@ -278,6 +291,7 @@ def _case_to_dict(item: EvaluatedProductCase) -> dict[str, Any]:
         "kind": item.kind,
         "tags": list(item.tags),
         "reciprocal_rank": item.reciprocal_rank,
+        "latency_ms": item.latency_ms,
         "metrics": {
             str(k): asdict(value) for k, value in item.metrics.items()
         },
@@ -291,3 +305,18 @@ def _mean(values: Iterable[float]) -> float:
 
     materialized = tuple(values)
     return round(sum(materialized) / len(materialized), 6)
+
+
+def _percentile(values: Sequence[float], percentile: int) -> float:
+    """用线性插值计算小样本延迟分位数。"""
+
+    ordered = sorted(values)
+    if not ordered:
+        return 0.0
+    position = (len(ordered) - 1) * percentile / 100
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return round(ordered[lower], 3)
+    weight = position - lower
+    return round(ordered[lower] * (1 - weight) + ordered[upper] * weight, 3)

@@ -29,6 +29,10 @@ def create_context_middleware(
 ) -> list[AgentMiddleware]:
     """创建工具侧防线、上下文治理和缓存指标 Middleware。"""
 
+    # 评测模式 off 保留原始 LangGraph 消息历史，不安装任何治理中间件。
+    if config.mode == "off":
+        return []
+
     model_name = str(
         getattr(model, "model_name", None)
         or getattr(model, "model", None)
@@ -37,7 +41,8 @@ def create_context_middleware(
     return [
         ToolResultMiddleware(config=config, agent_id=agent_id),
         ContextGovernanceMiddleware(
-            compressor=compressor,
+            # deterministic 仍执行卸载、热区保护和 Epoch 规则，但不调用 LLM。
+            compressor=compressor if config.mode == "full" else None,
             config=config,
             agent_id=agent_id,
             static_system_prompt=system_prompt,

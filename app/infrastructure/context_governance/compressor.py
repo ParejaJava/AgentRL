@@ -8,6 +8,8 @@ from typing import Any, Protocol
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from app.infrastructure.evidence_budget import EvidenceUsageBudget, message_usage
+
 from .messages import IndexedMessage, canonical_json, message_payload
 from .schemas import (
     CompressionDelta,
@@ -45,9 +47,46 @@ class ContextCompressor(Protocol):
 class StructuredLLMCompressor:
     """使用 LangChain structured output 调用独立压缩模型。"""
 
-    def __init__(self, model: BaseChatModel) -> None:
-        self._summary_model = model.with_structured_output(CompressionDelta)
-        self._baseline_model = model.with_structured_output(EpochBaseline)
+    def __init__(
+        self,
+        model: BaseChatModel,
+        *,
+        evidence_budget: EvidenceUsageBudget | None = None,
+    ) -> None:
+        self._evidence_budget = evidence_budget
+        include_raw = evidence_budget is not None
+        self._summary_model = model.with_structured_output(
+            CompressionDelta,
+            include_raw=include_raw,
+        )
+        self._baseline_model = model.with_structured_output(
+            EpochBaseline,
+            include_raw=include_raw,
+        )
+
+    async def _invoke_structured(
+        self,
+        runnable: Any,
+        messages: list[SystemMessage | HumanMessage],
+        schema: type[CompressionDelta | EpochBaseline],
+    ) -> CompressionDelta | EpochBaseline:
+        """调用结构化模型，并把压缩请求纳入共享证据预算。"""
+
+        if self._evidence_budget is not None:
+            await self._evidence_budget.reserve_request()
+        result = await runnable.ainvoke(messages)
+        if self._evidence_budget is None:
+            return schema.model_validate(result)
+
+        # include_raw=True 会同时返回原始 AIMessage 与解析后的 Pydantic 对象。
+        raw = result.get("raw") if isinstance(result, dict) else None
+        parsed = result.get("parsed") if isinstance(result, dict) else result
+        input_tokens, output_tokens = message_usage(raw)
+        await self._evidence_budget.record_usage(
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+        )
+        return schema.model_validate(parsed)
 
     async def summarize_incrementally(
         self,
@@ -88,7 +127,11 @@ class StructuredLLMCompressor:
                 }
             )
         )
-        result = await self._summary_model.ainvoke([system, human])
+        result = await self._invoke_structured(
+            self._summary_model,
+            [system, human],
+            CompressionDelta,
+        )
         return CompressionDelta.model_validate(result)
 
     async def consolidate_baseline(
@@ -120,5 +163,9 @@ class StructuredLLMCompressor:
                 }
             )
         )
-        result = await self._baseline_model.ainvoke([system, human])
+        result = await self._invoke_structured(
+            self._baseline_model,
+            [system, human],
+            EpochBaseline,
+        )
         return EpochBaseline.model_validate(result)

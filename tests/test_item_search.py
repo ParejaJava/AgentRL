@@ -146,7 +146,9 @@ class StableReranker:
         return [1.0 - index * 0.1 for index, _ in enumerate(pairs)]
 
 
-def _build_service() -> tuple[ItemSearchService, FakeIndex]:
+def _build_service(
+    retrieval_mode: str = "embedding_rerank",
+) -> tuple[ItemSearchService, FakeIndex]:
     def product(item_id: str, title: str) -> Product:
         """构造具备可售主 SKU 的最小商品测试夹具。"""
 
@@ -190,6 +192,7 @@ def _build_service() -> tuple[ItemSearchService, FakeIndex]:
         result_k=2,
         max_result_k=3,
         query_weight=0.8,
+        retrieval_mode=retrieval_mode,
     )
     service = ItemSearchService(
         encoder=FakeEncoder(),
@@ -199,6 +202,40 @@ def _build_service() -> tuple[ItemSearchService, FakeIndex]:
         config=config,
     )
     return service, index
+
+
+def test_retrieval_ablation_can_run_lexical_without_embedding() -> None:
+    """词法消融必须完全绕过 embedding 与 reranker。"""
+
+    service, _ = _build_service("lexical")
+    service._encoder = FailingEncoder()  # type: ignore[attr-defined]
+    service._reranker = FailingReranker()  # type: ignore[attr-defined]
+
+    response = service.search(
+        ItemSearchCommand(
+            spec=ProductSearchSpec(normalized_query="旅行收纳袋", top_k=2),
+            index_id="amazon-cn",
+        )
+    )
+
+    assert response.recall_strategy == "keyword_2gram"
+    assert response.items
+
+
+def test_retrieval_ablation_can_skip_reranker() -> None:
+    """向量消融保留 FAISS 顺序并且不调用交叉编码器。"""
+
+    service, _ = _build_service("embedding")
+    service._reranker = FailingReranker()  # type: ignore[attr-defined]
+
+    response = service.search(
+        ItemSearchCommand(
+            spec=ProductSearchSpec(normalized_query="旅行收纳袋", top_k=2),
+            index_id="amazon-cn",
+        )
+    )
+
+    assert response.recall_strategy == "embedding_only"
 
 
 def test_fusion_falls_back_to_query_without_user_signal() -> None:

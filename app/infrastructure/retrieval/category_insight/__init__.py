@@ -6,11 +6,12 @@ from .ingestion import (
     StructuredLLMCategoryExtractor,
 )
 from .local_store import JsonlCategoryCardStore, LocalCategoryCardRetriever
-from .opensearch import OpenSearchCategoryCardRepository
+from .opensearch import CategoryRetrievalStrategy, OpenSearchCategoryCardRepository
 
 __all__ = [
     "CategoryIngestionReport",
     "CategoryKnowledgeIngestor",
+    "CategoryRetrievalStrategy",
     "JsonlCategoryCardStore",
     "LocalCategoryCardRetriever",
     "OpenSearchCategoryCardRepository",

@@ -1,5 +1,7 @@
 # 四、Memory 与上下文工程
 
+> 证据口径：会话治理引用 `CTX-001`，个性化偏好引用 `COMMERCE-001`；供应商无缓存 Token 明细时不得把稳定前缀率称为缓存命中率。
+
 > 本模块直接对应项目已经实现的会话内上下文治理和跨会话买家偏好。需要特别区分：LangGraph Checkpoint 保存执行状态，Context Governance 决定本轮给模型看什么，Preference Store 保存跨会话业务记忆；三者不是同一件事。
 
 ## 1. Agent 为什么需要 Memory？
@@ -107,4 +109,4 @@ Context Window 是一次推理能接收和生成的 Token 总范围。更长不�
 
 控制手段包括：稳定短 System Prompt；按需工具 Schema；D1–D4 上下文投影；大结果外置；增量而非全量摘要；轻重模型分层；总预算和每阶段预算；缓存稳定前缀；限制 Agent 轮次和并发分支。
 
-项目 ModelGateway 支持主/轻量/最小/备用档位，预算比例决定模型层级；同一预算可向 fork 任务传播。排查时按 trace 分解输入、输出、工具结果、摘要和各子 Agent Token，观察 Cache Epoch 重建、重复同参调用、工具 JSON 膨胀或子任务过度拆分。当前代码具备 LangFuse 接入和事件字段，但缓存命中 80% 仍属于设计/简历目标，尚无完整线上 A/B 证明，应避免当作已验证结论。
+项目 ModelGateway 支持主/轻量/最小/备用档位，预算比例决定模型层级；同一预算可向 fork 任务传播。排查时按 trace 分解输入、输出、工具结果、摘要和各子 Agent Token，观察 Cache Epoch 重建、重复同参调用、工具 JSON 膨胀或子任务过度拆分。CTX-001 的本地候选 A/B/C 已测得 `full` 相比 `off` 输入 Token 降低 32.21%、信息保留率 100%、同 Epoch 前缀 Hash 稳定率 100%；供应商虽返回部分缓存 Token，当前实验仍不把前缀稳定率换算成“缓存命中 80%”。

@@ -20,6 +20,7 @@ def _env_bool(name: str, default: bool) -> bool:
 class GovernanceConfig:
     """集中保存会话级上下文治理参数。"""
 
+    mode: str = "full"
     context_window_tokens: int = 131_072
     summary_trigger_ratio: float = 0.70
     forced_summary_ratio: float = 0.85
@@ -43,6 +44,9 @@ class GovernanceConfig:
 
         defaults = cls()
         config = cls(
+            mode=os.getenv("CONTEXT_GOVERNANCE_MODE", defaults.mode)
+            .strip()
+            .lower(),
             context_window_tokens=int(
                 os.getenv("LLM_CONTEXT_WINDOW", defaults.context_window_tokens)
             ),
@@ -116,6 +120,10 @@ class GovernanceConfig:
     def validate(self) -> None:
         """拒绝会造成治理顺序错误或非法容量的配置。"""
 
+        if self.mode not in {"off", "deterministic", "full"}:
+            raise ValueError(
+                "CONTEXT_GOVERNANCE_MODE 只能是 off、deterministic 或 full"
+            )
         ratios = (
             self.target_ratio,
             self.summary_trigger_ratio,

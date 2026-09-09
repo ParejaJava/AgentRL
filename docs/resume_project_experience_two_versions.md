@@ -1,160 +1,61 @@
-# Globex Agent 项目简历描述（目标完成态）
+# Globex Agent 项目简历描述（证据约束版）
 
-> 本文按“最终可投递状态”设计。简历正文聚焦设计思想、工程行动与结果，不展开函数、
-> 脚本和接口名称；当前尚未完成或尚未压测的结果统一使用 `X`，待对应能力和报告完成后
-> 替换。文末检查清单仅供投递前自查，不需要放进正式简历。
-
----
+> 数字必须引用 `docs/interview_evidence/README.md` 中的 Claim ID。当前数值来自本地候选报告；只有在干净 Commit 上重新运行并发布后，才可作为正式投递数字。未测量的生产收益不写入正文。
 
 ## 版本 A：一页简历结果版
 
-### Globex Agent｜跨境电商多 Agent 搜索与决策平台（个人项目）
+### Globex Agent｜跨境购物多 Agent 搜索与决策平台（个人项目）
 
-**技术栈：** Python、LangGraph/LangChain、FastAPI、BGE-M3、BGE Reranker、FAISS、
-OpenSearch、SQLite、Redis、Docker Compose、Pytest、uv
+**技术栈：** Python、LangGraph/LangChain、FastAPI、BGE-M3、BGE Reranker、FAISS、OpenSearch、Redis、SQLite、WebSocket/SSE、Docker Compose、Pytest、uv
 
-设计并实现服务于跨境电商场景的 Agent 平台，覆盖品类知识洞察、商品召回与精排、
-跨境到手价估算、多任务并行编排、长会话上下文治理和运行可观测性；以 DDD-lite +
-Hexagonal Architecture 隔离电商领域规则、Agent 应用用例与模型/检索基础设施。
+设计并实现面向跨境购物决策的 Agent 平台，覆盖品类知识洞察、个性化商品搜索、跨境到手价估算、多任务并行、长会话治理和订单意向；以 DDD-lite + Hexagonal Architecture 隔离领域规则、应用编排与模型/检索基础设施。
 
-- **多 Agent 编排：** 针对复杂购物请求中单 Agent 上下文串扰、并行任务重复认领和
-  计划在长对话中丢失的问题，设计 Main/Worker 同质运行图与外部化任务状态，使用依赖
-  DAG、状态机、原子认领和隔离执行统一管理串并行任务；支持最多 **50** 个子任务并发
-  配置，验证 **20 路并发写入无 ID 冲突**，最终将复杂任务成功率提升至 **X%**、独立任务
-  并行执行耗时降低 **X%**。
+- **多 Agent 与 Task DAG（ORCH-001）：** 针对复杂请求的上下文串扰和独立任务串行等待，将计划外置为持久化依赖 DAG，通过原子认领、Worker 租约、独立 `thread_id`、最小工具权限和 settled 幂等回写实现主/子 Agent 协作；30 轮 4 路 I/O 实验的 P50 加速比为 **3.55×**，重复派发率与上下文泄漏率均为 **0**，部分失败结果保留率、中断恢复率和幂等回写率均为 **100%**。
 
-- **Cache-aware 上下文治理：** 针对长 AgentLoop 的 token 膨胀与摘要破坏 Prompt Cache
-  稳定前缀的矛盾，构建“稳定基线、结构化任务状态、热消息、冷事件”分层上下文，结合
-  工具结果卸载、增量摘要、Cache Epoch、双 Breakpoint 哈希校验和溢出重试；将平均输入
-  token 降低 **X%**，Prompt Cache 命中率稳定至 **X%**，长会话任务信息保留率达到 **X%**。
+- **Cache-aware 上下文治理（CTX-001）：** 将会话上下文拆为结构化任务状态、可更新工作记忆、热消息和冷引用，结合工具结果卸载、确定性裁剪、LLM 增量摘要、Cache Epoch 与 Breakpoint 稳定前缀；3 组固定 8 轮 Kimi A/B/C 候选实验中，`full` 相比 `off` 输入 Token 降低 **32.21%**，关键信息保留率和 Epoch 内前缀 Hash 稳定率均为 **100%**。供应商未返回缓存 Token，因此不声称真实 Prompt Cache 命中率。
 
-- **商品搜索与跨境计价：** 针对自然语言需求、商品语义相关性和可购买硬约束难以统一的
-  问题，实现 BGE-M3 + FAISS 召回、BGE Reranker 精排、品类/配送地/SKU/预算多层校验，
-  并在请求包含收货地时内联汇率、运费、关税和免税额度计算；通过三级检索降级保证基础
-  模型故障时服务可用，在 **67 条**离线集上取得 **Recall@10 96.27%、MRR@10 93.22%、
-  NDCG@10 92.58%**，Top-1 Precision 达 **91.04%**。
+- **个性化商品搜索与跨境计价（SEARCH-001、SEARCH-PERSONALIZATION-001、COMMERCE-001）：** 使用 BGE-M3 + FAISS 召回、交叉编码重排、用户偏好加权和黑名单过滤，并仅在存在 `ship_to` 时内联汇率、运费、关税与免税额；在 67 条冻结集上达到 **Recall@10 96.27%、MRR@10 93.22%、NDCG@10 92.58%**，定向画像集 personalization on 相比 off 的 MRR 提升 **6.67 个百分点**。
 
-- **品类知识 RAG：** 针对模型重复阅读品类文档、知识输出不稳定和证据难复用的问题，
-  将 Markdown 知识一次性结构化为可版本化知识卡，线上采用 OpenSearch BM25+KNN
-  Pipeline 融合与 BGE 重排，并提供向量、重排和检索服务故障时的三级降级；建设
-  **100 条**中英混合、口语改写、多相关项和负例评测集，最终达到 Recall@10 **X%**、
-  MRR@10 **X%**、负例拒答准确率 **X%**。
+- **品类知识 RAG（RAG-001、RAG-THRESHOLD-001）：** 将 Markdown 知识离线一次结构化为可复用知识卡，在线使用 OpenSearch BM25 + KNN Hybrid RRF 和 BGE Reranker，并提供三级降级；独立开发集选择拒答阈值后，100 条冻结集候选结果达到 **Recall@10 94.44%、MRR@10 80.37%、NDCG@10 81.79%**，负例拒识率由旧基线 **0%** 提升至 **90%**。
 
-- **Agent Harness 可靠性：** 针对工具失控、单个子任务失败拖垮整批结果和供应商限流，
-  构建参数/领域/服务三层校验、并发信号量、429 指数退避、逐任务失败结算、工具大结果
-  截断与错误显式返回机制；将异常场景任务完成率提升至 **X%**，并确保单 Worker 失败不
-  丢失同批其他任务结果。
+- **可靠性与可观测性（REL-001、OBS-001）：** 建立参数/领域/服务三层校验、共享并发与 Token 硬预算、429/超时指数退避、熔断、三级检索降级和 Emergency Projection；17 类故障注入场景全部通过。以统一事件协议向 WebSocket/SSE 推送 Run、Model、Tool、Task、Fork、Retrieval 和 Context 事件，并接入 Langfuse；候选报告成功回读 **3/3** 条完整主/子 Agent Trace，且 run/trace 映射率为 **100%**。最终代码通过 **170 项**回归测试。
 
-- **架构与可观测性：** 通过端口/适配器保护 Agent Runtime 与电商领域核心，使用统一事件
-  协议串联模型、任务、工具、检索和上下文治理链路，并以 SSE/WebSocket + Redis 背板
-  推送进度、对接全链路 Trace；完成 **72 项自动化测试**，将 badcase 定位时间由 **X 分钟**
-  缩短至 **X 分钟**，并通过容器化编排实现一键复现评测与服务环境。
-
----
-
-## 版本 B：Agent / LLM 工程技术版
+## 版本 B：Agent 平台技术深挖版
 
 ### Globex Agent｜Cache-aware Multi-Agent Commerce Platform（个人项目）
 
-**技术栈：** Python 3.11+、LangGraph/LangChain 1.x、FastAPI、BGE-M3、BGE Reranker、
-FAISS HNSW、OpenSearch Hybrid Search、SQLite WAL、Redis、Docker Compose、Pytest、uv
+**技术栈：** Python 3.12、LangGraph/LangChain 1.x、FastAPI、BGE-M3、BGE-reranker-v2-m3、FAISS、OpenSearch Hybrid Search、Redis、SQLite WAL、Langfuse、Docker Compose、Pytest、uv
 
-从 0 到 1 构建跨境电商 Agent Platform，使主 Agent 既能直接完成品类洞察、商品搜索与
-到手价计算，也能把复杂目标拆成带依赖的任务图并并行调度隔离 Worker；同时建设
-Cache-aware 会话治理、结构化 RAG、检索评测和可观测运行时。
+- **DDD-lite + Hexagonal（ARCH-001）：** 将商品、SKU、Money、关税和订单意向建模为纯领域对象，将运行、编排、检索、存储和事件定义为端口，把 LangGraph、模型供应商、OpenSearch、Redis、SQLite 和 Langfuse 置于适配器层；使用 AST 架构测试持续阻止 Domain 反向依赖框架，关键领域规则行/分支覆盖率候选结果均为 **100%**。
 
-- **DDD-lite + Hexagonal Architecture：** 针对 Agent 框架、检索实现和电商规则耦合导致
-  业务难测试、基础设施难替换的问题，将商品/SKU/金额/配送/关税建模为纯领域对象，
-  将运行、编排、检索和事件抽象为应用端口，模型、LangGraph、OpenSearch、Redis、SQLite
-  作为可替换适配器；以唯一 Composition Root 管理装配并用架构测试约束依赖方向，保持
-  **72 项测试通过**，使核心业务规则不依赖具体 Agent/RAG 框架。
+- **同构 Agent Runtime 与权限隔离（ORCH-001）：** 主/子 Agent 复用 LangGraph 的模型节点、工具节点、条件边、中间件和停止逻辑，不共享消息 State；路由策略仅在“可并行、需上下文隔离、预计调用链 ≥3 层”之一成立时 fork，Worker 按任务获得最小工具集。真实证据运行固定模型并发 **10**、子 Agent 并发 **8**、请求启动间隔 **0.75 秒**。
 
-- **LangGraph 多 Agent Runtime：** 针对单 Agent 长链路上下文污染与权限扩散，设计主/
-  子 Agent 同质图，复用模型节点、工具节点、条件边、Checkpoint 和 Context Middleware，
-  同时通过独立运行标识和会话目录隔离消息历史；主 Agent 负责计划与调度，Worker 仅获得
-  完成任务所需的最小工具权限，结合并发信号量和限流退避将最高并发配置为 **50**，复杂
-  任务吞吐提升 **X 倍**。
+- **可恢复 Task Planning（ORCH-001）：** 以 SQLite WAL 持久化 Task、依赖、Owner、租约和终态，使用乐观并发控制完成循环检测、原子认领与后继解锁；过期租约把中断任务恢复为 `pending`，重复提交相同终态为 no-op，冲突终态拒绝覆盖。30 轮实验中 DAG 正确率、中断恢复率和幂等回写率均为 **100%**。
 
-- **Harness-level Task Planning：** 针对自然语言计划不可恢复、模型无法可靠判断可并行性
-  的问题，将 Work State 从对话历史中分离，构建持久化任务看板、状态机、Owner、结果/
-  错误、依赖 DAG 和动态可运行投影；派发前在事务内完成依赖校验、循环检测和原子认领，
-  派发后逐项回写成功/失败并自动解锁后继任务，验证 **20 路并发创建无冲突**，任务重复
-  派发率降至 **0%**，中断恢复成功率达到 **X%**。
+- **四层上下文与全局模型预算（CTX-001、REL-001）：** 每轮在 Breakpoint 后执行确定性卸载/裁剪，并按阈值调用 LLM 生成增量工作摘要；Cache Epoch 变化时才重建稳定前缀。主 Agent、子 Agent、重试和摘要模型共享线程安全账本，live 套件硬限制 **250 次请求、1,000,000 Token**，超限立即停止且禁止发布残缺报告。
 
-- **四层 Cache-aware Context Governance：** 针对大工具结果、热对话、稳定任务状态与冷
-  Trace 混入同一 Prompt 的问题，建立稳定 Baseline、结构化 Work State、可更新 Working
-  Memory、热消息与冷引用分层；使用 append-only Event Log、Artifact Offloading、确定性
-  压缩策略、LLM 增量摘要、Cache Epoch 和 Provider Cache Breakpoint 维持稳定前缀，并在
-  上下文溢出时切换 Emergency Projection，将 P95 输入 token 控制在 **X**、缓存命中率
-  提升至 **X%**。
+- **双检索系统与可解释评测（RAG-001、SEARCH-001）：** 将知识卡 RAG 与商品候选召回分开评测；前者覆盖 keyword/BM25/KNN/Hybrid/Hybrid+Reranker 消融及拒答阈值校准，后者覆盖 lexical/embedding/embedding+reranker 和 personalization off/on，统一输出 Recall、Precision、MRR、NDCG、P50/P95 延迟、降级模式及全部失败样本。
 
-- **商品检索与弹性降级：** 针对语义相关商品不一定可购买、检索模型故障会中断 AgentLoop
-  的问题，将查询编码、用户信号、向量索引、重排器和计价服务抽象为独立端口，使用
-  BGE-M3 + FAISS 召回与 BGE Reranker 精排，并在 Embedding/Reranker 异常时自动降级至
-  向量原序或本地词法召回；在 **67 条**最终排序评测中达到 **Recall@3 94.65%、
-  Recall@10 96.27%、MRR@10 93.22%、NDCG@10 92.58%**。
+- **购物领域不变量（COMMERCE-001）：** 使用 Money/Decimal 处理跨币种预算与到手价，在工具执行前拒绝非法币种、数量、SKU 和目的地；订单意向要求已有商品搜索证据和用户确认，并以幂等键阻止重复创建。项目明确不连接真实库存、支付、退款或第三方平台下单。
 
-- **跨境 Pricing Domain：** 针对跨币种预算过滤与到手价逻辑散落、浮点金额不可审计的
-  问题，以金额值对象和计价端口统一处理数量、汇率、运费、关税、免税额度与规则版本，
-  使用整数最小货币单位和 Decimal 保证精度；计价不可用时保留有效商品候选并返回可解释
-  原因，将估算结果与真实结账价的 P90 误差控制在 **X%**。
+- **可复现证据工程（ENV-001、TEST-001、E2E-001）：** 建立 preflight、offline、live、publish 四阶段入口，报告绑定 Git SHA、依赖锁摘要、数据集 SHA256、模型版本、Docker/OpenSearch Pipeline、执行命令、耗时和失败样本；发布器拒绝脏工作区、失败套件、Commit 不一致或脱敏失败的结果。12 个真实 Kimi 场景各重复 3 次，本地候选通过率为 **97.22%**。
 
-- **CategoryInsight Hybrid RAG：** 针对品类知识重复抽取、在线 LLM 输出漂移和纯关键词
-  召回不准，设计“文档变更检测 → 一次结构化 → 知识卡持久复用 → 混合召回 → 交叉编码
-  精排”链路；使用 OpenSearch BM25+KNN Pipeline 进行候选融合，BGE Reranker 负责最终
-  排序，并保留本地降级通路，在 **100 条**离线集上达到 Recall@10 **X%**、MRR@10 **X%**、
-  NDCG@10 **X%**。
+## 投递前核验表
 
-- **事件驱动可观测性：** 针对长链路执行过程黑盒、工具与子任务 badcase 难定位的问题，
-  定义覆盖 Run、Model、Tool、Task、Fork、Retrieval、Context 的统一事件协议，通过
-  SSE/WebSocket 实时推送并使用 Redis 支撑 API/Worker 跨进程分发，接入 Trace、Token、
-  Cache 和延迟指标；将问题定位时间从 **X 分钟**缩短至 **X 分钟**，事件投递成功率达到
-  **X%**。
+| 简历结论 | Claim ID | 当前候选值 | 正式投递条件 |
+|---|---|---:|---|
+| 编排加速与安全性 | ORCH-001 | 3.55×；泄漏/重复派发 0；恢复/幂等 100% | 发布当前 offline 候选 |
+| 上下文 Token 降幅 | CTX-001 | 32.21%；信息保留 100% | 重跑 live 并发布 |
+| 商品搜索 | SEARCH-001 | R@10 96.27%；MRR 93.22%；NDCG 92.58% | 重跑 offline 并发布 |
+| 个性化排序 | SEARCH-PERSONALIZATION-001 | MRR +6.67 个百分点 | 重跑 offline 并发布 |
+| 品类 RAG | RAG-001 | R@10 94.44%；MRR 80.37%；NDCG 81.79%；拒识 90% | 重跑 offline 并发布 |
+| 自动化回归 | TEST-001 | 170 passed；总覆盖率 73.42% | 发布当前 offline 候选 |
+| 真实 Agent 场景 | E2E-001 | 36 次，通过率 97.22% | 重跑 live 并发布 |
+| Langfuse Trace | OBS-001 | 3/3 条完整主/子 Trace；映射率 100% | 发布当前 live 候选 |
 
-- **评测与交付工程：** 针对模型、索引、显存配置和运行环境变化导致结果不可复现，建立
-  商品/品类两套离线评测，按场景与标签统计 Recall、Precision、MRR、NDCG 和负例拒答，
-  统一 GPU Device/FP16/Batch Size 配置，并以多服务容器编排固化 API、Worker、OpenSearch、
-  Redis 与推理依赖；将新环境搭建时间从 **X 小时**缩短至 **X 分钟**。
+## 不得写成成果的边界
 
----
-
-## 投递前私人核验清单（不要复制到简历）
-
-### 已有真实结果，可保留
-
-| 结果 | 当前可信值 |
-|---|---:|
-| 商品离线评测规模 | 67 条 |
-| 商品 Recall@3 / Recall@10 | 94.65% / 96.27% |
-| 商品 Precision@1 | 91.04% |
-| 商品 MRR@10 / NDCG@10 | 93.22% / 92.58% |
-| 品类离线评测规模 | 100 条（90 正例、10 负例） |
-| 并发任务写入验证 | 20 路，无重复顺序 ID |
-| 自动化测试 | 72 passed |
-| 子 Agent 并发配置 | 默认 50 |
-
-### `X` 指标取得后再替换
-
-| 能力 | 建议最终指标 |
-|---|---|
-| Task DAG | 复杂任务成功率、并行加速比、重复派发率、中断恢复率 |
-| 上下文治理 | 平均/P95 token、缓存命中率、关键信息保留率、压缩调用次数 |
-| 品类 RAG | Recall@K、MRR、NDCG、负例拒答、正常/降级路径分桶指标 |
-| Agent Harness | 模型/工具故障注入下的完成率、重试成功率、P95 延迟 |
-| 到手价 | 对真实订单的 P50/P90 误差及不可估价比例 |
-| 可观测性 | 事件投递率、首事件延迟、badcase 平均定位时间 |
-| 容器化 | 冷启动时间、环境搭建时间、评测可复现率 |
-
-### 写入最终简历前必须补齐的实现
-
-1. 完成品类知识卡摄取与 OpenSearch 索引初始化，重新跑完 100 条评测；
-2. 建立固定长会话集，对比治理开启/关闭时的 token、缓存和信息保留率；
-3. 为任务图构建串行/并行对照实验与故障注入评测；
-4. 完成模型、工具、任务、子 Agent、检索和压缩的逐事件推送；
-5. 使用 Redis EventBus/Queue 替换单进程实现，并验证跨进程去重和恢复；
-6. 接入统一 Trace 后记录 badcase 定位耗时；
-7. 完成 API、Worker、OpenSearch、Redis 和推理服务的容器化编排；
-8. 接入真实或回放订单，校准到手价误差。
-
-不建议为了贴近参考简历而加入与当前项目路线无关的 SFT、Agentic RL、跨会话长期记忆或
-专用文化合规 Agent。只有在确实完成训练、评测或产品需求验证后，再将其升级为简历成果。
+- 不写“完成购买”：系统只创建订单意向，不处理真实库存、支付、退款或平台下单。
+- 不写“Prompt Cache 命中率 80%”：当前只能证明同 Epoch 稳定前缀 Hash 一致率。
+- 不写生产 QPS、线上转化率、真实计价误差或 badcase 定位耗时：尚无对应正式实验。
+- 不写“全部遥测 100% 上传”：当前仅抽样回读 3 条完整主/子 Trace，证明链路可用而非全量上传率。

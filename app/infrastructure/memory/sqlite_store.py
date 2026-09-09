@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import sqlite3
+from contextlib import closing
 from datetime import datetime
 from pathlib import Path
 
@@ -40,7 +41,7 @@ class SQLitePreferenceStore:
         normalized_buyer = buyer_id.strip()
         if not normalized_buyer:
             raise ValueError("buyer_id 不能为空")
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             rows = connection.execute(
                 """
                 SELECT buyer_id, kind, statement, created_at, updated_at
@@ -81,7 +82,7 @@ class SQLitePreferenceStore:
         return connection
 
     def _save_sync(self, preference: BuyerPreference) -> BuyerPreference:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             connection.execute("BEGIN IMMEDIATE")
             existing = connection.execute(
                 """
@@ -151,7 +152,7 @@ class SQLitePreferenceStore:
         normalized_statement = statement.strip()
         if not normalized_buyer or not normalized_statement:
             raise ValueError("buyer_id 和偏好原文不能为空")
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             cursor = connection.execute(
                 """
                 DELETE FROM buyer_preferences

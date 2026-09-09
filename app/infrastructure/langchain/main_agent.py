@@ -44,9 +44,11 @@ class MainAgent:
         task_service: TaskBoardService | None = None,
         compressor: ContextCompressor | None = None,
         checkpointer: BaseCheckpointSaver[Any] | None = None,
-        sub_agent_max_concurrency: int = 50,
+        sub_agent_max_concurrency: int = 10,
         shared_middleware: Sequence[AgentMiddleware] = (),
         observability: ObservabilityCallbacks | None = None,
+        main_system_prompt: str = MAIN_SYSTEM_PROMPT,
+        sub_agent_system_prompt: str = SUB_AGENT_SYSTEM_PROMPT,
     ) -> None:
         self._model = model
         self._config = governance_config
@@ -59,7 +61,7 @@ class MainAgent:
             *create_context_middleware(
                 model=self._model,
                 tools=child_tools,
-                system_prompt=SUB_AGENT_SYSTEM_PROMPT,
+                system_prompt=sub_agent_system_prompt,
                 agent_id="forked_sub_agent",
                 config=self._config,
                 compressor=compressor,
@@ -68,7 +70,7 @@ class MainAgent:
         child_loop = ForkedAgentLoop.create(
             model=self._model,
             tools=child_tools,
-            system_prompt=SUB_AGENT_SYSTEM_PROMPT,
+            system_prompt=sub_agent_system_prompt,
             max_concurrency=sub_agent_max_concurrency,
             middleware=child_middleware,
             observability=observability,
@@ -92,7 +94,7 @@ class MainAgent:
             *create_context_middleware(
                 model=self._model,
                 tools=main_tools,
-                system_prompt=MAIN_SYSTEM_PROMPT,
+                system_prompt=main_system_prompt,
                 agent_id="main_agent",
                 config=self._config,
                 compressor=compressor,
@@ -101,7 +103,7 @@ class MainAgent:
         self._agent = create_agent(
             model=self._model,
             tools=main_tools,
-            system_prompt=MAIN_SYSTEM_PROMPT,
+            system_prompt=main_system_prompt,
             middleware=main_middleware,
             state_schema=SessionAgentState,
             context_schema=AgentExecutionContext,
@@ -120,6 +122,14 @@ class MainAgent:
         """返回主 Agent 可见的完整工具名。"""
 
         return self._main_tool_names
+
+    async def state_snapshot(self, thread_id: str) -> dict[str, Any]:
+        """读取指定 thread 的 LangGraph 状态，供诊断和离线证据使用。"""
+
+        snapshot = await self._agent.aget_state(
+            {"configurable": {"thread_id": thread_id}}
+        )
+        return dict(snapshot.values)
 
     async def stream(
         self,

@@ -1,5 +1,7 @@
 # 六、Prompt Engineering
 
+> 证据口径：系统提示、工具描述和稳定前缀设计分别引用 `ARCH-001`、`CTX-001`、`REL-001`。
+
 > 当前项目的主/子 Agent Prompt 是版本库中的 Python 常量，依靠工具 docstring、Schema 和运行时策略共同约束。尚未实现独立 Prompt Registry、在线 A/B 或自动 Prompt 优化。
 
 ## 1. 什么是 Prompt Engineering？

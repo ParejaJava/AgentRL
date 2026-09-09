@@ -40,7 +40,11 @@ class ProductSearchSpec:
         if category and len(category) > 100:
             raise ValueError("category 不能超过 100 个字符")
         ship_to = self.ship_to.strip().upper() if self.ship_to else None
-        if ship_to and (len(ship_to) != 2 or not ship_to.isalpha()):
+        if ship_to and (
+            len(ship_to) != 2
+            or not ship_to.isascii()
+            or not ship_to.isalpha()
+        ):
             raise ValueError("ship_to 必须是两位字母国家或地区代码")
         locale = self.locale.strip()
         if not locale:

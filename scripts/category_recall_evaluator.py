@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import json
 import math
+import time
 from collections import defaultdict
 from collections.abc import Callable, Iterable, Sequence
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -68,6 +69,7 @@ class EvaluatedCase:
     metrics: dict[int, RankingAtK]
     expected: tuple[EvaluationKey, ...]
     retrieved: tuple[EvaluationKey, ...]
+    latency_ms: float = 0.0
 
 
 def load_category_recall_cases(path: Path) -> tuple[CategoryRecallCase, ...]:
@@ -111,11 +113,15 @@ def evaluate_category_recall(
     evaluated: list[EvaluatedCase] = []
     total = len(cases)
     for current, case in enumerate(cases, start=1):
+        started = time.perf_counter()
+        retrieved = retriever.search(case.query, max_k)
+        latency_ms = (time.perf_counter() - started) * 1000
         item = _evaluate_case(
             case,
-            retriever.search(case.query, max_k),
+            retrieved,
             normalized_ks,
         )
+        item = replace(item, latency_ms=round(latency_ms, 3))
         evaluated.append(item)
         if progress is not None:
             progress(current, total, item)
@@ -148,6 +154,10 @@ def evaluate_category_recall(
                 if negatives
                 else None
             ),
+            "latency_ms": {
+                "p50": _percentile([item.latency_ms for item in evaluated], 50),
+                "p95": _percentile([item.latency_ms for item in evaluated], 95),
+            },
         },
         "by_tag": _aggregate_by_tag(evaluated, max_k),
         "cases": [_case_to_dict(item) for item in evaluated],
@@ -312,6 +322,7 @@ def _case_to_dict(item: EvaluatedCase) -> dict[str, Any]:
         "is_negative": item.is_negative,
         "reciprocal_rank": item.reciprocal_rank,
         "negative_rejected": item.negative_rejected,
+        "latency_ms": item.latency_ms,
         "metrics": {
             str(k): asdict(value) for k, value in item.metrics.items()
         },
@@ -333,3 +344,18 @@ def _mean(values: Iterable[float]) -> float:
     if not materialized:
         return 0.0
     return round(sum(materialized) / len(materialized), 6)
+
+
+def _percentile(values: Sequence[float], percentile: int) -> float:
+    """用线性插值计算小样本延迟分位数。"""
+
+    ordered = sorted(values)
+    if not ordered:
+        return 0.0
+    position = (len(ordered) - 1) * percentile / 100
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return round(ordered[lower], 3)
+    weight = position - lower
+    return round(ordered[lower] * (1 - weight) + ordered[upper] * weight, 3)

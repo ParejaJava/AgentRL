@@ -1,8 +1,9 @@
 """Default wiring for the production BGE and FAISS adapters."""
 
+from dataclasses import replace
 from pathlib import Path
 
-from app.application.catalog.config import ItemSearchConfig
+from app.application.catalog.config import ItemRetrievalMode, ItemSearchConfig
 from app.application.catalog.ports import (
     EmbeddingEncoder,
     IndexRegistry,
@@ -32,10 +33,13 @@ def create_item_search_service(
     device: str = "auto",
     embedding_batch_size: int = 16,
     reranker_batch_size: int = 8,
+    retrieval_mode: ItemRetrievalMode | None = None,
 ) -> ItemSearchService:
     """按统一设备、精度和批大小装配商品搜索服务。"""
 
     resolved_config = config or ItemSearchConfig()
+    if retrieval_mode is not None:
+        resolved_config = replace(resolved_config, retrieval_mode=retrieval_mode)
     resolved_encoder = encoder or create_item_embedding_encoder(
         config=resolved_config,
         vector_cache=vector_cache,

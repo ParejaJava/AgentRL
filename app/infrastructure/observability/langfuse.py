@@ -28,8 +28,15 @@ class LangfuseCallbacks:
             raise RuntimeError(
                 "已启用 LangFuse；请运行 `uv sync --extra platform`"
             ) from exc
-        del context, agent_id
-        return [CallbackHandler()]
+        del agent_id
+        trace_id = context.trace_id or (
+            context.run_id.replace("-", "") if context.run_id else None
+        )
+        return [
+            CallbackHandler(
+                trace_context={"trace_id": trace_id} if trace_id else None
+            )
+        ]
 
     def metadata(
         self,
@@ -48,6 +55,7 @@ class LangfuseCallbacks:
             ),
             "langfuse_tags": ["globex-agent", agent_id],
             "run_id": context.run_id or "",
+            "trace_id": context.trace_id or "",
             "thread_id": context.thread_id,
             "agent_id": agent_id,
         }

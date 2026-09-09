@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from copy import deepcopy
+from datetime import UTC, datetime, timedelta
 from typing import Any, ClassVar, Literal, TypeVar
 from uuid import uuid4
 
@@ -66,11 +67,13 @@ class TaskBoardService:
         repository: TaskBoardRepository,
         *,
         max_conflict_retries: int = 8,
+        claim_lease_seconds: float = 300.0,
     ) -> None:
         if max_conflict_retries < 1:
             raise ValueError("max_conflict_retries 必须大于 0")
         self._repository = repository
         self._max_conflict_retries = max_conflict_retries
+        self._claim_lease_seconds = max(0.0, claim_lease_seconds)
 
     async def create(
         self,
@@ -191,6 +194,9 @@ class TaskBoardService:
                 task.status = new_status
                 if new_status != TaskStatus.FAILED:
                     task.error = None
+                if new_status != TaskStatus.IN_PROGRESS:
+                    task.owner = None
+                    task.lease_expires_at = None
 
             if not changed:
                 raise TaskingError("没有提供可更新的字段")
@@ -242,6 +248,10 @@ class TaskBoardService:
                 owner = f"fork:{dispatch_id}:{task.id}"
                 task.status = TaskStatus.IN_PROGRESS
                 task.owner = owner
+                task.lease_expires_at = (
+                    datetime.now(UTC)
+                    + timedelta(seconds=self._claim_lease_seconds)
+                ).isoformat()
                 task.error = None
                 task.updated_at = utc_now_iso()
                 claims.append((task.id, owner))
@@ -259,6 +269,38 @@ class TaskBoardService:
             for task_id, owner in claims
         )
 
+    async def recover_expired_claims(self, scope_id: str) -> tuple[str, ...]:
+        """把租约已过期的中断任务恢复为 pending，允许安全重新派发。"""
+
+        now = datetime.now(UTC)
+
+        def mutation(board: TaskBoard) -> tuple[str, ...]:
+            recovered: list[str] = []
+            for task in board.tasks.values():
+                if task.status != TaskStatus.IN_PROGRESS or not task.lease_expires_at:
+                    continue
+                if not self._lease_is_expired(task.lease_expires_at, now):
+                    continue
+                task.status = TaskStatus.PENDING
+                task.owner = None
+                task.lease_expires_at = None
+                task.error = "上一次 Worker 租约过期，任务已恢复待派发"
+                task.updated_at = utc_now_iso()
+                recovered.append(task.id)
+            return tuple(recovered)
+
+        board = await self._repository.load(self._normalize_scope(scope_id))
+        has_expired = any(
+            task.status == TaskStatus.IN_PROGRESS
+            and task.lease_expires_at
+            and self._lease_is_expired(task.lease_expires_at, now)
+            for task in board.tasks.values()
+        )
+        if not has_expired:
+            return ()
+        _, recovered = await self._mutate(scope_id, mutation)
+        return recovered
+
     async def finish_dispatch(
         self,
         scope_id: str,
@@ -275,11 +317,17 @@ class TaskBoardService:
         def mutation(board: TaskBoard) -> tuple[str, ...]:
             for item in work_items:
                 task = self._require_task(board, item.task_id)
+                outcome = outcome_by_id[task.id]
+                if task.owner == item.owner and self._same_terminal_outcome(
+                    task,
+                    outcome,
+                ):
+                    # 网络重试可能重复提交完全相同的结果；保持已有事实不变。
+                    continue
                 if task.status != TaskStatus.IN_PROGRESS or task.owner != item.owner:
                     raise TaskTransitionError(
                         f"任务 {task.id} 的认领状态已变化，拒绝覆盖结果"
                     )
-                outcome = outcome_by_id[task.id]
                 if outcome.succeeded:
                     task.status = TaskStatus.COMPLETED
                     task.result = outcome.result or ""
@@ -287,11 +335,38 @@ class TaskBoardService:
                 else:
                     task.status = TaskStatus.FAILED
                     task.error = outcome.error or "子 Agent 执行失败"
+                task.lease_expires_at = None
                 task.updated_at = utc_now_iso()
             return tuple(item.task_id for item in work_items)
 
         board, finished_ids = await self._mutate(scope_id, mutation)
         return tuple(self._view(board, task_id) for task_id in finished_ids)
+
+    @staticmethod
+    def _lease_is_expired(value: str, now: datetime) -> bool:
+        """解析租约时间；损坏的租约按过期处理，避免任务永久卡死。"""
+
+        try:
+            return datetime.fromisoformat(value) <= now
+        except (TypeError, ValueError):
+            return True
+
+    @staticmethod
+    def _same_terminal_outcome(
+        task: TaskRecord,
+        outcome: TaskExecutionOutcome,
+    ) -> bool:
+        """判断重复回写是否与已经提交的终态完全一致。"""
+
+        if outcome.succeeded:
+            return (
+                task.status == TaskStatus.COMPLETED
+                and task.result == (outcome.result or "")
+            )
+        return (
+            task.status == TaskStatus.FAILED
+            and task.error == (outcome.error or "子 Agent 执行失败")
+        )
 
     async def _mutate(
         self,
@@ -346,6 +421,7 @@ class TaskBoardService:
             status=task.status,
             effective_status=effective_status,  # type: ignore[arg-type]
             owner=task.owner,
+            lease_expires_at=task.lease_expires_at,
             blocked_by=tuple(task.blocked_by),
             active_blocked_by=active_blocked_by,
             blocks=tuple(sorted(blocks, key=self._task_sort_key)),
@@ -464,6 +540,8 @@ class TaskDispatchService:
     ) -> TaskDispatchReport:
         """执行一次经过 Task DAG 校验的确定性派发。"""
 
+        # 先回收中断 Worker 的过期租约，再认领当前可运行任务。
+        await self._tasks.recover_expired_claims(scope_id)
         dispatch_id = uuid4().hex[:12]
         work_items = await self._tasks.claim_runnable(
             scope_id,

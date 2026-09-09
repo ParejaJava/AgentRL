@@ -41,7 +41,7 @@ class Address:
                 raise ValueError(f"Address.{field_name} 不能为空")
             object.__setattr__(self, field_name, value)
         country = self.country.strip().upper()
-        if len(country) != 2 or not country.isalpha():
+        if len(country) != 2 or not country.isascii() or not country.isalpha():
             raise ValueError("Address.country 必须是两位国家或地区代码")
         object.__setattr__(self, "country", country)
 

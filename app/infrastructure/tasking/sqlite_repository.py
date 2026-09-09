@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +22,27 @@ class SQLiteTaskBoardRepository:
 
     def __init__(self, database_path: Path) -> None:
         self._path = database_path
+        self._initialize()
+
+    def _initialize(self) -> None:
+        """只在仓储装配时设置 WAL 和建表，避免并发连接重复抢模式锁。"""
+
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        with closing(sqlite3.connect(self._path, timeout=30)) as connection:
+            connection.execute("PRAGMA busy_timeout=30000")
+            connection.execute("PRAGMA journal_mode=WAL")
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS task_boards (
+                    scope_id TEXT PRIMARY KEY,
+                    version INTEGER NOT NULL,
+                    next_numeric_id INTEGER NOT NULL,
+                    payload TEXT NOT NULL,
+                    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )
+            connection.commit()
 
     async def load(self, scope_id: str) -> TaskBoard:
         """在线程池中读取一个看板快照。"""
@@ -44,25 +66,12 @@ class SQLiteTaskBoardRepository:
     def _connect(self) -> sqlite3.Connection:
         """创建支持跨线程并发访问的短生命周期连接。"""
 
-        self._path.parent.mkdir(parents=True, exist_ok=True)
         connection = sqlite3.connect(self._path, timeout=30)
-        connection.execute("PRAGMA journal_mode=WAL")
         connection.execute("PRAGMA busy_timeout=30000")
-        connection.execute(
-            """
-            CREATE TABLE IF NOT EXISTS task_boards (
-                scope_id TEXT PRIMARY KEY,
-                version INTEGER NOT NULL,
-                next_numeric_id INTEGER NOT NULL,
-                payload TEXT NOT NULL,
-                updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-            )
-            """
-        )
         return connection
 
     def _load_sync(self, scope_id: str) -> TaskBoard:
-        with self._connect() as connection:
+        with closing(self._connect()) as connection:
             row = connection.execute(
                 """
                 SELECT version, next_numeric_id, payload
@@ -91,7 +100,7 @@ class SQLiteTaskBoardRepository:
             ensure_ascii=False,
             sort_keys=True,
         )
-        with self._connect() as connection:
+        with closing(self._connect()) as connection:
             connection.execute("BEGIN IMMEDIATE")
             row = connection.execute(
                 "SELECT version FROM task_boards WHERE scope_id = ?",
@@ -146,6 +155,7 @@ class SQLiteTaskBoardRepository:
             "description": task.description,
             "status": task.status.value,
             "owner": task.owner,
+            "lease_expires_at": task.lease_expires_at,
             "blocked_by": list(task.blocked_by),
             "result": task.result,
             "error": task.error,
@@ -170,6 +180,11 @@ class SQLiteTaskBoardRepository:
                 description=str(raw["description"]),
                 status=TaskStatus(str(raw["status"])),
                 owner=str(raw["owner"]) if raw.get("owner") else None,
+                lease_expires_at=(
+                    str(raw["lease_expires_at"])
+                    if raw.get("lease_expires_at")
+                    else None
+                ),
                 blocked_by=[str(item) for item in raw.get("blocked_by", [])],
                 result=str(raw["result"]) if raw.get("result") is not None else None,
                 error=str(raw["error"]) if raw.get("error") is not None else None,

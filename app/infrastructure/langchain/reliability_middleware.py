@@ -25,7 +25,19 @@ from langgraph.types import Command
 
 from app.application.runtime import BudgetTier, current_token_budget
 from app.infrastructure.context import require_context
+from app.infrastructure.evidence_budget import (
+    EvidenceBudgetExceeded,
+    EvidenceUsageBudget,
+)
 from app.infrastructure.resilience import SharedCircuitBreaker
+
+__all__ = [
+    "EvidenceBudgetExceeded",
+    "ModelGatewayMiddleware",
+    "ToolHarnessMiddleware",
+    "ToolResilienceConfig",
+    "ToolResilienceMiddleware",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,16 +60,26 @@ class ModelGatewayMiddleware(AgentMiddleware):
         max_concurrency: int,
         min_interval_seconds: float,
         max_retries: int,
+        max_total_requests: int = 0,
+        max_observed_tokens: int = 0,
+        evidence_budget: EvidenceUsageBudget | None = None,
         fallback_model: BaseChatModel | None = None,
         lite_model: BaseChatModel | None = None,
     ) -> None:
         self._semaphore = asyncio.Semaphore(max_concurrency)
-        self._interval = max(0.0, min_interval_seconds)
         self._max_retries = max(0, max_retries)
+        self._evidence_budget = evidence_budget or EvidenceUsageBudget(
+            max_total_requests=max_total_requests,
+            max_observed_tokens=max_observed_tokens,
+            min_interval_seconds=min_interval_seconds,
+        )
         self._fallback = fallback_model
         self._lite = lite_model
-        self._spacing_lock = asyncio.Lock()
-        self._last_started = 0.0
+
+    def usage_snapshot(self) -> dict[str, int]:
+        """返回进程内模型网关计数，供受控评测和运行诊断使用。"""
+
+        return self._evidence_budget.snapshot()
 
     async def awrap_model_call(
         self,
@@ -96,9 +118,14 @@ class ModelGatewayMiddleware(AgentMiddleware):
                 )
             last_error: Exception | None = None
             for attempt in range(self._max_retries + 1):
-                await self._wait_for_slot()
+                await self._reserve_request()
                 try:
                     response = await handler(selected)
+                    response_usage = _response_usage(response)
+                    await self._evidence_budget.record_usage(
+                        input_tokens=response_usage[0],
+                        output_tokens=response_usage[1],
+                    )
                     _charge_budget(response, "model")
                     return response
                 except Exception as exc:  # noqa: BLE001 - 需兼容多供应商异常。
@@ -107,19 +134,22 @@ class ModelGatewayMiddleware(AgentMiddleware):
                         break
                     await asyncio.sleep((2**attempt) * 0.25 + random.uniform(0, 0.1))
             if self._fallback is not None:
-                await self._wait_for_slot()
+                await self._reserve_request()
                 response = await handler(selected.override(model=self._fallback))
+                response_usage = _response_usage(response)
+                await self._evidence_budget.record_usage(
+                    input_tokens=response_usage[0],
+                    output_tokens=response_usage[1],
+                )
                 _charge_budget(response, "fallback_model")
                 return response
             assert last_error is not None
             raise last_error
 
-    async def _wait_for_slot(self) -> None:
-        async with self._spacing_lock:
-            delay = self._interval - (time.monotonic() - self._last_started)
-            if delay > 0:
-                await asyncio.sleep(delay)
-            self._last_started = time.monotonic()
+    async def _reserve_request(self) -> None:
+        """原子检查证据硬上限、执行请求间隔并预留一个模型请求。"""
+
+        await self._evidence_budget.reserve_request()
 
 
 class ToolResilienceMiddleware(AgentMiddleware):
@@ -353,21 +383,36 @@ def _is_retryable(exc: Exception) -> bool:
     )
 
 
-def _charge_budget(response: ModelResponse, source: str) -> None:
-    """兼容不同模型供应商的 usage 字段，把真实用量记入意图账本。"""
+def _response_usage(response: ModelResponse) -> tuple[int, int]:
+    """兼容不同模型供应商的 usage 字段，汇总输入与输出 Token。"""
 
-    budget = current_token_budget()
-    if budget is None:
-        return
-    total = 0
+    input_tokens = 0
+    output_tokens = 0
     for message in response.result:
         usage = getattr(message, "usage_metadata", None)
         if not isinstance(usage, Mapping):
             continue
-        value = usage.get("total_tokens")
-        if value is None:
-            value = int(usage.get("input_tokens", 0) or 0) + int(
-                usage.get("output_tokens", 0) or 0
-            )
-        total += int(value or 0)
+        message_input = int(usage.get("input_tokens", 0) or 0)
+        message_output = int(usage.get("output_tokens", 0) or 0)
+        if not message_input and not message_output and usage.get("total_tokens"):
+            # 无法拆分时保守记入输入侧，确保总预算仍然有效。
+            message_input = int(usage["total_tokens"] or 0)
+        input_tokens += message_input
+        output_tokens += message_output
+    return input_tokens, output_tokens
+
+
+def _response_token_count(response: ModelResponse) -> int:
+    """返回一次响应的输入与输出 Token 总和。"""
+
+    return sum(_response_usage(response))
+
+
+def _charge_budget(response: ModelResponse, source: str) -> None:
+    """把一次模型响应的真实用量记入当前意图账本。"""
+
+    budget = current_token_budget()
+    if budget is None:
+        return
+    total = _response_token_count(response)
     budget.charge(source, total)

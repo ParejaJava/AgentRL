@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncIterator, Callable
 from functools import lru_cache
 from uuid import uuid4
@@ -58,13 +59,27 @@ def create_app(
                 redis_ok = await container.task_queue.ping()
             except Exception:  # noqa: BLE001 - 健康接口需返回状态而不是 500。
                 redis_ok = False
-        ready = redis_ok is not False
+        opensearch = None
+        if container.opensearch_probe is not None:
+            opensearch = await asyncio.to_thread(container.opensearch_probe.check)
+        opensearch_ok = None if opensearch is None else opensearch.ready
+        ready = redis_ok is not False and opensearch_ok is not False
         return {
             "status": "ready" if ready else "degraded",
             "redis": "disabled" if redis_ok is None else redis_ok,
             "langfuse": container.settings.langfuse_enabled,
-            "opensearch": container.settings.category_retriever_backend
-            == "opensearch",
+            "opensearch": (
+                "disabled" if opensearch_ok is None else opensearch_ok
+            ),
+            "details": {
+                "opensearch": (
+                    {"configured": False}
+                    if opensearch is None
+                    else {"configured": True, **opensearch.to_dict()}
+                ),
+                # Langfuse 是非关键遥测依赖；这里仅报告是否启用，不阻断就绪。
+                "langfuse": {"configured": container.settings.langfuse_enabled},
+            },
         }
 
     @api.post("/api/agent")

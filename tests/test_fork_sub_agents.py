@@ -125,6 +125,7 @@ def test_fork_inherits_shopping_session_but_isolates_execution_ids() -> None:
     parent = AgentExecutionContext(
         thread_id="main-thread",
         run_id="main-run",
+        trace_id="0123456789abcdef0123456789abcdef",
         shopping=ShoppingContextSnapshot("shopping-1", "buyer-1"),
     )
 
@@ -139,6 +140,7 @@ def test_fork_inherits_shopping_session_but_isolates_execution_ids() -> None:
     assert child.shopping == parent.shopping
     assert child.thread_id != parent.thread_id
     assert child.run_id != parent.run_id
+    assert child.trace_id == parent.trace_id
 
 
 def test_parallel_fork_dispatches_only_runnable_task_ids_and_writes_back() -> None:

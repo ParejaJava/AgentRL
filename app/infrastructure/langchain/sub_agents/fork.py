@@ -136,6 +136,7 @@ class ForkedAgentLoop:
             thread_id=sub_thread_id,
             shopping=parent.shopping if parent is not None else None,
             run_id=str(uuid4()),
+            trace_id=parent.trace_id if parent is not None else None,
             session_dir=child_session_dir,
         )
         if self._observability is not None:

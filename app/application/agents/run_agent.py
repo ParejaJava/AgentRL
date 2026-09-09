@@ -112,6 +112,7 @@ class RunAgent:
             thread_id=command.thread_id,
             shopping=command.shopping,
             run_id=run_id,
+            trace_id=run_id.replace("-", ""),
             session_dir=command.session_dir,
         )
         run.start()

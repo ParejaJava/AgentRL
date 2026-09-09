@@ -27,7 +27,11 @@ class TariffRuleSet:
         normalized_rates: dict[str, Mapping[str, Decimal]] = {}
         for destination, category_rates in self.tariff_rates.items():
             normalized_destination = destination.strip().upper()
-            if len(normalized_destination) != 2 or not normalized_destination.isalpha():
+            if (
+                len(normalized_destination) != 2
+                or not normalized_destination.isascii()
+                or not normalized_destination.isalpha()
+            ):
                 raise ValueError("关税目的地必须是两位字母代码")
             if normalized_destination in normalized_rates:
                 raise ValueError(f"关税目的地重复：{normalized_destination}")

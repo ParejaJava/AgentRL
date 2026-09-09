@@ -7,7 +7,7 @@ import logging
 import math
 from collections.abc import Sequence
 from threading import Lock
-from typing import Any
+from typing import Any, Literal, TypeAlias
 from urllib.parse import urlparse
 
 from app.application.catalog.category_insight_models import RetrievedCategoryCard
@@ -18,6 +18,14 @@ from app.domain.catalog import CategoryCard
 from .schemas import category_card_from_dict, category_card_to_dict
 
 logger = logging.getLogger(__name__)
+
+CategoryRetrievalStrategy: TypeAlias = Literal[
+    "keyword",
+    "bm25",
+    "knn",
+    "hybrid_rrf",
+    "hybrid_rerank",
+]
 
 
 def create_opensearch_client(
@@ -107,9 +115,11 @@ class OpenSearchCategoryCardRepository:
         *,
         index_name: str,
         pipeline_name: str,
+        number_of_replicas: int = 0,
         embedding_dimension: int,
         embedding_model: str | None = None,
         hybrid_recall_k: int = 50,
+        min_relevance_score: float = 0.1,
         bm25_weight: float = 0.4,
         knn_weight: float = 0.6,
         keyword_fallback: CategoryKnowledgeRetriever | None = None,
@@ -118,6 +128,10 @@ class OpenSearchCategoryCardRepository:
             raise ValueError("编码器维度与 OpenSearch 索引维度不一致")
         if hybrid_recall_k < 1:
             raise ValueError("hybrid_recall_k 必须大于 0")
+        if number_of_replicas < 0:
+            raise ValueError("number_of_replicas 不能小于 0")
+        if not 0.0 <= min_relevance_score <= 1.0:
+            raise ValueError("min_relevance_score 必须位于 0 到 1 之间")
         if abs(bm25_weight + knn_weight - 1.0) > 1e-9:
             raise ValueError("BM25 与 KNN 权重之和必须为 1")
         self._client = client
@@ -125,11 +139,13 @@ class OpenSearchCategoryCardRepository:
         self._reranker = reranker
         self._index_name = index_name
         self._pipeline_name = pipeline_name
+        self._number_of_replicas = number_of_replicas
         self._embedding_dimension = embedding_dimension
         self._embedding_model = embedding_model or str(
             getattr(encoder, "model_name", type(encoder).__name__)
         )
         self._hybrid_recall_k = hybrid_recall_k
+        self._min_relevance_score = min_relevance_score
         self._bm25_weight = bm25_weight
         self._knn_weight = knn_weight
         self._keyword_fallback = keyword_fallback
@@ -148,6 +164,12 @@ class OpenSearchCategoryCardRepository:
                 self._client.indices.create(
                     index=self._index_name,
                     body=self._index_definition(),
+                )
+            else:
+                # 本地单节点默认零副本；生产环境可通过配置提高副本数。
+                self._client.indices.put_settings(
+                    index=self._index_name,
+                    body={"index": {"number_of_replicas": self._number_of_replicas}},
                 )
             # Pipeline 是服务器端融合环节；PUT 可重复执行并更新权重。
             self._client.transport.perform_request(
@@ -248,9 +270,6 @@ class OpenSearchCategoryCardRepository:
         if not hybrid_cards:
             return self._keyword_search(category, limit)
 
-        specific_cards = [
-            card for card in hybrid_cards if not card.applies_to_all_categories
-        ]
         general_cards = [
             card for card in hybrid_cards if card.applies_to_all_categories
         ]
@@ -259,17 +278,17 @@ class OpenSearchCategoryCardRepository:
         except Exception:
             # 全局规则补查失败不应丢弃已经成功召回的具体品类卡。
             logger.warning("品类全局规则补查失败，继续使用现有候选", exc_info=True)
-        specific_ids = {card.card_id for card in specific_cards}
-        general_cards = list(
+        candidates = list(
             {
                 card.card_id: card
-                for card in general_cards
-                if card.card_id not in specific_ids
+                for card in (*hybrid_cards, *general_cards)
             }.values()
         )
 
         try:
-            ranked = self._rerank(category, specific_cards)
+            # 全局规则也参与相关性门槛：它可以回答到手价/关税类问题，
+            # 但不会再无条件附加并令域外查询命中。
+            ranked = self._rerank(category, candidates)
         except Exception:
             logger.warning(
                 "品类 reranker 失败，降级到 embedding_only",
@@ -281,23 +300,100 @@ class OpenSearchCategoryCardRepository:
                     score=round(1.0 / rank, 6),
                     recall_strategy="embedding_only",
                 )
-                for rank, card in enumerate(specific_cards, start=1)
+                for rank, card in enumerate(hybrid_cards, start=1)
             ]
-        # 全局规则不依赖文本相似度，固定为结果预留一个位置。
-        selected_general = general_cards[:1]
-        specific_limit = max(0, limit - len(selected_general))
-        result = ranked[:specific_limit]
+        else:
+            # 最高相关分承担查询级域外拒答。入域后保留完整 Top-K，避免
+            # 单卡绝对分过滤破坏 Recall 与需要多张卡联合回答的场景。
+            if not ranked or ranked[0].score < self._min_relevance_score:
+                return ()
+        return tuple(ranked[:limit])
+
+    def search_with_strategy(
+        self,
+        category: str,
+        limit: int,
+        strategy: CategoryRetrievalStrategy,
+    ) -> Sequence[RetrievedCategoryCard]:
+        """按指定单一路径检索，供离线消融使用且不触发隐式降级。"""
+
+        if limit < 1:
+            return ()
+        if strategy == "keyword":
+            return self._keyword_search(category, limit)
+
+        self.ensure_resources()
+        params: dict[str, str] | None = None
+        if strategy == "bm25":
+            body = self._bm25_query(category)
+        else:
+            query_vectors = self._encoder.embed_queries([category])
+            if len(query_vectors) != 1:
+                raise RuntimeError("BGE 没有为品类查询返回唯一向量")
+            query_vector = [float(value) for value in query_vectors[0]]
+            if len(query_vector) != self._embedding_dimension:
+                raise RuntimeError("BGE 返回的查询向量维度与索引配置不一致")
+            if strategy == "knn":
+                body = self._knn_query(query_vector)
+            else:
+                body = self._hybrid_query(category, query_vector)
+                params = {"search_pipeline": self._pipeline_name}
+
+        response = self._client.search(
+            index=self._index_name,
+            body=body,
+            **({"params": params} if params is not None else {}),
+        )
+        cards = self._cards_from_hits(response)
+        if strategy == "hybrid_rerank":
+            general = [card for card in cards if card.applies_to_all_categories]
+            general.extend(self._general_cards())
+            candidates = list(
+                {
+                    card.card_id: card
+                    for card in (*cards, *general)
+                }.values()
+            )
+            ranked = self._rerank(category, candidates)
+            if not ranked or ranked[0].score < self._min_relevance_score:
+                return ()
+            return tuple(ranked[:limit])
+        else:
+            specific = [
+                card for card in cards if not card.applies_to_all_categories
+            ]
+            recall_strategy = {
+                "bm25": "bm25",
+                "knn": "knn",
+                "hybrid_rrf": "hybrid_rrf",
+            }[strategy]
+            ranked = [
+                RetrievedCategoryCard(
+                    card=card,
+                    score=round(1.0 / rank, 6),
+                    recall_strategy=recall_strategy,
+                )
+                for rank, card in enumerate(specific, start=1)
+            ]
+
+        general = [card for card in cards if card.applies_to_all_categories]
+        general.extend(self._general_cards())
+        specific_ids = {item.card.card_id for item in ranked}
+        unique_general = {
+            card.card_id: card
+            for card in general
+            if card.card_id not in specific_ids
+        }
+        selected_general = list(unique_general.values())[:1]
+        result = ranked[: max(0, limit - len(selected_general))]
         result.extend(
             RetrievedCategoryCard(
                 card=card,
                 score=0.1,
-                recall_strategy=(
-                    ranked[0].recall_strategy
-                    if ranked
-                    else "embedding_rerank"
-                ),
+                recall_strategy=ranked[0].recall_strategy,
             )
             for card in selected_general
+            if ranked
         )
         return tuple(result[:limit])
 
@@ -422,6 +518,41 @@ class OpenSearchCategoryCardRepository:
             },
         }
 
+    def _bm25_query(self, category: str) -> dict[str, Any]:
+        """构造只使用 OpenSearch BM25 的消融查询。"""
+
+        return {
+            "size": self._hybrid_recall_k,
+            "_source": {"excludes": ["embedding"]},
+            "query": {
+                "multi_match": {
+                    "query": category,
+                    "fields": [
+                        "category^4",
+                        "summary^2",
+                        "search_text",
+                        "raw_evidence",
+                    ],
+                }
+            },
+        }
+
+    def _knn_query(self, query_vector: list[float]) -> dict[str, Any]:
+        """构造只使用 BGE 向量近邻的消融查询。"""
+
+        return {
+            "size": self._hybrid_recall_k,
+            "_source": {"excludes": ["embedding"]},
+            "query": {
+                "knn": {
+                    "embedding": {
+                        "vector": query_vector,
+                        "k": self._hybrid_recall_k,
+                    }
+                }
+            },
+        }
+
     def _index_definition(self) -> dict[str, Any]:
         """定义兼顾中文 BM25 与 BGE-M3 向量召回的索引映射。"""
 
@@ -431,6 +562,7 @@ class OpenSearchCategoryCardRepository:
                 "index": {
                     "knn": True,
                     "knn.algo_param.ef_search": 100,
+                    "number_of_replicas": self._number_of_replicas,
                 }
             },
             "mappings": {

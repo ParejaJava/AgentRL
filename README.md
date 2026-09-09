@@ -1,5 +1,7 @@
 # Globex Agent
 
+> 面试证据、真实指标边界和一键复现入口见 [`docs/interview_evidence/README.md`](docs/interview_evidence/README.md)。简历数字以绑定固定 Commit 的发布报告为准。
+
 Globex Agent 是一个面向多 Agent 场景的全栈项目骨架，后端使用 FastAPI，前端使用 React + Vite。
 
 后端采用 DDD-lite + Hexagonal/Onion Architecture：`domain` 只保存电商业务模型与规则；Agent Runtime、编排和上下文治理策略属于 `application`；LangChain、LangGraph、ContextVar、SQLite、FAISS 和 FastAPI 都位于外层适配器。详细调整说明见 [`docs/architecture_reorganization.md`](docs/architecture_reorganization.md)。
@@ -50,7 +52,7 @@ docker compose -f docker/docker-compose.yml up --build
 完整设计和配置说明见
 [`docs/cache_aware_session_context_management_design.md`](docs/cache_aware_session_context_management_design.md)。
 
-默认使用供应商的隐式前缀缓存。确认当前 Qwen 模型支持显式缓存后，可以设置：
+默认使用供应商的隐式前缀缓存。只有切换到支持显式缓存标记的 Qwen 模型并确认接口兼容后，才设置：
 
 ```dotenv
 LLM_CACHE_PROVIDER=qwen
@@ -102,7 +104,16 @@ npm install
 npm run dev
 ```
 
-健康检查：`GET http://127.0.0.1:8000/health`
+存活检查：`GET http://127.0.0.1:8000/health`；依赖就绪检查：`GET http://127.0.0.1:8000/health/ready`。
+
+统一证据入口：
+
+```powershell
+uv run python -m scripts.evidence preflight
+uv run python -m scripts.evidence run --suite offline
+uv run python -m scripts.evidence run --suite live
+uv run python -m scripts.evidence publish --run-id <run_id>
+```
 
 会话事件订阅：`WS /ws/events/{shopping_session_id}`。`shopping_session_id`
 是购物会话和事件分区键，`thread_id` 是 LangGraph 短期消息历史键，两者不能混用。
