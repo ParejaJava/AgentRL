@@ -5,6 +5,12 @@
       "commit": "fa1ca544bbfcd720918bbbed835d4f95bce57472",
       "published_at": "2026-09-09T07:45:56.528232+00:00",
       "path": "docs/interview_evidence/results/20260909T073736Z-offline"
+    },
+    "live-e2e": {
+      "run_id": "20260909T094839Z-live-e2e",
+      "commit": "bd67b9a9a03e004760e835dc6e1dd5b5cf08c05c",
+      "published_at": "2026-09-09T10:10:00.452022+00:00",
+      "path": "docs/interview_evidence/results/20260909T094839Z-live-e2e"
     }
   }
 }

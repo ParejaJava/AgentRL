@@ -1,0 +1,1589 @@
+{
+  "claim_id": "E2E-001",
+  "capability": "真实 Kimi 多 Agent 端到端执行",
+  "status": "verified",
+  "started_at": "2026-09-09T09:48:40.176836+00:00",
+  "duration_seconds": 1230.277683,
+  "command": "uv run python -m scripts.evidence run --suite live-e2e",
+  "environment": {
+    "commit": "bd67b9a9a03e004760e835dc6e1dd5b5cf08c05c",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "dataset": {
+    "path": "eval/evidence/live_cases.jsonl",
+    "sha256": "531af52e7834a9b79d1f33f950f780ce778e30ee910caa112a93152a8aa9dc71",
+    "cases": 12,
+    "repetitions": 3
+  },
+  "runtime_policy": {
+    "model_max_concurrency": 10,
+    "sub_agent_max_concurrency": 8,
+    "model_min_interval_seconds": 0.75,
+    "model_max_retries": 0,
+    "retry_evidence": "REL-001",
+    "reason": "避免网络重试随机挤占 live 套件共享的模型请求硬预算"
+  },
+  "metrics": {
+    "expected_runs": 36,
+    "completed_runs": 36,
+    "pass_rate": 1.0,
+    "started_requests": 123,
+    "completed_requests": 116,
+    "observed_tokens": 515793,
+    "observed_input_tokens": 475357,
+    "observed_output_tokens": 40436,
+    "stopped_reason": null,
+    "within_budget": true,
+    "usage_observable": true
+  },
+  "cases": [
+    {
+      "case_id": "live-001",
+      "tags": [
+        "direct-search"
+      ],
+      "message": {
+        "sha256": "856f81d387837487bae5e2897e81782f994839cc6cf2f86eacef0fdf18696762",
+        "chars": 16
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "8459ebc76ff2e60c6f05ff848b28cd4d9209f2ec0c41201ac683e5d38e24bbb8",
+        "chars": 1118
+      },
+      "run_id": "8408a15d-042c-4e35-aca4-b9cca11de8dd",
+      "trace_id": "8408a15d042c4e35aca4b9cca11de8dd",
+      "repetition": 1,
+      "duration_seconds": 38.382688
+    },
+    {
+      "case_id": "live-002",
+      "tags": [
+        "category-rag"
+      ],
+      "message": {
+        "sha256": "7558798f89d0f0c930916717cad8d69c22038b89f65f6ba3a791c0050b644161",
+        "chars": 24
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "9cfde6967c97d1ba9d182624c24388a3a806c5d7d44048ce71b9b8af908fd8db",
+        "chars": 262
+      },
+      "run_id": "8f92d199-8281-4205-bf00-18b85bcea960",
+      "trace_id": "8f92d19982814205bf0018b85bcea960",
+      "repetition": 1,
+      "duration_seconds": 14.81479
+    },
+    {
+      "case_id": "live-003",
+      "tags": [
+        "landed-price"
+      ],
+      "message": {
+        "sha256": "90b469233f13d2198c028b5ddf5f9ba75e65c738b949040e4baa6e15f19362e0",
+        "chars": 23
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "fa86ed92de27060c042e9c1f4270d0b80aa9f8c6e8bdd399305d9e5bb83a38c2",
+        "chars": 1041
+      },
+      "run_id": "fcd510e9-5b40-4d72-9c8a-c9be9821a5c7",
+      "trace_id": "fcd510e95b404d729c8ac9be9821a5c7",
+      "repetition": 1,
+      "duration_seconds": 50.47621
+    },
+    {
+      "case_id": "live-004",
+      "tags": [
+        "preference"
+      ],
+      "message": {
+        "sha256": "512131fd6378b8aa8f93c16bfff3ecdf660832f341b2620f91bdb74da46476d4",
+        "chars": 14
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "remember_preference"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "6344efae915d77096e8baa323aa6a4f9f9eb27edbe7dbf39011a814c149512af",
+        "chars": 137
+      },
+      "run_id": "af822195-7d9a-44c1-bb7c-e9694432693c",
+      "trace_id": "af8221957d9a44c1bb7ce9694432693c",
+      "repetition": 1,
+      "duration_seconds": 7.874007
+    },
+    {
+      "case_id": "live-005",
+      "tags": [
+        "personalization"
+      ],
+      "message": {
+        "sha256": "0ca6bb94e16e24179294281e6a7e798144f97f91b36bb80f18b30f09748a2562",
+        "chars": 17
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "e68b00178e1d31b8758fbc3297987ca2d1d48b01f05693306285c870ffb09b98",
+        "chars": 1000
+      },
+      "run_id": "0f158bc0-0144-4096-8158-0e8fae8e8542",
+      "trace_id": "0f158bc00144409681580e8fae8e8542",
+      "repetition": 1,
+      "duration_seconds": 47.260249
+    },
+    {
+      "case_id": "live-006",
+      "tags": [
+        "parallel-fork"
+      ],
+      "message": {
+        "sha256": "b46f9d360628c37f6d8bb9f50c6be6d0d4642def6c5b9cb33cdf2b581e109a14",
+        "chars": 34
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "fork_sub_agents"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "agent.dispatch",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "d9fd9e40fd00f0db32b385348b707d6a2dc57135ae6e51085679798cb2112772",
+        "chars": 112
+      },
+      "run_id": "ea685144-f12c-42b3-b03f-c7ec0bb89bf0",
+      "trace_id": "ea685144f12c42b3b03fc7ec0bb89bf0",
+      "repetition": 1,
+      "duration_seconds": 42.754659
+    },
+    {
+      "case_id": "live-007",
+      "tags": [
+        "task-dag"
+      ],
+      "message": {
+        "sha256": "523c010ce34b9d21669b843e48da9c3b2cd48d2b21b82c9d8f51927569c98417",
+        "chars": 34
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "TaskUpdate",
+        "TaskUpdate",
+        "category_insight",
+        "category_insight",
+        "TaskUpdate"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "1212e8d77eb24b05b9ea7bf12403092d1e5ae5aad5b15e6e333a575fc7978733",
+        "chars": 318
+      },
+      "run_id": "cc5d6d69-b8ee-498c-9643-78b82b9653a5",
+      "trace_id": "cc5d6d69b8ee498c964378b82b9653a5",
+      "repetition": 1,
+      "duration_seconds": 45.775022
+    },
+    {
+      "case_id": "live-008",
+      "tags": [
+        "hard-constraints"
+      ],
+      "message": {
+        "sha256": "4f4c8897ec08b114569e6a1701182f48766d57cbc9c495efe2376109fe0d2fb5",
+        "chars": 20
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "7c58a09e45798b9030c38bbcd67c6cc407ae1a05fc11c7ba0e84e872c41b8c7f",
+        "chars": 1398
+      },
+      "run_id": "5730ec6e-d546-489f-939b-4c0c21b98cdf",
+      "trace_id": "5730ec6ed546489f939b4c0c21b98cdf",
+      "repetition": 1,
+      "duration_seconds": 90.355815
+    },
+    {
+      "case_id": "live-009",
+      "tags": [
+        "rag-search-chain"
+      ],
+      "message": {
+        "sha256": "6e61492f3ce75150a619caba203c364648c8b1fe29d24b76779bcece522fa98a",
+        "chars": 28
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "836e2dfb90d3e3f12c6b1bfc0eebac6ad411fa488bf690a813443475f640ce9c",
+        "chars": 2363
+      },
+      "run_id": "a61b9899-4ddc-4e98-8383-1896c75c13de",
+      "trace_id": "a61b98994ddc4e9883831896c75c13de",
+      "repetition": 1,
+      "duration_seconds": 64.213751
+    },
+    {
+      "case_id": "live-010",
+      "tags": [
+        "preference-boundary"
+      ],
+      "message": {
+        "sha256": "1656d63c5a62883f606ad6b8d0993fab6309c3fa435aed975f206539c42cdff6",
+        "chars": 27
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "2e8abef3ed067dd6d477ebe075f49d6d58a54e15630f4cade279ca4dd8c200d6",
+        "chars": 759
+      },
+      "run_id": "1e17eb4f-1475-4601-8c12-76442ce2c464",
+      "trace_id": "1e17eb4f147546018c1276442ce2c464",
+      "repetition": 1,
+      "duration_seconds": 22.392437
+    },
+    {
+      "case_id": "live-011",
+      "tags": [
+        "safety"
+      ],
+      "message": {
+        "sha256": "668d29a4fb2070bab309a16715695eb2d20f069928743c00f8eda28ed698dcbd",
+        "chars": 21
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [],
+      "event_types": [
+        "run.started",
+        "safety.blocked"
+      ],
+      "final_answer": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "chars": 0
+      },
+      "run_id": "5f1b2fa5-5596-4617-8bb1-186b5f83f6e9",
+      "trace_id": "5f1b2fa5559646178bb1186b5f83f6e9",
+      "repetition": 1,
+      "duration_seconds": 0.000125
+    },
+    {
+      "case_id": "live-012",
+      "tags": [
+        "payment-boundary"
+      ],
+      "message": {
+        "sha256": "0addcd500c4c56a128cd8bd688afadb18cf68cdfb36c9b9e0eefaeaa69e30520",
+        "chars": 14
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [],
+      "event_types": [
+        "run.started",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "071ded98313ff63828e36631fef30e5e0c820f3f11cd6a3cda5c94b383b0f76c",
+        "chars": 316
+      },
+      "run_id": "21408cd6-577a-459d-add7-6ac80971feb7",
+      "trace_id": "21408cd6577a459dadd76ac80971feb7",
+      "repetition": 1,
+      "duration_seconds": 12.455015
+    },
+    {
+      "case_id": "live-001",
+      "tags": [
+        "direct-search"
+      ],
+      "message": {
+        "sha256": "856f81d387837487bae5e2897e81782f994839cc6cf2f86eacef0fdf18696762",
+        "chars": 16
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "ba52309c55b264a526e5dcfcee04bff71545213b7a86ee20390aefa3f65fbcea",
+        "chars": 1153
+      },
+      "run_id": "751ac489-34ac-47f9-abb7-518f9477201a",
+      "trace_id": "751ac48934ac47f9abb7518f9477201a",
+      "repetition": 2,
+      "duration_seconds": 31.277803
+    },
+    {
+      "case_id": "live-002",
+      "tags": [
+        "category-rag"
+      ],
+      "message": {
+        "sha256": "7558798f89d0f0c930916717cad8d69c22038b89f65f6ba3a791c0050b644161",
+        "chars": 24
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "a9ecf16e420093366e0bd48a44c6cf4779c4f0b5c182bd62fba677f28ae759a3",
+        "chars": 352
+      },
+      "run_id": "83a3f0f1-770d-4a1c-8e26-f42680a12dce",
+      "trace_id": "83a3f0f1770d4a1c8e26f42680a12dce",
+      "repetition": 2,
+      "duration_seconds": 16.129866
+    },
+    {
+      "case_id": "live-003",
+      "tags": [
+        "landed-price"
+      ],
+      "message": {
+        "sha256": "90b469233f13d2198c028b5ddf5f9ba75e65c738b949040e4baa6e15f19362e0",
+        "chars": 23
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "7b6442ad14b9ae620d134782295316f0cd0febc848bab57e4d366723c253e426",
+        "chars": 802
+      },
+      "run_id": "99d9427a-fc6d-4d99-8ef0-3ac858168f7b",
+      "trace_id": "99d9427afc6d4d998ef03ac858168f7b",
+      "repetition": 2,
+      "duration_seconds": 29.813258
+    },
+    {
+      "case_id": "live-004",
+      "tags": [
+        "preference"
+      ],
+      "message": {
+        "sha256": "512131fd6378b8aa8f93c16bfff3ecdf660832f341b2620f91bdb74da46476d4",
+        "chars": 14
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "remember_preference"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "89ca98ce9ef4fdfa59453bebe1549f7f5e2ab3d810b57727dfe86c46ca9a43f6",
+        "chars": 126
+      },
+      "run_id": "00a45153-af0a-4650-a098-66da0fd53ae0",
+      "trace_id": "00a45153af0a4650a09866da0fd53ae0",
+      "repetition": 2,
+      "duration_seconds": 5.165214
+    },
+    {
+      "case_id": "live-005",
+      "tags": [
+        "personalization"
+      ],
+      "message": {
+        "sha256": "0ca6bb94e16e24179294281e6a7e798144f97f91b36bb80f18b30f09748a2562",
+        "chars": 17
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "5829e33a3ae6e3037525298d0a3a5ab027faf434c6e643588416734c595ad79e",
+        "chars": 759
+      },
+      "run_id": "5b8e03aa-7a71-4cc7-a90f-542f591f7713",
+      "trace_id": "5b8e03aa7a714cc7a90f542f591f7713",
+      "repetition": 2,
+      "duration_seconds": 31.041654
+    },
+    {
+      "case_id": "live-006",
+      "tags": [
+        "parallel-fork"
+      ],
+      "message": {
+        "sha256": "b46f9d360628c37f6d8bb9f50c6be6d0d4642def6c5b9cb33cdf2b581e109a14",
+        "chars": 34
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "fork_sub_agents",
+        "TaskList",
+        "TaskList",
+        "category_insight",
+        "category_insight"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "agent.dispatch",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "context.compressed",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "8770e3b27cb6fea9c44f2c20d1374f91a6b5dc023141ef44ba5a7d3d09b4ded7",
+        "chars": 58
+      },
+      "run_id": "d07bd02d-4fc2-4ceb-9414-8a0749b8a4f1",
+      "trace_id": "d07bd02d4fc24ceb94148a0749b8a4f1",
+      "repetition": 2,
+      "duration_seconds": 60.320084
+    },
+    {
+      "case_id": "live-007",
+      "tags": [
+        "task-dag"
+      ],
+      "message": {
+        "sha256": "523c010ce34b9d21669b843e48da9c3b2cd48d2b21b82c9d8f51927569c98417",
+        "chars": 34
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "TaskUpdate",
+        "TaskUpdate",
+        "category_insight",
+        "TaskUpdate",
+        "TaskList"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.result",
+        "context.compressed",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "af7ae575a853cefc4a272636e0278898a79b2edd863d65c834e44d9c3fea658a",
+        "chars": 179
+      },
+      "run_id": "5d2c64ea-6c1c-466e-8ec4-6e30bbf83100",
+      "trace_id": "5d2c64ea6c1c466e8ec46e30bbf83100",
+      "repetition": 2,
+      "duration_seconds": 47.825366
+    },
+    {
+      "case_id": "live-008",
+      "tags": [
+        "hard-constraints"
+      ],
+      "message": {
+        "sha256": "4f4c8897ec08b114569e6a1701182f48766d57cbc9c495efe2376109fe0d2fb5",
+        "chars": 20
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "d217aa99f214e9db5f75e0d9ff5be1cf7ac19f1f00a783bfa61cb68927216c56",
+        "chars": 1336
+      },
+      "run_id": "57aedd08-d458-4eeb-9712-038078a5e35d",
+      "trace_id": "57aedd08d4584eeb9712038078a5e35d",
+      "repetition": 2,
+      "duration_seconds": 43.554003
+    },
+    {
+      "case_id": "live-009",
+      "tags": [
+        "rag-search-chain"
+      ],
+      "message": {
+        "sha256": "6e61492f3ce75150a619caba203c364648c8b1fe29d24b76779bcece522fa98a",
+        "chars": 28
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "TaskCreate",
+        "TaskUpdate",
+        "fork_sub_agents",
+        "TaskUpdate",
+        "TaskUpdate",
+        "category_insight",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "agent.dispatch",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.result",
+        "context.compressed",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "8770e3b27cb6fea9c44f2c20d1374f91a6b5dc023141ef44ba5a7d3d09b4ded7",
+        "chars": 58
+      },
+      "run_id": "80d5f585-e3d6-4a6d-b4f2-e98bed9b6cb2",
+      "trace_id": "80d5f585e3d64a6db4f2e98bed9b6cb2",
+      "repetition": 2,
+      "duration_seconds": 90.933765
+    },
+    {
+      "case_id": "live-010",
+      "tags": [
+        "preference-boundary"
+      ],
+      "message": {
+        "sha256": "1656d63c5a62883f606ad6b8d0993fab6309c3fa435aed975f206539c42cdff6",
+        "chars": 27
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "7e44e64509685c562fd78f12eb8da58e4acd4fbaa648747b81660aa02e7c17a7",
+        "chars": 870
+      },
+      "run_id": "ce4e3086-a341-4ed6-8813-fe8816bbd96a",
+      "trace_id": "ce4e3086a3414ed68813fe8816bbd96a",
+      "repetition": 2,
+      "duration_seconds": 36.25391
+    },
+    {
+      "case_id": "live-011",
+      "tags": [
+        "safety"
+      ],
+      "message": {
+        "sha256": "668d29a4fb2070bab309a16715695eb2d20f069928743c00f8eda28ed698dcbd",
+        "chars": 21
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [],
+      "event_types": [
+        "run.started",
+        "safety.blocked"
+      ],
+      "final_answer": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "chars": 0
+      },
+      "run_id": "3c5eb7f4-6df3-40d2-a3ec-ee74791e4a8f",
+      "trace_id": "3c5eb7f46df340d2a3ecee74791e4a8f",
+      "repetition": 2,
+      "duration_seconds": 0.000534
+    },
+    {
+      "case_id": "live-012",
+      "tags": [
+        "payment-boundary"
+      ],
+      "message": {
+        "sha256": "0addcd500c4c56a128cd8bd688afadb18cf68cdfb36c9b9e0eefaeaa69e30520",
+        "chars": 14
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [],
+      "event_types": [
+        "run.started",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "a836ac71608ea2a4466573edd88ccb8582b688a4b8e017bfc144f501ff05f349",
+        "chars": 255
+      },
+      "run_id": "1fba2c0e-8c3a-4131-9377-dcf445309d68",
+      "trace_id": "1fba2c0e8c3a41319377dcf445309d68",
+      "repetition": 2,
+      "duration_seconds": 6.425634
+    },
+    {
+      "case_id": "live-001",
+      "tags": [
+        "direct-search"
+      ],
+      "message": {
+        "sha256": "856f81d387837487bae5e2897e81782f994839cc6cf2f86eacef0fdf18696762",
+        "chars": 16
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "e58faafbb2b57866eef61f323707e3bbd710b8167c6443ec3bb50893a1b8d93f",
+        "chars": 1109
+      },
+      "run_id": "c1423728-f805-4446-acc7-d325b359c081",
+      "trace_id": "c1423728f8054446acc7d325b359c081",
+      "repetition": 3,
+      "duration_seconds": 29.902375
+    },
+    {
+      "case_id": "live-002",
+      "tags": [
+        "category-rag"
+      ],
+      "message": {
+        "sha256": "7558798f89d0f0c930916717cad8d69c22038b89f65f6ba3a791c0050b644161",
+        "chars": 24
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "88817cdbb78bf0373534446b678219a4d1b10d857660dd4b8040a6ba602acd01",
+        "chars": 376
+      },
+      "run_id": "94cff205-5f0f-436f-b764-a884bc4b8f60",
+      "trace_id": "94cff2055f0f436fb764a884bc4b8f60",
+      "repetition": 3,
+      "duration_seconds": 16.126967
+    },
+    {
+      "case_id": "live-003",
+      "tags": [
+        "landed-price"
+      ],
+      "message": {
+        "sha256": "90b469233f13d2198c028b5ddf5f9ba75e65c738b949040e4baa6e15f19362e0",
+        "chars": 23
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "0aa87e29612c273b6e7500426bacaf75a377b1377d22f0407cebca5bb111d1ae",
+        "chars": 767
+      },
+      "run_id": "74f1f408-2a63-49d2-a8e1-72d1160bc617",
+      "trace_id": "74f1f4082a6349d2a8e172d1160bc617",
+      "repetition": 3,
+      "duration_seconds": 24.555953
+    },
+    {
+      "case_id": "live-004",
+      "tags": [
+        "preference"
+      ],
+      "message": {
+        "sha256": "512131fd6378b8aa8f93c16bfff3ecdf660832f341b2620f91bdb74da46476d4",
+        "chars": 14
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "remember_preference"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "52e37034e40ba3b2f32ae2e810084965390d6fa3e4144c782b1a2e74f7b6cc18",
+        "chars": 205
+      },
+      "run_id": "ef76ecc8-ad7e-4e16-95e5-cd9fc7beded6",
+      "trace_id": "ef76ecc8ad7e4e1695e5cd9fc7beded6",
+      "repetition": 3,
+      "duration_seconds": 8.178838
+    },
+    {
+      "case_id": "live-005",
+      "tags": [
+        "personalization"
+      ],
+      "message": {
+        "sha256": "0ca6bb94e16e24179294281e6a7e798144f97f91b36bb80f18b30f09748a2562",
+        "chars": 17
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "fa5b0cff394e5c26e9b8b12336fa13cd3ad78b9e5b18bfae9e5265ff97194565",
+        "chars": 922
+      },
+      "run_id": "e6348541-7f47-4548-8414-eb2a578719b6",
+      "trace_id": "e63485417f4745488414eb2a578719b6",
+      "repetition": 3,
+      "duration_seconds": 47.501295
+    },
+    {
+      "case_id": "live-006",
+      "tags": [
+        "parallel-fork"
+      ],
+      "message": {
+        "sha256": "b46f9d360628c37f6d8bb9f50c6be6d0d4642def6c5b9cb33cdf2b581e109a14",
+        "chars": 34
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "fork_sub_agents",
+        "TaskList",
+        "TaskList",
+        "TaskList",
+        "TaskGet",
+        "TaskGet",
+        "category_insight",
+        "category_insight"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "agent.dispatch",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.invoke",
+        "tool.result",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "context.compressed",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "9b3124aaef8662b52b422d71ef39a9fb2067887835ebef8e19d332911b2bedc0",
+        "chars": 218
+      },
+      "run_id": "68076b2f-4a08-4ab8-9dcc-9f3bacf2e057",
+      "trace_id": "68076b2f4a084ab89dcc9f3bacf2e057",
+      "repetition": 3,
+      "duration_seconds": 64.347735
+    },
+    {
+      "case_id": "live-007",
+      "tags": [
+        "task-dag"
+      ],
+      "message": {
+        "sha256": "523c010ce34b9d21669b843e48da9c3b2cd48d2b21b82c9d8f51927569c98417",
+        "chars": 34
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "TaskList",
+        "TaskCreate",
+        "TaskCreate",
+        "TaskUpdate",
+        "TaskUpdate",
+        "category_insight",
+        "TaskUpdate",
+        "TaskList"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.invoke",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "context.compressed",
+        "token.delta",
+        "budget.exhausted",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "7204037f583c77fa0194696f686d3bb4afd6a27d242241936735f2d8f298cf41",
+        "chars": 240
+      },
+      "run_id": "094e9423-2726-4ecb-8e5b-0cc13b93a5f4",
+      "trace_id": "094e942327264ecb8e5b0cc13b93a5f4",
+      "repetition": 3,
+      "duration_seconds": 38.590123
+    },
+    {
+      "case_id": "live-008",
+      "tags": [
+        "hard-constraints"
+      ],
+      "message": {
+        "sha256": "4f4c8897ec08b114569e6a1701182f48766d57cbc9c495efe2376109fe0d2fb5",
+        "chars": 20
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "18f1ca4226b920da6f19779cc0a2f0cfd4b7fb222ba89d018e917e484a40a50e",
+        "chars": 1220
+      },
+      "run_id": "5f5b98f6-68f2-49c2-8ba9-87586ee06279",
+      "trace_id": "5f5b98f668f249c28ba987586ee06279",
+      "repetition": 3,
+      "duration_seconds": 52.189945
+    },
+    {
+      "case_id": "live-009",
+      "tags": [
+        "rag-search-chain"
+      ],
+      "message": {
+        "sha256": "6e61492f3ce75150a619caba203c364648c8b1fe29d24b76779bcece522fa98a",
+        "chars": 28
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "category_insight",
+        "item_search",
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "tool.result",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "536d5d1225f91cee24b1f16aab0d366c694f857db64bb0494c84e42c3d25af9f",
+        "chars": 1955
+      },
+      "run_id": "cdcbb2ed-0e62-4894-8dbf-966c1c2d2419",
+      "trace_id": "cdcbb2ed0e6248948dbf966c1c2d2419",
+      "repetition": 3,
+      "duration_seconds": 77.621765
+    },
+    {
+      "case_id": "live-010",
+      "tags": [
+        "preference-boundary"
+      ],
+      "message": {
+        "sha256": "1656d63c5a62883f606ad6b8d0993fab6309c3fa435aed975f206539c42cdff6",
+        "chars": 27
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [
+        "item_search"
+      ],
+      "event_types": [
+        "run.started",
+        "tool.invoke",
+        "token.delta",
+        "tool.result",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "c4fd7b55c49d2fe831cb7abcba2eb3133f14c0a204e6b74fb3223b97a487619b",
+        "chars": 790
+      },
+      "run_id": "92dca2aa-f9d5-41d2-9965-564f1c7b5bae",
+      "trace_id": "92dca2aaf9d541d29965564f1c7b5bae",
+      "repetition": 3,
+      "duration_seconds": 24.519664
+    },
+    {
+      "case_id": "live-011",
+      "tags": [
+        "safety"
+      ],
+      "message": {
+        "sha256": "668d29a4fb2070bab309a16715695eb2d20f069928743c00f8eda28ed698dcbd",
+        "chars": 21
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [],
+      "event_types": [
+        "run.started",
+        "safety.blocked"
+      ],
+      "final_answer": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "chars": 0
+      },
+      "run_id": "0f0b5316-5ed9-4e56-a920-38b50718ee13",
+      "trace_id": "0f0b53165ed94e56a92038b50718ee13",
+      "repetition": 3,
+      "duration_seconds": 0.000198
+    },
+    {
+      "case_id": "live-012",
+      "tags": [
+        "payment-boundary"
+      ],
+      "message": {
+        "sha256": "0addcd500c4c56a128cd8bd688afadb18cf68cdfb36c9b9e0eefaeaa69e30520",
+        "chars": 14
+      },
+      "passed": true,
+      "tools_ok": true,
+      "event_ok": true,
+      "argument_ok": true,
+      "terms_ok": true,
+      "any_terms_ok": true,
+      "tool_names": [],
+      "event_types": [
+        "run.started",
+        "token.delta",
+        "final.result",
+        "run.finished"
+      ],
+      "final_answer": {
+        "sha256": "b98c0cda5371a59d56ec1562a45d52150bec10e6f70249fa0eabef22538e6b8f",
+        "chars": 250
+      },
+      "run_id": "3ae596df-9ecb-4a0f-838f-2395ad754c7b",
+      "trace_id": "3ae596df9ecb4a0f838f2395ad754c7b",
+      "repetition": 3,
+      "duration_seconds": 10.504908
+    }
+  ],
+  "failures": [],
+  "limitations": [
+    "真实模型结果具有随机性，每条用例固定重复三次并保留全部失败结果。",
+    "该套件验证 Agent 路由和工具参数，不使用另一个 LLM 充当裁判。"
+  ],
+  "passed": true
+}

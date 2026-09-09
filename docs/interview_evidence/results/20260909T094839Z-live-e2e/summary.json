@@ -1,0 +1,40 @@
+{
+  "run_id": "20260909T094839Z-live-e2e",
+  "suite": "live-e2e",
+  "environment": {
+    "commit": "bd67b9a9a03e004760e835dc6e1dd5b5cf08c05c",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "passed": true,
+  "reports": [
+    {
+      "claim_id": "ENV-001",
+      "status": "verified",
+      "passed": true
+    },
+    {
+      "claim_id": "E2E-001",
+      "status": "verified",
+      "passed": true
+    },
+    {
+      "claim_id": "OBS-001",
+      "status": "verified",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "run_id": "20260909T094839Z-live-e2e",
+  "commit": "bd67b9a9a03e004760e835dc6e1dd5b5cf08c05c",
+  "published_at": "2026-09-09T10:10:00.451007+00:00",
+  "secret_scan": "passed",
+  "source_reports": [
+    "live.json",
+    "observability.json",
+    "preflight.json",
+    "summary.json"
+  ]
+}
