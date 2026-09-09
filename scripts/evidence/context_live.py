@@ -205,6 +205,7 @@ async def _run_mode(
         observability=observability,
         main_system_prompt=CONTEXT_EVIDENCE_PROMPT,
         sub_agent_system_prompt=CONTEXT_EVIDENCE_PROMPT,
+        enable_fork_tool=False,
     )
     mode_cases: list[dict[str, Any]] = []
     stopped_reason: str | None = None

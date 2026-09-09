@@ -632,3 +632,23 @@ def test_main_agent_does_not_give_main_only_tools_to_children() -> None:
         "task_control",
         "fork_sub_agents",
     }
+
+
+def test_main_agent_can_disable_fork_for_isolated_evidence_fixture() -> None:
+    """单能力评测可以关闭控制面工具，正式运行默认行为保持不变。"""
+
+    @tool
+    def evidence_only(value: str) -> str:
+        """返回上下文评测使用的固定证据。"""
+
+        return value
+
+    agent = MainAgent(
+        model=ToolCapableFakeModel(),
+        tools=[evidence_only],
+        governance_config=_config(TEST_SESSION_ROOT),
+        enable_fork_tool=False,
+    )
+
+    assert agent.child_tool_names == ("evidence_only",)
+    assert agent.main_tool_names == ("evidence_only",)

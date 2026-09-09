@@ -45,6 +45,7 @@ class MainAgent:
         compressor: ContextCompressor | None = None,
         checkpointer: BaseCheckpointSaver[Any] | None = None,
         sub_agent_max_concurrency: int = 10,
+        enable_fork_tool: bool = True,
         shared_middleware: Sequence[AgentMiddleware] = (),
         observability: ObservabilityCallbacks | None = None,
         main_system_prompt: str = MAIN_SYSTEM_PROMPT,
@@ -82,11 +83,11 @@ class MainAgent:
             else None
         )
         # 任务控制面只属于主 Agent；子 Agent 只复用业务执行工具。
-        main_tools = [
-            *child_tools,
-            *main_only_tools,
-            create_fork_tool(child_loop, task_dispatcher),
-        ]
+        main_tools = [*child_tools, *main_only_tools]
+        if enable_fork_tool:
+            # 正式主 Agent 默认具备 fork 能力；聚焦单一能力的评测夹具可关闭，
+            # 避免模型调用实验范围之外的控制面工具。
+            main_tools.append(create_fork_tool(child_loop, task_dispatcher))
         self._child_tool_names = tuple(tool.name for tool in child_tools)
         self._main_tool_names = tuple(tool.name for tool in main_tools)
         main_middleware = [
