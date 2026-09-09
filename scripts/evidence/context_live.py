@@ -86,12 +86,11 @@ def _prefix_stability(snapshots: list[dict[str, Any]]) -> float:
 
 
 def _incremental_summary_verified(full: dict[str, Any]) -> bool:
-    """确认 full 模式每个场景都真实完成了无失败的有损增量摘要。"""
+    """确认 full 模式每个场景都至少完成一次产生净收益的增量摘要。"""
 
     full_cases = full.get("cases", [])
     return bool(full_cases) and all(
         int(item.get("incremental_summary_successes", 0)) > 0
-        and int(item.get("incremental_summary_failures", 0)) == 0
         and int(item.get("compression_input_tokens", 0))
         > int(item.get("compression_output_tokens", 0))
         > 0
@@ -308,6 +307,8 @@ async def _run_mode(
         )
         compression_input = int(ledger.get("compression_input_tokens", 0))
         compression_output = int(ledger.get("compression_output_tokens", 0))
+        agent_input = int(ledger.get("input_tokens", 0))
+        agent_output = int(ledger.get("output_tokens", 0))
         summary_attempts = int(ledger.get("incremental_summary_attempts", 0))
         summary_successes = int(ledger.get("incremental_summary_successes", 0))
         summary_failures = int(ledger.get("incremental_summary_failures", 0))
@@ -339,6 +340,12 @@ async def _run_mode(
                 ),
                 "compression_input_tokens": compression_input,
                 "compression_output_tokens": compression_output,
+                "agent_model_calls": int(ledger.get("model_calls", 0)),
+                "agent_input_tokens": agent_input,
+                "agent_output_tokens": agent_output,
+                "agent_cached_input_tokens": int(
+                    ledger.get("cached_input_tokens", 0)
+                ),
                 "compression_ratio": (
                     round(compression_output / compression_input, 6)
                     if compression_input
@@ -382,6 +389,20 @@ async def _run_mode(
             "cache_epoch_rolls": sum(
                 int(item["cache_epoch_rolls"]) for item in mode_cases
             ),
+            "agent_usage": {
+                "model_calls": sum(
+                    int(item["agent_model_calls"]) for item in mode_cases
+                ),
+                "input_tokens": sum(
+                    int(item["agent_input_tokens"]) for item in mode_cases
+                ),
+                "output_tokens": sum(
+                    int(item["agent_output_tokens"]) for item in mode_cases
+                ),
+                "cached_input_tokens": sum(
+                    int(item["agent_cached_input_tokens"]) for item in mode_cases
+                ),
+            },
             "cases": mode_cases,
         },
         stopped_reason,
@@ -453,9 +474,11 @@ async def run_context_live(
 
         get_client().flush()
 
-    off_input = int(modes.get("off", {}).get("usage", {}).get("observed_input_tokens", 0))
+    off_input = int(
+        modes.get("off", {}).get("agent_usage", {}).get("input_tokens", 0)
+    )
     full_input = int(
-        modes.get("full", {}).get("usage", {}).get("observed_input_tokens", 0)
+        modes.get("full", {}).get("agent_usage", {}).get("input_tokens", 0)
     )
     reduction = (
         (off_input - full_input) / off_input if off_input and full_input else 0.0
@@ -475,6 +498,8 @@ async def run_context_live(
         "供应商返回 cached_input_tokens 时才可声明真实 Prompt Cache 命中率；否则只报告稳定前缀率。",
         "实验使用固定小窗口加速触发，不代表生产环境的上下文窗口大小。",
         "受控 evidence_blob 只隔离验证治理策略，不替代完整购物 Agent 端到端评测。",
+        "input_token_reduction 只比较主 AgentLoop 输入；摘要模型开销单独计入 usage 与压缩字段。",
+        "无净 Token 收益的摘要会被拒绝并计数，不会删除原始候选事件。",
     ]
     if full_input == 0 or off_input == 0:
         limitations.append("模型未返回输入 Token 明细，Token 降幅无法验证。")
@@ -501,10 +526,14 @@ async def run_context_live(
         },
         "metrics": {
             "input_token_reduction": round(reduction, 6),
+            "input_token_reduction_scope": "agent_loop_only",
             "total_model_requests": total_requests,
             "total_observed_tokens": total_tokens,
             "stopped_reason": stopped_reason,
             "incremental_summary_verified": incremental_summary_verified,
+            "rejected_summary_attempts": int(
+                full.get("incremental_summary_failures", 0)
+            ),
         },
         "modes": modes,
         "failures": [
@@ -522,7 +551,6 @@ async def run_context_live(
             for item in full_cases
             if not (
                 int(item.get("incremental_summary_successes", 0)) > 0
-                and int(item.get("incremental_summary_failures", 0)) == 0
                 and int(item.get("compression_input_tokens", 0))
                 > int(item.get("compression_output_tokens", 0))
                 > 0

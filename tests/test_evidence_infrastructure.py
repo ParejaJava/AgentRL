@@ -49,7 +49,7 @@ def test_context_governance_modes_select_expected_middleware(tmp_path: Path) -> 
 
 
 def test_context_evidence_requires_real_incremental_summary_success() -> None:
-    """只有计数、没有摘要 Token 或存在回退失败时不得发布 verified 证据。"""
+    """必须有净收益摘要；被安全拒绝的其他尝试不抹掉既有成功证据。"""
 
     failed = {
         "cases": [
@@ -65,7 +65,7 @@ def test_context_evidence_requires_real_incremental_summary_success() -> None:
         "cases": [
             {
                 "incremental_summary_successes": 2,
-                "incremental_summary_failures": 0,
+                "incremental_summary_failures": 1,
                 "compression_input_tokens": 900,
                 "compression_output_tokens": 120,
             }

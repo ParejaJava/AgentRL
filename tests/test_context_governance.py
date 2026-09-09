@@ -130,8 +130,8 @@ class _StructuredRunnable:
         return self._payload
 
 
-class _IncompleteCompressionModel:
-    """模拟复杂 Schema 漏掉摘要、最小 Schema 正常返回的供应商。"""
+class _MinimalCompressionModel:
+    """模拟只实现最小摘要 Schema 的 OpenAI-compatible 供应商。"""
 
     def with_structured_output(
         self,
@@ -142,8 +142,6 @@ class _IncompleteCompressionModel:
         """按 Schema 返回对应的固定 Runnable。"""
 
         del include_raw
-        if schema.__name__ == "CompressionDelta":
-            return _StructuredRunnable({"cold_event_ids": ["event-1"]})
         if schema.__name__ == "CompressionSummary":
             return _StructuredRunnable(
                 {"compressed_summary": "保留预算、目的地和已验证工具结论。"}
@@ -151,10 +149,10 @@ class _IncompleteCompressionModel:
         return _StructuredRunnable({})
 
 
-def test_structured_compressor_recovers_missing_summary_field() -> None:
-    """复杂结构化输出漏字段时，使用最小 Schema 恢复且不扩大归档范围。"""
+def test_structured_compressor_uses_minimal_schema_and_fixed_candidate_ids() -> None:
+    """LLM 只生成摘要，归档范围必须继续使用确定性候选 ID。"""
 
-    compressor = StructuredLLMCompressor(_IncompleteCompressionModel())  # type: ignore[arg-type]
+    compressor = StructuredLLMCompressor(_MinimalCompressionModel())  # type: ignore[arg-type]
     result = asyncio.run(
         compressor.summarize_incrementally(
             task_state=TaskState(goal="购买旅行箱", constraints=["预算600元"]),

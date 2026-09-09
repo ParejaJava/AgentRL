@@ -7,7 +7,7 @@ from typing import Any, Protocol, TypeVar
 
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import HumanMessage, SystemMessage
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field
 
 from app.infrastructure.evidence_budget import EvidenceUsageBudget, message_usage
 
@@ -18,6 +18,7 @@ from .schemas import (
     TaskDelta,
     TaskState,
 )
+from .token_counter import count_text
 
 TStructured = TypeVar("TStructured", bound=BaseModel)
 
@@ -67,10 +68,6 @@ class StructuredLLMCompressor:
     ) -> None:
         self._evidence_budget = evidence_budget
         include_raw = evidence_budget is not None
-        self._summary_model = model.with_structured_output(
-            CompressionDelta,
-            include_raw=include_raw,
-        )
         self._summary_only_model = model.with_structured_output(
             CompressionSummary,
             include_raw=include_raw,
@@ -122,20 +119,25 @@ class StructuredLLMCompressor:
             for item in candidates
         ]
         candidate_ids = [item.event_id for item in candidates]
+        candidate_tokens = count_text(canonical_json(candidate_payload))
+        summary_token_budget = max(
+            16,
+            min(target_tokens, max(16, candidate_tokens // 2)),
+        )
         system = SystemMessage(
             content=(
-                "你是会话上下文压缩器，只做结构化增量摘要。"
+                "你是会话上下文压缩器，只输出候选闭合事件的语义摘要。"
                 "不得改写当前用户请求、未闭合工具调用或稳定缓存前缀。"
-                "输入中的 events 已由确定性规则确认可以归档。"
-                "cold_event_ids 必须完整且仅包含 candidate_event_ids。"
-                "task_state_patch 只写发生变化的字段；工作记忆使用 upsert/delete。"
-                "摘要必须保留目标、约束、已验证事实、失败路径、关键工具结论和引用。"
+                "摘要必须保留目标、有效约束、已验证事实、失败路径、"
+                "关键工具结论和引用，不得添加输入中不存在的事实。"
+                "摘要必须明显短于 events，并严格服从 summary_token_budget；"
+                "候选内容较短时只写一句话。"
             )
         )
         human = HumanMessage(
             content=canonical_json(
                 {
-                    "target_tokens": target_tokens,
+                    "summary_token_budget": summary_token_budget,
                     "task_state": task_state.model_dump(mode="json"),
                     "working_memory": working_memory,
                     "candidate_event_ids": candidate_ids,
@@ -143,33 +145,17 @@ class StructuredLLMCompressor:
                 }
             )
         )
-        try:
-            result = await self._invoke_structured(
-                self._summary_model,
-                [system, human],
-                CompressionDelta,
-            )
-            return CompressionDelta.model_validate(result)
-        except ValidationError:
-            # 部分 OpenAI-compatible 供应商会遗漏复杂 Schema 的必填摘要字段。
-            # 此时只重试最小语义任务；归档范围仍由确定性候选 ID 决定，
-            # 不接受模型自行扩大 cold_event_ids，避免压缩越过 D1/Breakpoint。
-            recovery_system = SystemMessage(
-                content=(
-                    "你是会话上下文压缩器。只返回 compressed_summary。"
-                    "摘要必须保留候选事件中的目标、有效约束、已验证事实、"
-                    "失败路径、关键工具结论和引用，不得添加输入中不存在的事实。"
-                )
-            )
-            recovered = await self._invoke_structured(
-                self._summary_only_model,
-                [recovery_system, human],
-                CompressionSummary,
-            )
-            return CompressionDelta(
-                cold_event_ids=candidate_ids,
-                compressed_summary=recovered.compressed_summary,
-            )
+        # 删除范围、D1 保留范围与 Breakpoint 均由确定性代码决定；LLM 只负责
+        # 对已批准的候选事件做语义摘要，不能自行扩大 cold_event_ids。
+        summary = await self._invoke_structured(
+            self._summary_only_model,
+            [system, human],
+            CompressionSummary,
+        )
+        return CompressionDelta(
+            cold_event_ids=candidate_ids,
+            compressed_summary=summary.compressed_summary,
+        )
 
     async def consolidate_baseline(
         self,
