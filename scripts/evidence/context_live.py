@@ -445,6 +445,13 @@ async def run_context_live(
             "cases": len(cases),
             "modes": ["off", "deterministic", "full"],
         },
+        "runtime_policy": {
+            "model_max_concurrency": base.model_max_concurrency,
+            "model_min_interval_seconds": base.model_min_interval_seconds,
+            "model_max_retries": base.model_max_retries,
+            "shared_request_budget": max_model_requests,
+            "shared_token_budget": max_total_tokens,
+        },
         "metrics": {
             "input_token_reduction": round(reduction, 6),
             "total_model_requests": total_requests,

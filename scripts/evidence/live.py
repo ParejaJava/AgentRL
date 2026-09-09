@@ -139,6 +139,9 @@ async def run_live_suite(
             model_max_concurrency=10,
             sub_agent_max_concurrency=8,
             model_min_interval_seconds=0.75,
+            # 正式 E2E 证据关注模型实际决策次数；外层重试会随机挤占与
+            # 上下文实验共享的 250 次硬预算。重试能力由 offline 故障矩阵独立证明。
+            model_max_retries=0,
             token_budget_total=30_000,
             model_run_max_requests=max_model_requests,
             model_run_max_observed_tokens=max_total_tokens,
@@ -249,6 +252,14 @@ async def run_live_suite(
             "sha256": sha256_file(case_path),
             "cases": len(cases),
             "repetitions": repetitions,
+        },
+        "runtime_policy": {
+            "model_max_concurrency": settings.model_max_concurrency,
+            "sub_agent_max_concurrency": settings.sub_agent_max_concurrency,
+            "model_min_interval_seconds": settings.model_min_interval_seconds,
+            "model_max_retries": settings.model_max_retries,
+            "retry_evidence": "REL-001",
+            "reason": "避免网络重试随机挤占 live 套件共享的模型请求硬预算",
         },
         "metrics": {
             "expected_runs": expected_runs,

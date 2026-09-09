@@ -34,6 +34,8 @@ uv run python -m scripts.evidence publish --run-id <run_id>
 
 live 默认固定：模型并发 10、子 Agent 并发 8、启动间隔 0.75 秒、最多 250 次模型请求和 1,000,000 Token。可用 `--repetitions`、`--max-requests`、`--max-total-tokens` 向下收紧，不应超过默认门槛。
 
+为避免临时网络重试随机挤占 E2E 与上下文实验共享的 250 次硬预算，正式 E2E 取证关闭外层模型重试，并把该策略写入 `live.json`；上下文实验保留环境中配置的重试策略。429、超时、暂时性错误的重试与退避能力由不调用外部模型的 `REL-001` 故障注入矩阵独立证明。
+
 live 只有在 `observability.json` 至少回读一条包含主 Agent、子 Agent、模型和工具节点的完整 Trace，且 Fork、压缩、`final.result` 事件摘要齐全时才通过。公开报告不会保存原始输入、完整 Prompt 或模型输出。
 
 ## 单项消融
