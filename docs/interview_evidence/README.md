@@ -68,7 +68,7 @@ sequenceDiagram
 - `ORCH-001`：30 轮 4 路 I/O 的 P50 加速 3.55×；重复派发率、上下文泄漏率为 0，中断恢复率与幂等回写率为 100%。
 - `OBS-001`：从 Langfuse 抽样回读 3/3 条完整主/子 Agent Trace，run/trace 映射率 100%，并覆盖 Fork、压缩与 final 事件摘要；不据此推断全量遥测上传率。
 
-提交全部实现后必须重新执行 offline/live，再运行 `publish`。发布器会拒绝脏工作区、失败套件、Commit 不一致和脱敏扫描不通过的报告。
+正式取证拆分为 offline、live-e2e、live-context 三套独立报告；某一套失败时只重跑该部分。发布器会拒绝脏工作区、失败套件、Commit 不一致和脱敏扫描不通过的报告。
 
 ## 深挖材料
 

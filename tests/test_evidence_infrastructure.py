@@ -351,3 +351,71 @@ def test_observability_export_requires_complete_main_sub_trace_and_redacts_io(
     assert report["traces"][0]["input_tokens"] == 100
     assert "private" not in serialized
     assert "do-not-export" not in serialized
+
+
+def test_context_observability_uses_context_trace_without_requiring_sub_agent(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    """上下文套件独立发布时，只要求主 Agent、模型、工具和压缩证据。"""
+
+    trace_payload = {
+        "id": "contexttrace1",
+        "name": "globex-context",
+        "observations": [
+            {
+                "id": "main",
+                "type": "AGENT",
+                "name": "globex-main-agent",
+                "start_time": "2026-09-09T00:00:00+00:00",
+            },
+            {
+                "id": "generation",
+                "type": "GENERATION",
+                "name": "ChatOpenAI",
+                "start_time": "2026-09-09T00:00:01+00:00",
+            },
+            {
+                "id": "tool",
+                "type": "TOOL",
+                "name": "evidence_blob",
+                "start_time": "2026-09-09T00:00:02+00:00",
+            },
+        ],
+    }
+
+    class TraceEndpoint:
+        @staticmethod
+        def get(trace_id: str, **_kwargs):
+            assert trace_id == "contexttrace1"
+            return trace_payload
+
+    context_report = {
+        "modes": {
+            "full": {
+                "compression_calls": 2,
+                "cases": [
+                    {
+                        "case_id": "context-1",
+                        "trace_runs": [
+                            {"run_id": "run-1", "trace_id": "contexttrace1"}
+                        ],
+                    }
+                ],
+            }
+        }
+    }
+    monkeypatch.setattr(
+        "scripts.evidence.observability.runtime_environment",
+        lambda _root: {"commit": "abc", "dirty": False},
+    )
+
+    report = collect_langfuse_trace_evidence(
+        tmp_path,
+        context_report=context_report,
+        client=SimpleNamespace(api=SimpleNamespace(trace=TraceEndpoint())),
+    )
+
+    assert report["passed"] is True
+    assert report["metrics"]["complete_context_traces"] == 1
+    assert report["metrics"]["required_events"] == ["compression"]

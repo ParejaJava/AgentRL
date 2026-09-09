@@ -140,15 +140,47 @@ def _candidate_runs(live_report: Mapping[str, Any], limit: int) -> list[dict[str
     return selected
 
 
+def _candidate_context_runs(
+    context_report: Mapping[str, Any],
+    limit: int,
+) -> list[dict[str, str]]:
+    """从 full 模式会话中选择可回读的运行，不复制用户消息。"""
+
+    full = context_report.get("modes", {}).get("full", {})
+    cases = full.get("cases", []) if isinstance(full, Mapping) else []
+    selected: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for case in cases:
+        if not isinstance(case, Mapping):
+            continue
+        for item in reversed(case.get("trace_runs", [])):
+            if not isinstance(item, Mapping):
+                continue
+            trace_id = str(item.get("trace_id", ""))
+            if not trace_id or trace_id in seen:
+                continue
+            seen.add(trace_id)
+            selected.append(
+                {
+                    "case_id": str(case.get("case_id", "")),
+                    "run_id": str(item.get("run_id", "")),
+                    "trace_id": trace_id,
+                }
+            )
+            if len(selected) >= limit:
+                return selected
+    return selected
+
+
 def collect_langfuse_trace_evidence(
     root: Path,
-    live_report: Mapping[str, Any],
+    live_report: Mapping[str, Any] | None = None,
     *,
     context_report: Mapping[str, Any] | None = None,
     client: Any | None = None,
     trace_limit: int = 3,
 ) -> dict[str, Any]:
-    """回读少量 Trace；至少一条完整主/子链路才把 OBS-001 标为 verified。"""
+    """按 E2E 或上下文套件回读少量 Trace，并只保留拓扑与性能字段。"""
 
     started_at = utc_now()
     started = time.perf_counter()
@@ -156,9 +188,16 @@ def collect_langfuse_trace_evidence(
         from langfuse import get_client
 
         client = get_client()
+    live_payload = live_report if isinstance(live_report, Mapping) else {}
+    context_payload = context_report if isinstance(context_report, Mapping) else {}
+    candidates = (
+        _candidate_runs(live_payload, trace_limit)
+        if live_payload
+        else _candidate_context_runs(context_payload, trace_limit)
+    )
     traces: list[dict[str, Any]] = []
     failures: list[dict[str, str]] = []
-    for candidate in _candidate_runs(live_report, trace_limit):
+    for candidate in candidates:
         try:
             trace = client.api.trace.get(
                 candidate["trace_id"],
@@ -181,13 +220,20 @@ def collect_langfuse_trace_evidence(
         traces.append(summary)
 
     complete = [item for item in traces if item["complete_main_sub_trace"]]
+    complete_context = [
+        item
+        for item in traces
+        if item["has_main_agent"]
+        and item["generation_count"] > 0
+        and bool(item["tool_names"])
+    ]
     mappings_ok = all(item["trace_id"] == item["langfuse_trace_id"] for item in traces)
     live_cases = [
-        item for item in live_report.get("cases", []) if isinstance(item, Mapping)
+        item for item in live_payload.get("cases", []) if isinstance(item, Mapping)
     ]
     full_context = (
-        context_report.get("modes", {}).get("full", {})
-        if isinstance(context_report, Mapping)
+        context_payload.get("modes", {}).get("full", {})
+        if context_payload
         else {}
     )
     event_coverage = {
@@ -201,19 +247,35 @@ def collect_langfuse_trace_evidence(
             "final.result" in item.get("event_types", []) for item in live_cases
         ),
     }
-    passed = bool(complete) and mappings_ok and all(event_coverage.values())
+    required_events = (
+        ("fork", "final_result")
+        if live_payload and not context_payload
+        else ("compression",)
+        if context_payload and not live_payload
+        else ("fork", "compression", "final_result")
+    )
+    trace_complete = bool(complete) if live_payload else bool(complete_context)
+    passed = trace_complete and mappings_ok and all(
+        event_coverage[name] for name in required_events
+    )
+    suite = "live-e2e" if live_payload else "live-context"
     return {
         "claim_id": "OBS-001",
-        "capability": "Langfuse 主/子 Agent 全链路 Trace 摘要",
+        "capability": (
+            "Langfuse 主/子 Agent 全链路 Trace 摘要"
+            if live_payload
+            else "Langfuse 上下文治理 Trace 摘要"
+        ),
         "status": "verified" if passed else "code_verified",
         "started_at": started_at,
         "duration_seconds": round(time.perf_counter() - started, 6),
-        "command": "uv run python -m scripts.evidence run --suite live",
+        "command": f"uv run python -m scripts.evidence run --suite {suite}",
         "environment": runtime_environment(root),
         "metrics": {
-            "requested_traces": len(_candidate_runs(live_report, trace_limit)),
+            "requested_traces": len(candidates),
             "retrieved_traces": len(traces),
             "complete_main_sub_traces": len(complete),
+            "complete_context_traces": len(complete_context),
             "run_trace_mapping_rate": (
                 round(
                     sum(
@@ -227,13 +289,14 @@ def collect_langfuse_trace_evidence(
                 else 0.0
             ),
             "event_coverage": event_coverage,
+            "required_events": list(required_events),
         },
         "traces": traces,
         "failures": failures,
         "limitations": [
             "公开摘要不保存用户原始输入、完整 Prompt、模型输出、密钥或私有 Langfuse 地址。",
             "只抽样最多三条 Trace；它证明链路可回读，不代表所有遥测事件都成功上传。",
-            "Fork/最终结果来自运行事件摘要，压缩事件来自 CTX-001 的 full 模式计数；公开报告不复制事件载荷。",
+            "E2E 要求完整主/子 Agent Trace；上下文套件要求主 Agent、模型和工具 Trace，并由 CTX-001 的 full 模式计数证明压缩发生。",
         ],
         "passed": passed,
     }

@@ -102,7 +102,7 @@ def _empty_report(
         "status": "code_verified",
         "started_at": started_at,
         "duration_seconds": round(time.perf_counter() - started, 6),
-        "command": "uv run python -m scripts.evidence run --suite live",
+        "command": "uv run python -m scripts.evidence run --suite live-context",
         "environment": runtime_environment(root),
         "dataset": {
             "path": "eval/evidence/context_cases.json",
@@ -205,6 +205,7 @@ async def _run_mode(
         session_dir = str(governance.session_root / str(case["case_id"]))
         snapshots: list[dict[str, Any]] = []
         turn_metrics: list[dict[str, Any]] = []
+        trace_runs: list[dict[str, str]] = []
         final_answer = ""
         tool_names: list[str] = []
         for turn_index, turn in enumerate(case["turns"], start=1):
@@ -231,6 +232,13 @@ async def _run_mode(
             except EvidenceBudgetExceeded:
                 stopped_reason = "evidence_budget_exceeded"
                 break
+            trace_runs.append(
+                {
+                    "run_id": run_id,
+                    "trace_id": run_id.replace("-", ""),
+                    "turn": str(turn_index),
+                }
+            )
             state = await runtime.state_snapshot(thread_id)
             final_answer = "".join(
                 str(event.get("content", ""))
@@ -294,6 +302,7 @@ async def _run_mode(
                 "superseded_terms_absent": superseded_absent,
                 "final_answer": final_answer,
                 "tool_names": tool_names,
+                "trace_runs": trace_runs,
                 "turn_metrics": turn_metrics,
                 "prefix_stability": _prefix_stability(snapshots),
                 "cache_epoch_rolls": max(
@@ -437,7 +446,7 @@ async def run_context_live(
         "status": "verified" if passed else "code_verified",
         "started_at": started_at,
         "duration_seconds": round(time.perf_counter() - started, 6),
-        "command": "uv run python -m scripts.evidence run --suite live",
+        "command": "uv run python -m scripts.evidence run --suite live-context",
         "environment": runtime_environment(root),
         "dataset": {
             "path": "eval/evidence/context_cases.json",

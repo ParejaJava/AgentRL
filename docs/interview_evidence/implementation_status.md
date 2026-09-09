@@ -50,7 +50,7 @@
 ## 发布前还需执行
 
 1. 审查当前改动并提交，确保 `git status --short` 为空。
-2. 在该 Commit 上重新执行 offline 和 live；旧原始报告因 Commit 不同不能发布。
+2. 在干净 Commit 上分别执行 live-e2e 和 live-context；旧的组合式 live 原始报告只保留为历史候选。
 3. 分别执行 `publish --run-id`，让发布器完成脱敏扫描并生成 `docs/interview_evidence/results/` 快照。
-4. 发布 live 快照中的 `observability.json`；它已通过 API 回读验证，但只能证明 3 条抽样 Trace，不能宣称全量遥测 100% 上传。
+4. 两套 live 的 `observability.json` 分别验证主/子 Agent 与上下文治理 Trace；抽样 Trace 不能宣称全量遥测 100% 上传。
 5. 将简历每个数字链接到最新正式快照；没有报告支持的耗时收益继续留为 planned。

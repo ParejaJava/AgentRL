@@ -32,7 +32,7 @@
 
 - **可恢复 Task Planning（ORCH-001）：** 以 SQLite WAL 持久化 Task、依赖、Owner、租约和终态，使用乐观并发控制完成循环检测、原子认领与后继解锁；过期租约把中断任务恢复为 `pending`，重复提交相同终态为 no-op，冲突终态拒绝覆盖。30 轮实验中 DAG 正确率、中断恢复率和幂等回写率均为 **100%**。
 
-- **四层上下文与全局模型预算（CTX-001、REL-001）：** 每轮在 Breakpoint 后执行确定性卸载/裁剪，并按阈值调用 LLM 生成增量工作摘要；Cache Epoch 变化时才重建稳定前缀。主 Agent、子 Agent、重试和摘要模型共享线程安全账本，live 套件硬限制 **250 次请求、1,000,000 Token**，超限立即停止且禁止发布残缺报告。
+- **四层上下文与全局模型预算（CTX-001、REL-001）：** 每轮在 Breakpoint 后执行确定性卸载/裁剪，并按阈值调用 LLM 生成增量工作摘要；Cache Epoch 变化时才重建稳定前缀。主 Agent、子 Agent、重试和摘要模型共享线程安全账本，每套 live 证据硬限制 **250 次请求、1,000,000 Token**，超限立即停止且禁止发布残缺报告。
 
 - **双检索系统与可解释评测（RAG-001、SEARCH-001）：** 将知识卡 RAG 与商品候选召回分开评测；前者覆盖 keyword/BM25/KNN/Hybrid/Hybrid+Reranker 消融及拒答阈值校准，后者覆盖 lexical/embedding/embedding+reranker 和 personalization off/on，统一输出 Recall、Precision、MRR、NDCG、P50/P95 延迟、降级模式及全部失败样本。
 

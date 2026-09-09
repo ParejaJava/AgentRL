@@ -28,7 +28,11 @@ def _parser() -> argparse.ArgumentParser:
     preflight.add_argument("--live", action="store_true", help="同时要求 Kimi/Langfuse 配置")
 
     run = subcommands.add_parser("run", help="运行证据套件")
-    run.add_argument("--suite", choices=("offline", "live"), required=True)
+    run.add_argument(
+        "--suite",
+        choices=("offline", "live-e2e", "live-context"),
+        required=True,
+    )
     run.add_argument("--skip-retrieval", action="store_true")
     run.add_argument("--repetitions", type=int, default=3)
     run.add_argument("--max-requests", type=int, default=250)
@@ -56,7 +60,7 @@ async def _run(args: argparse.Namespace) -> int:
         write_json(directory / "preflight.json", preflight)
         if not preflight["passed"]:
             reports = [preflight]
-        else:
+        elif args.suite == "live-e2e":
             live = await run_live_suite(
                 ROOT,
                 repetitions=args.repetitions,
@@ -65,22 +69,23 @@ async def _run(args: argparse.Namespace) -> int:
                 runtime_root=directory / "runtime",
             )
             write_json(directory / "live.json", live)
-            remaining_requests = max(0, args.max_requests - int(live["metrics"]["started_requests"]))
-            remaining_tokens = max(0, args.max_total_tokens - int(live["metrics"]["observed_tokens"]))
+            observability = collect_langfuse_trace_evidence(ROOT, live)
+            write_json(directory / "observability.json", observability)
+            reports = [preflight, live, observability]
+        else:
             context = await run_context_live(
                 ROOT,
-                max_model_requests=remaining_requests,
-                max_total_tokens=remaining_tokens,
+                max_model_requests=args.max_requests,
+                max_total_tokens=args.max_total_tokens,
                 runtime_root=directory / "runtime",
             )
             write_json(directory / "context.json", context)
             observability = collect_langfuse_trace_evidence(
                 ROOT,
-                live,
                 context_report=context,
             )
             write_json(directory / "observability.json", observability)
-            reports = [preflight, live, context, observability]
+            reports = [preflight, context, observability]
     summary: dict[str, Any] = {
         "run_id": run_id,
         "suite": args.suite,

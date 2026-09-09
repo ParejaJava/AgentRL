@@ -111,7 +111,8 @@ npm run dev
 ```powershell
 uv run python -m scripts.evidence preflight
 uv run python -m scripts.evidence run --suite offline
-uv run python -m scripts.evidence run --suite live
+uv run python -m scripts.evidence run --suite live-e2e
+uv run python -m scripts.evidence run --suite live-context
 uv run python -m scripts.evidence publish --run-id <run_id>
 ```
 

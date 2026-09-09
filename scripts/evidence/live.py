@@ -245,7 +245,7 @@ async def run_live_suite(
         "status": "verified" if passed else "code_verified",
         "started_at": started_at,
         "duration_seconds": round(time.perf_counter() - started, 6),
-        "command": "uv run python -m scripts.evidence run --suite live",
+        "command": "uv run python -m scripts.evidence run --suite live-e2e",
         "environment": runtime_environment(root),
         "dataset": {
             "path": "eval/evidence/live_cases.jsonl",
