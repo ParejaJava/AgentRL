@@ -98,6 +98,37 @@ def _incremental_summary_verified(full: dict[str, Any]) -> bool:
     )
 
 
+def _mode_agent_usage(
+    mode: str,
+    cases: list[dict[str, Any]],
+    shared_usage: dict[str, int],
+) -> dict[str, int | str]:
+    """汇总 AgentLoop 用量；off 无治理账本时使用纯 Agent 网关计数。"""
+
+    usage: dict[str, int | str] = {
+        "model_calls": sum(int(item["agent_model_calls"]) for item in cases),
+        "input_tokens": sum(int(item["agent_input_tokens"]) for item in cases),
+        "output_tokens": sum(int(item["agent_output_tokens"]) for item in cases),
+        "cached_input_tokens": sum(
+            int(item["agent_cached_input_tokens"]) for item in cases
+        ),
+        "source": "context_token_ledger",
+    }
+    if mode == "off" and int(usage["input_tokens"]) == 0:
+        # off 明确不装配上下文治理中间件，也不会产生压缩模型调用；因此共享
+        # 网关的全部用量都来自 AgentLoop，可作为未治理基线的真实用量。
+        usage.update(
+            {
+                "model_calls": int(shared_usage.get("completed_requests", 0)),
+                "input_tokens": int(shared_usage.get("observed_input_tokens", 0)),
+                "output_tokens": int(shared_usage.get("observed_output_tokens", 0)),
+                "cached_input_tokens": 0,
+                "source": "gateway_budget_no_compressor",
+            }
+        )
+    return usage
+
+
 def _empty_report(
     root: Path,
     dataset_path: Path,
@@ -356,6 +387,7 @@ async def _run_mode(
         )
 
     usage = shared_budget.snapshot()
+    agent_usage = _mode_agent_usage(mode, mode_cases, usage)
     retention_rate = (
         sum(bool(item["retained"]) for item in mode_cases) / len(mode_cases)
         if mode_cases
@@ -390,20 +422,7 @@ async def _run_mode(
             "cache_epoch_rolls": sum(
                 int(item["cache_epoch_rolls"]) for item in mode_cases
             ),
-            "agent_usage": {
-                "model_calls": sum(
-                    int(item["agent_model_calls"]) for item in mode_cases
-                ),
-                "input_tokens": sum(
-                    int(item["agent_input_tokens"]) for item in mode_cases
-                ),
-                "output_tokens": sum(
-                    int(item["agent_output_tokens"]) for item in mode_cases
-                ),
-                "cached_input_tokens": sum(
-                    int(item["agent_cached_input_tokens"]) for item in mode_cases
-                ),
-            },
+            "agent_usage": agent_usage,
             "cases": mode_cases,
         },
         stopped_reason,

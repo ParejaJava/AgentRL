@@ -11,7 +11,10 @@ from app.infrastructure.context_governance.config import GovernanceConfig
 from app.infrastructure.context_governance.factory import create_context_middleware
 from app.infrastructure.health import OpenSearchReadinessProbe
 from app.infrastructure.settings import Settings
-from scripts.evidence.context_live import _incremental_summary_verified
+from scripts.evidence.context_live import (
+    _incremental_summary_verified,
+    _mode_agent_usage,
+)
 from scripts.evidence.live import _evaluate_case
 from scripts.evidence.observability import collect_langfuse_trace_evidence
 from scripts.evidence.offline import _coverage_thresholds
@@ -74,6 +77,35 @@ def test_context_evidence_requires_real_incremental_summary_success() -> None:
 
     assert _incremental_summary_verified(failed) is False
     assert _incremental_summary_verified(verified) is True
+
+
+def test_context_off_mode_uses_gateway_usage_as_agent_baseline() -> None:
+    """off 不装配治理账本时，共享网关用量就是纯 AgentLoop 基线。"""
+
+    usage = _mode_agent_usage(
+        "off",
+        [
+            {
+                "agent_model_calls": 0,
+                "agent_input_tokens": 0,
+                "agent_output_tokens": 0,
+                "agent_cached_input_tokens": 0,
+            }
+        ],
+        {
+            "completed_requests": 12,
+            "observed_input_tokens": 8_000,
+            "observed_output_tokens": 500,
+        },
+    )
+
+    assert usage == {
+        "model_calls": 12,
+        "input_tokens": 8_000,
+        "output_tokens": 500,
+        "cached_input_tokens": 0,
+        "source": "gateway_budget_no_compressor",
+    }
 
 
 def test_publish_refuses_dirty_worktree(tmp_path: Path, monkeypatch) -> None:
