@@ -1,7 +1,8 @@
 """API 与 Worker 共用的唯一依赖装配入口。"""
 
+import asyncio
 import hashlib
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from app.application.agents import DriftDetector, RunAgent
 from app.application.catalog import CategoryInsightConfig, ItemRetrievalMode
@@ -29,11 +30,13 @@ from app.infrastructure.langchain.preference_middleware import (
 )
 from app.infrastructure.langchain.prompts import MAIN_SYSTEM_PROMPT
 from app.infrastructure.langchain.reliability_middleware import (
+    ModelAttemptBudgetMiddleware,
     ModelGatewayMiddleware,
     ToolHarnessMiddleware,
     ToolResilienceConfig,
     ToolResilienceMiddleware,
 )
+from app.infrastructure.langchain.shopping_guard import ShoppingGuardMiddleware
 from app.infrastructure.langchain.tools import (
     create_category_insight_tool,
     create_item_search_tool,
@@ -42,13 +45,21 @@ from app.infrastructure.langchain.tools import (
     create_task_tools,
     create_web_search_tool,
 )
+from app.infrastructure.langchain.tools.product_search import (
+    create_category_resolution_tool,
+)
 from app.infrastructure.llm import (
     create_category_structuring_model,
     create_chat_model,
     create_compression_model,
+    create_executor_model,
 )
 from app.infrastructure.memory import SQLitePreferenceStore
 from app.infrastructure.observability import LangfuseCallbacks
+from app.infrastructure.observability.trajectory_recorder import (
+    ModelCallScopeMiddleware,
+    TrajectoryRecorderMiddleware,
+)
 from app.infrastructure.orders import IndexedProductReader, SQLiteOrderRepository
 from app.infrastructure.queue import RedisStreamTaskQueue
 from app.infrastructure.resilience import RedisSharedCircuitBreaker
@@ -97,6 +108,9 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
 
     resolved = settings or Settings.from_env()
     model = create_chat_model(resolved)
+    executor_model = (
+        create_executor_model(resolved) if resolved.executor_model_name else None
+    )
     fallback_model = (
         create_chat_model(resolved, model_name=resolved.fallback_llm_model)
         if resolved.fallback_llm_model
@@ -173,13 +187,14 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
             index_id=resolved.item_search_index_id,
         ),
         create_category_insight_tool(category_insight_service),
+        create_category_resolution_tool(
+            item_search_service, index_id=resolved.item_search_index_id
+        ),
     ]
     if resolved.tavily_api_key:
         tools.append(create_web_search_tool(TavilyWebSearch(resolved.tavily_api_key)))
     task_service = TaskBoardService(
-        SQLiteTaskBoardRepository(
-            resolved.governance.session_root / "task_boards.db"
-        )
+        SQLiteTaskBoardRepository(resolved.governance.session_root / "task_boards.db")
     )
     task_tools = create_task_tools(task_service)
     preference_tools = create_preference_tools(preference_store)
@@ -191,6 +206,8 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         preference_store,
         preference_selector,
     )
+    model_semaphore = asyncio.Semaphore(resolved.model_max_concurrency)
+    exact_attempts = bool(resolved.executor_model_name or resolved.trajectory_root)
     model_gateway = ModelGatewayMiddleware(
         max_concurrency=resolved.model_max_concurrency,
         min_interval_seconds=resolved.model_min_interval_seconds,
@@ -200,6 +217,32 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         evidence_budget=evidence_budget,
         fallback_model=fallback_model,
         lite_model=lite_model,
+        semaphore=model_semaphore,
+        external_attempt_accounting=exact_attempts,
+    )
+    executor_gateway = (
+        ModelGatewayMiddleware(
+            max_concurrency=resolved.model_max_concurrency,
+            min_interval_seconds=resolved.model_min_interval_seconds,
+            max_retries=resolved.model_max_retries,
+            evidence_budget=evidence_budget,
+            semaphore=model_semaphore,
+            external_attempt_accounting=True,
+            fallback_model=(
+                create_executor_model(
+                    resolved, model_name=resolved.executor_fallback_model
+                )
+                if resolved.executor_fallback_model
+                else None
+            ),
+            lite_model=(
+                create_executor_model(resolved, model_name=resolved.executor_lite_model)
+                if resolved.executor_lite_model
+                else None
+            ),
+        )
+        if executor_model is not None
+        else model_gateway
     )
     shared_breaker = (
         RedisSharedCircuitBreaker(
@@ -229,6 +272,51 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
     )
     runtime = MainAgent(
         model=model,
+        sub_agent_model=executor_model,
+        sub_agent_governance_config=(
+            replace(
+                resolved.governance,
+                context_window_tokens=resolved.executor_context_window or 4096,
+                explicit_cache=False,
+                cache_provider="auto",
+            )
+            if executor_model is not None or resolved.executor_context_window
+            else None
+        ),
+        main_model_middleware=(ModelCallScopeMiddleware(), model_gateway),
+        sub_model_middleware=(ModelCallScopeMiddleware(), executor_gateway),
+        main_boundary_middleware=(
+            *(
+                (ModelAttemptBudgetMiddleware(evidence_budget),)
+                if exact_attempts
+                else ()
+            ),
+            *(
+                (
+                    TrajectoryRecorderMiddleware(
+                        resolved.trajectory_root, agent_role="planner"
+                    ),
+                )
+                if resolved.trajectory_root
+                else ()
+            ),
+        ),
+        sub_boundary_middleware=(
+            *(
+                (ModelAttemptBudgetMiddleware(evidence_budget),)
+                if exact_attempts
+                else ()
+            ),
+            *(
+                (
+                    TrajectoryRecorderMiddleware(
+                        resolved.trajectory_root, agent_role="executor"
+                    ),
+                )
+                if resolved.trajectory_root
+                else ()
+            ),
+        ),
         tools=tools,
         main_only_tools=(*task_tools, *preference_tools, *order_tools),
         task_service=task_service,
@@ -236,10 +324,12 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
         governance_config=resolved.governance,
         sub_agent_max_concurrency=resolved.sub_agent_max_concurrency,
         shared_middleware=(
-            model_gateway,
+            preference_middleware,
+            ShoppingGuardMiddleware(
+                resolved.trajectory_root / "guard" if resolved.trajectory_root else None
+            ),
             tool_harness,
             tool_resilience,
-            preference_middleware,
         ),
         observability=observability,
         checkpointer=checkpointer,
@@ -271,6 +361,7 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
             namespace=(
                 f"{resolved.redis_key_prefix}:semantic:"
                 f"{resolved.llm_model_name}:"
+                f"{resolved.executor_model_name + ':' if resolved.executor_model_name else ''}"
                 f"{hashlib.sha256(MAIN_SYSTEM_PROMPT.encode()).hexdigest()[:12]}"
             ),
             threshold=resolved.semantic_cache_threshold,

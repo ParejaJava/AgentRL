@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import Any, Literal, NotRequired
+from typing import Annotated, Any, Literal, NotRequired
 
 from langchain.agents.middleware import AgentState
 from pydantic import BaseModel, Field
@@ -136,6 +136,11 @@ class GovernanceSnapshot(BaseModel):
     prefix_mismatch: bool = False
 
 
+def merge_shopping_evidence(left: dict, right: dict) -> dict:
+    """Merge independently keyed parallel tool results without sharing mutable state."""
+    return {**left, **right}
+
+
 class SessionAgentState(AgentState):
     """LangGraph Checkpointer 持久化的单个 AgentLoop 会话状态。"""
 
@@ -154,6 +159,8 @@ class SessionAgentState(AgentState):
     repeated_compactions: NotRequired[int]
     last_semantic_signal_id: NotRequired[str | None]
     last_governance: NotRequired[dict[str, Any]]
+    shopping_requirements: NotRequired[dict[str, Any]]
+    shopping_evidence: Annotated[dict[str, Any], merge_shopping_evidence]
 
 
 class ChildAgentResult(BaseModel):

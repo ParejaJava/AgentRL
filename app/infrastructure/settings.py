@@ -96,6 +96,13 @@ class Settings:
     preference_prompt_like_limit: int
     order_database_path: Path
     governance: GovernanceConfig
+    executor_model_name: str | None = None
+    executor_base_url: str | None = None
+    executor_api_key: str | None = None
+    executor_context_window: int | None = None
+    executor_fallback_model: str | None = None
+    executor_lite_model: str | None = None
+    trajectory_root: Path | None = None
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -104,6 +111,21 @@ class Settings:
         load_dotenv()
         model_name = os.getenv("LLM_MODEL_NAME", "qwen-max")
         settings = cls(
+            executor_model_name=os.getenv("EXECUTOR_MODEL_NAME") or None,
+            executor_base_url=os.getenv("EXECUTOR_BASE_URL") or None,
+            executor_api_key=os.getenv("EXECUTOR_API_KEY") or None,
+            executor_context_window=(
+                int(os.environ["EXECUTOR_CONTEXT_WINDOW"])
+                if os.getenv("EXECUTOR_CONTEXT_WINDOW")
+                else None
+            ),
+            executor_fallback_model=os.getenv("EXECUTOR_FALLBACK_MODEL") or None,
+            executor_lite_model=os.getenv("EXECUTOR_LITE_MODEL") or None,
+            trajectory_root=(
+                Path(os.environ["TRAJECTORY_ROOT"])
+                if os.getenv("TRAJECTORY_ROOT")
+                else None
+            ),
             llm_model_name=model_name,
             llm_api_key=os.getenv("LLM_API_KEY"),
             llm_base_url=os.getenv("LLM_BASE_URL"),
@@ -138,9 +160,7 @@ class Settings:
             redis_url=os.getenv("REDIS_URL", "redis://localhost:6379/0"),
             redis_key_prefix=os.getenv("REDIS_KEY_PREFIX", "globex").strip(),
             queue_max_attempts=int(os.getenv("QUEUE_MAX_ATTEMPTS", "3")),
-            queue_large_request_turns=int(
-                os.getenv("QUEUE_LARGE_REQUEST_TURNS", "30")
-            ),
+            queue_large_request_turns=int(os.getenv("QUEUE_LARGE_REQUEST_TURNS", "30")),
             checkpoint_backend=os.getenv("CHECKPOINT_BACKEND", "memory")
             .strip()
             .lower(),
@@ -199,19 +219,15 @@ class Settings:
             category_ingestion_max_concurrency=int(
                 os.getenv("CATEGORY_INGESTION_MAX_CONCURRENCY", "5")
             ),
-            category_quick_recall_k=int(
-                os.getenv("CATEGORY_QUICK_RECALL_K", "8")
-            ),
-            category_deep_recall_k=int(
-                os.getenv("CATEGORY_DEEP_RECALL_K", "20")
-            ),
-            category_min_confidence=float(
-                os.getenv("CATEGORY_MIN_CONFIDENCE", "0.6")
-            ),
+            category_quick_recall_k=int(os.getenv("CATEGORY_QUICK_RECALL_K", "8")),
+            category_deep_recall_k=int(os.getenv("CATEGORY_DEEP_RECALL_K", "20")),
+            category_min_confidence=float(os.getenv("CATEGORY_MIN_CONFIDENCE", "0.6")),
             category_retriever_backend=os.getenv(
                 "CATEGORY_RETRIEVER_BACKEND",
                 "local",
-            ).strip().lower(),
+            )
+            .strip()
+            .lower(),
             category_embedding_model=os.getenv(
                 "CATEGORY_EMBEDDING_MODEL",
                 "BAAI/bge-m3",
@@ -223,9 +239,7 @@ class Settings:
                 "CATEGORY_RERANKER_MODEL",
                 "BAAI/bge-reranker-v2-m3",
             ),
-            category_hybrid_recall_k=int(
-                os.getenv("CATEGORY_HYBRID_RECALL_K", "50")
-            ),
+            category_hybrid_recall_k=int(os.getenv("CATEGORY_HYBRID_RECALL_K", "50")),
             category_min_relevance_score=float(
                 os.getenv("CATEGORY_MIN_RELEVANCE_SCORE", "0.01")
             ),
@@ -250,12 +264,8 @@ class Settings:
             opensearch_number_of_replicas=int(
                 os.getenv("OPENSEARCH_NUMBER_OF_REPLICAS", "0")
             ),
-            opensearch_bm25_weight=float(
-                os.getenv("OPENSEARCH_BM25_WEIGHT", "0.4")
-            ),
-            opensearch_knn_weight=float(
-                os.getenv("OPENSEARCH_KNN_WEIGHT", "0.6")
-            ),
+            opensearch_bm25_weight=float(os.getenv("OPENSEARCH_BM25_WEIGHT", "0.4")),
+            opensearch_knn_weight=float(os.getenv("OPENSEARCH_KNN_WEIGHT", "0.6")),
             preference_database_path=Path(
                 os.getenv(
                     "PREFERENCE_DATABASE_PATH",
@@ -277,20 +287,27 @@ class Settings:
             raise ValueError("MODEL_MAX_CONCURRENCY 必须大于 0")
         if settings.model_min_interval_seconds < 0 or settings.model_max_retries < 0:
             raise ValueError("模型请求间隔和重试次数不能小于 0")
-        if min(
-            settings.model_run_max_requests,
-            settings.model_run_max_observed_tokens,
-        ) < 0:
+        if (
+            min(
+                settings.model_run_max_requests,
+                settings.model_run_max_observed_tokens,
+            )
+            < 0
+        ):
             raise ValueError("证据运行请求和 Token 硬上限不能小于 0")
         if settings.token_budget_total < 0:
             raise ValueError("TOKEN_BUDGET_TOTAL 不能小于 0")
         if settings.tool_timeout_seconds <= 0:
             raise ValueError("TOOL_TIMEOUT_SECONDS 必须大于 0")
-        if min(
-            settings.tool_failure_threshold,
-            settings.tool_repeated_call_limit,
-            settings.drift_check_interval,
-        ) < 1 or settings.tool_recovery_seconds < 0:
+        if (
+            min(
+                settings.tool_failure_threshold,
+                settings.tool_repeated_call_limit,
+                settings.drift_check_interval,
+            )
+            < 1
+            or settings.tool_recovery_seconds < 0
+        ):
             raise ValueError("工具熔断和重复调用参数不合法")
         if not settings.redis_url or not settings.redis_key_prefix:
             raise ValueError("REDIS_URL 和 REDIS_KEY_PREFIX 不能为空")
@@ -322,6 +339,13 @@ class Settings:
             raise ValueError("RETRIEVAL_EMBEDDING_BATCH_SIZE 必须大于 0")
         if settings.retrieval_reranker_batch_size < 1:
             raise ValueError("RETRIEVAL_RERANKER_BATCH_SIZE 必须大于 0")
+        if (
+            settings.executor_context_window is not None
+            and settings.executor_context_window < 1
+        ):
+            raise ValueError("EXECUTOR_CONTEXT_WINDOW must be positive")
+        if settings.executor_base_url and not settings.executor_model_name:
+            raise ValueError("EXECUTOR_BASE_URL requires EXECUTOR_MODEL_NAME")
         if settings.compression_llm_max_tokens < 1:
             raise ValueError("COMPRESSION_LLM_MAX_TOKENS 必须大于 0")
         if settings.category_structuring_max_tokens < 1:
@@ -331,21 +355,15 @@ class Settings:
         if settings.category_quick_recall_k < 1:
             raise ValueError("CATEGORY_QUICK_RECALL_K 必须大于 0")
         if settings.category_deep_recall_k < settings.category_quick_recall_k:
-            raise ValueError(
-                "CATEGORY_DEEP_RECALL_K 不能小于 CATEGORY_QUICK_RECALL_K"
-            )
+            raise ValueError("CATEGORY_DEEP_RECALL_K 不能小于 CATEGORY_QUICK_RECALL_K")
         if not 0.0 <= settings.category_min_confidence <= 1.0:
             raise ValueError("CATEGORY_MIN_CONFIDENCE 必须位于 0 到 1 之间")
         if settings.category_retriever_backend not in {"local", "opensearch"}:
-            raise ValueError(
-                "CATEGORY_RETRIEVER_BACKEND 只能是 local 或 opensearch"
-            )
+            raise ValueError("CATEGORY_RETRIEVER_BACKEND 只能是 local 或 opensearch")
         if settings.category_embedding_dimension < 1:
             raise ValueError("CATEGORY_EMBEDDING_DIMENSION 必须大于 0")
         if settings.category_hybrid_recall_k < settings.category_deep_recall_k:
-            raise ValueError(
-                "CATEGORY_HYBRID_RECALL_K 不能小于 CATEGORY_DEEP_RECALL_K"
-            )
+            raise ValueError("CATEGORY_HYBRID_RECALL_K 不能小于 CATEGORY_DEEP_RECALL_K")
         if not 0.0 <= settings.category_min_relevance_score <= 1.0:
             raise ValueError("CATEGORY_MIN_RELEVANCE_SCORE 必须位于 0 到 1 之间")
         if settings.opensearch_timeout_seconds <= 0:

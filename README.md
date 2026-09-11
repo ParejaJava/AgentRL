@@ -1,5 +1,10 @@
 # Globex Agent
 
+子 Agent 执行模型的 LoRA SFT、数据校验、本地推理接入和回滚说明见
+[`training/README.md`](training/README.md)。默认不启用执行模型覆盖或轨迹采集。
+第二版 Qwen3-1.7B QLoRA、2,000 条冻结决策数据及完整任务对照流程见
+[`training/V2.md`](training/V2.md)。模型原始正确率与业务校验后的任务成功率分别统计。
+
 > 面试证据、真实指标边界和一键复现入口见 [`docs/interview_evidence/README.md`](docs/interview_evidence/README.md)。简历数字以绑定固定 Commit 的发布报告为准。
 
 Globex Agent 是一个面向多 Agent 场景的全栈项目骨架，后端使用 FastAPI，前端使用 React + Vite。

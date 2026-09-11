@@ -2,10 +2,12 @@
 
 import logging
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from app.domain.catalog import Money, Product, ProductSearchSpec
+from app.domain.shipping import ShippingQuote
 
+from .category_resolution import SearchClarificationError
 from .config import ItemSearchConfig
 from .fusion import fuse_request_vector
 from .models import (
@@ -64,27 +66,41 @@ class ItemSearchService:
                 "encoder dimension does not match ItemSearch configuration"
             )
 
+    def resolve_category(self, index_id: str, query: str) -> dict[str, object]:
+        """Resolve only against the selected catalog; unavailable metadata is explicit."""
+        index = self._indexes.get(index_id)
+        catalog = getattr(index, "category_catalog", None)
+        if not callable(catalog):
+            return {
+                "status": "unavailable",
+                "code": "category_catalog_unavailable",
+                "message": "当前索引未提供品类目录，不能自动推断别名。",
+            }
+        return catalog().resolve(query)
+
     def search(self, command: ItemSearchCommand) -> ItemSearchResponse:
         """执行三级召回链，并在返回商品卡中内联估算到手价。"""
 
         spec = command.spec
         if spec.top_k > self._config.max_result_k:
-            raise ValueError(
-                f"top_k must be between 1 and {self._config.max_result_k}"
-            )
+            raise ValueError(f"top_k must be between 1 and {self._config.max_result_k}")
         if (
             spec.ship_to
             and self._pricing is not None
             and spec.ship_to not in self._pricing.supported_destinations()
         ):
             supported = ", ".join(self._pricing.supported_destinations())
-            raise ValueError(
-                f"暂不支持目的地 {spec.ship_to}；当前支持：{supported}"
-            )
+            raise ValueError(f"暂不支持目的地 {spec.ship_to}；当前支持：{supported}")
 
         index = self._indexes.get(command.index_id)
         if index.dimension != self._encoder.dimension:
             raise ValueError("selected index dimension does not match the encoder")
+        if spec.category:
+            resolution = self.resolve_category(command.index_id, spec.category)
+            if resolution["status"] == "resolved":
+                spec = replace(spec, category=str(resolution["category"]))
+            elif resolution["status"] == "needs_clarification":
+                raise SearchClarificationError(resolution)
 
         # 品类既作为语义提示参与召回，之后也会作为确定性硬约束检查。
         retrieval_query = (
@@ -143,9 +159,14 @@ class ItemSearchService:
 
         eligible: list[_Candidate] = []
         filtered_out: list[FilteredItem] = []
+        quotes: dict[str, ShippingQuote] = {}
+        seen_ids: set[str] = set()
         for candidate in ranked_candidates:
+            if candidate.item_id in seen_ids:
+                continue
+            seen_ids.add(candidate.item_id)
             product = index.get_product(candidate.item_id)
-            reason, converted_price = self._reject_reason(product, spec)
+            reason, converted_price = self._reject_reason(product, spec, quotes)
             if reason is None:
                 eligible.append(candidate)
             elif len(filtered_out) < _FILTERED_OUT_LIMIT:
@@ -165,6 +186,7 @@ class ItemSearchService:
                 candidate=candidate,
                 product=index.get_product(candidate.item_id),
                 spec=spec,
+                quote=quotes.get(candidate.item_id),
             )
             for rank, candidate in enumerate(eligible[: spec.top_k], start=1)
         ]
@@ -190,19 +212,13 @@ class ItemSearchService:
 
         if strategy == "keyword_2gram":
             return (
-                [
-                    _Candidate(hit.item_id, hit.score, hit.score)
-                    for hit in hits
-                ],
+                [_Candidate(hit.item_id, hit.score, hit.score) for hit in hits],
                 strategy,
             )
 
         if self._config.retrieval_mode == "embedding":
             return (
-                [
-                    _Candidate(hit.item_id, hit.score, hit.score)
-                    for hit in hits
-                ],
+                [_Candidate(hit.item_id, hit.score, hit.score) for hit in hits],
                 "embedding_only",
             )
 
@@ -211,10 +227,7 @@ class ItemSearchService:
         try:
             scores = list(
                 self._reranker.score(
-                    [
-                        (rerank_query, product.to_search_text())
-                        for product in products
-                    ]
+                    [(rerank_query, product.to_search_text()) for product in products]
                 )
             )
             if len(scores) != len(hits):
@@ -241,10 +254,7 @@ class ItemSearchService:
                 exc_info=True,
             )
             return (
-                [
-                    _Candidate(hit.item_id, hit.score, hit.score)
-                    for hit in hits
-                ],
+                [_Candidate(hit.item_id, hit.score, hit.score) for hit in hits],
                 "embedding_only",
             )
 
@@ -252,6 +262,7 @@ class ItemSearchService:
         self,
         product: Product,
         spec: ProductSearchSpec,
+        quotes: dict[str, ShippingQuote] | None = None,
     ) -> tuple[str | None, Money | None]:
         """返回硬约束拒绝原因及可选的目标币种商品价格。"""
 
@@ -259,10 +270,19 @@ class ItemSearchService:
             return "category_mismatch", None
         if spec.ship_to and spec.ship_to not in product.ships_to:
             return "ship_to_unavailable", None
+        if product.brand.casefold() in {b.casefold() for b in spec.excluded_brands}:
+            return "excluded_brand", None
+        if (
+            spec.required_brand
+            and product.brand.casefold() != spec.required_brand.casefold()
+        ):
+            return "brand_mismatch", None
         try:
             primary = product.primary_sku()
         except ValueError:
             return "no_available_sku", None
+        if primary.stock < spec.quantity:
+            return "insufficient_stock", None
 
         converted_price: Money | None = None
         if spec.price_cap is not None:
@@ -271,6 +291,24 @@ class ItemSearchService:
                     primary.price,
                     spec.target_currency,
                 )
+                if spec.price_basis == "subtotal":
+                    converted_price = Money(
+                        converted_price.amount_minor * spec.quantity,
+                        converted_price.currency,
+                    )
+                elif spec.price_basis == "landed":
+                    if self._pricing is None:
+                        return "pricing_unavailable", None
+                    quote = self._pricing.quote(
+                        unit_price=primary.price,
+                        category=product.category,
+                        ship_to=spec.ship_to,
+                        quantity=spec.quantity,
+                        target_currency=spec.target_currency,
+                    )
+                    converted_price = quote.landed_total
+                    if quotes is not None:
+                        quotes[product.item_id] = quote
             except ValueError:
                 return "pricing_unavailable", None
             if converted_price.amount_minor > spec.price_cap.amount_minor:
@@ -293,12 +331,12 @@ class ItemSearchService:
         candidate: _Candidate,
         product: Product,
         spec: ProductSearchSpec,
+        quote: ShippingQuote | None = None,
     ) -> RankedItem:
         """组装最终商品卡，并在指定收货地时内联估算到手价。"""
 
-        quote = None
         pricing_unavailable_reason = None
-        if spec.ship_to:
+        if spec.ship_to and quote is None:
             try:
                 primary = product.primary_sku()
                 if self._pricing is None:

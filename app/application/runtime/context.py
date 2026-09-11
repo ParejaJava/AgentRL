@@ -30,6 +30,8 @@ class AgentExecutionContext:
     run_id: str | None = None
     trace_id: str | None = None
     session_dir: str | None = None
+    parent_run_id: str | None = None
+    confirmed_requirements: dict[str, object] | None = None
 
     def __post_init__(self) -> None:
         """LangGraph 的线程标识必须显式存在。"""

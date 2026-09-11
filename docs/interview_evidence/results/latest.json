@@ -11,6 +11,12 @@
       "commit": "bd67b9a9a03e004760e835dc6e1dd5b5cf08c05c",
       "published_at": "2026-09-09T10:10:00.452022+00:00",
       "path": "docs/interview_evidence/results/20260909T094839Z-live-e2e"
+    },
+    "live-context": {
+      "run_id": "20260909T141654Z-live-context",
+      "commit": "38e4fdf8b9436bb083d3a75ce2aa675e46cf7add",
+      "published_at": "2026-09-09T14:25:11.486232+00:00",
+      "path": "docs/interview_evidence/results/20260909T141654Z-live-context"
     }
   }
 }

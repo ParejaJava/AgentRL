@@ -10,6 +10,7 @@ from typing import Any
 
 import numpy as np
 
+from app.application.catalog.category_resolution import CategoryCatalog
 from app.application.catalog.config import ItemSearchConfig
 from app.application.catalog.models import FloatVector, RecallHit
 from app.application.catalog.ports import ItemVectorIndex
@@ -86,6 +87,10 @@ class FaissItemIndex:
     @property
     def manifest(self) -> IndexManifest:
         return self._manifest
+
+    def category_catalog(self) -> CategoryCatalog:
+        """Expose canonical categories and explicitly curated aliases from metadata."""
+        return CategoryCatalog.from_products(self._products.values())
 
     @classmethod
     def build(

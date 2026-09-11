@@ -1,0 +1,245 @@
+"""Create an honest V2 report from completed, immutable comparison artifacts."""
+
+import json
+import statistics
+from collections import Counter
+from pathlib import Path
+
+from training.data import read_jsonl
+
+
+def main() -> None:
+    root = Path("eval/reports/executor-v2")
+    results = json.loads(
+        (root / "comparison_complete.json").read_text(encoding="utf-8")
+    )
+    training_root = Path("training/outputs/executor-v2-1.7b-qlora")
+    metrics = json.loads((training_root / "metrics.json").read_text(encoding="utf-8"))
+    selected = min(metrics["epochs"][1:], key=lambda epoch: epoch["dev_loss"])
+    base, adapter = results["decisions-base"], results["decisions-adapter"]
+    base_agent, adapter_agent = results["agent-base"], results["agent-adapter"]
+    agent_details = {}
+    for name in ("base", "adapter"):
+        cases = [
+            json.loads(path.read_text(encoding="utf-8"))
+            for path in (root / f"agent-{name}").glob("*/result.json")
+        ]
+        assert len(cases) == 40
+        successful = [case for case in cases if case["guarded_task_passed"]]
+        agent_details[name] = {
+            "successful_task_p50_seconds": statistics.median(
+                case["duration_seconds"] for case in successful
+            )
+            if successful
+            else None,
+            "passed_with_raw_selection_failure": sum(
+                case["raw_selection_failures"] > 0 for case in successful
+            ),
+            "errors": dict(Counter(case["error"] for case in cases if case["error"])),
+            "all_parent_links_present": all(
+                case["parent_links_present"] for case in cases
+            ),
+            "started_requests": sum(
+                case["budget"]["started_requests"] for case in cases
+            ),
+            "completed_requests": sum(
+                case["budget"]["completed_requests"] for case in cases
+            ),
+            "observed_tokens": sum(case["budget"]["observed_tokens"] for case in cases),
+        }
+    (root / "agent_metric_details.json").write_text(
+        json.dumps(agent_details, indent=2), encoding="utf-8"
+    )
+    raw_base = {
+        row["case_id"]: row for row in read_jsonl(root / "decisions-base/cases.jsonl")
+    }
+    raw_adapter = {
+        row["case_id"]: row
+        for row in read_jsonl(root / "decisions-adapter/cases.jsonl")
+    }
+    assert raw_base.keys() == raw_adapter.keys() and len(raw_base) == 300
+    tool_ids = {
+        row["case_id"]
+        for row in read_jsonl("eval/executor_v2/test.jsonl")
+        if row["target"].get("tool_calls")
+    }
+    decomposition = {}
+    for name, raw in (("base", raw_base), ("adapter", raw_adapter)):
+        valid_choices = [
+            raw[ident]
+            for ident in tool_ids
+            if raw[ident]["tool_choice_ok"] and raw[ident]["schema_ok"]
+        ]
+        good = sum(row["parameters_ok"] for row in valid_choices)
+        decomposition[name] = {
+            "tool_targets": len(tool_ids),
+            "valid_tool_choices": len(valid_choices),
+            "correct_parameters": good,
+            "conditional_parameter_rate": good / len(valid_choices)
+            if valid_choices
+            else None,
+        }
+    (root / "metric_decomposition.json").write_text(
+        json.dumps(decomposition, indent=2), encoding="utf-8"
+    )
+    changes = {"improved": [], "regressed": [], "both_failed": [], "both_passed": []}
+    for ident, before in raw_base.items():
+        after = raw_adapter[ident]
+        key = (
+            "both_passed"
+            if before["passed"] and after["passed"]
+            else "both_failed"
+            if not before["passed"] and not after["passed"]
+            else "improved"
+            if after["passed"]
+            else "regressed"
+        )
+        changes[key].append(ident)
+    (root / "paired_changes.json").write_text(
+        json.dumps(changes, indent=2), encoding="utf-8"
+    )
+    families = "\n".join(
+        f"| {family} | {scores['passed']}/{scores['total']} | {adapter['families'][family]['passed']}/{adapter['families'][family]['total']} |"
+        for family, scores in base["families"].items()
+    )
+    report = f"""# Qwen3-1.7B 购物执行器第二版实验
+
+已完成业务约束、第二版数据、真实本地 QLoRA SFT，以及基座与 adapter 的冻结测试和完整 Agent 对照。
+默认应用模型没有切换；本报告中的结果只适用于本次合成受控实验。
+
+## 数据与训练
+
+- 冻结数据：1,500 train / 200 dev / 300 test，另有 40 个完整任务。训练集 30 个业务家族，
+  包含重复模板；类别实体与主要表达跨 split 隔离，不能等同于 2,000 个独立真实用户问题。
+- 固定 Qwen/Qwen3-1.7B revision `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`。
+- RTX 5060 Laptop 8GB；NF4 双重量化、BF16 计算、LoRA r8/alpha16/dropout0.05，
+  q/k/v/o 投影，3,211,264 个可训练参数；学习率 1e-4，梯度累积 8，2 epochs，seed42。
+- 实际最长 2,735 tokens，最大训练长度 3,072，无截断；只监督最后 assistant 目标。
+- 正式运行耗时 {metrics["duration_seconds"] / 60:.2f} 分钟，峰值 CUDA 分配 {metrics["peak_cuda_bytes"] / 2**30:.2f} GiB。
+- 开发集 loss：初始 {metrics["epochs"][0]["dev_loss"]:.6f}，epoch1 {metrics["epochs"][1]["dev_loss"]:.6f}，
+  epoch2 {metrics["epochs"][2]["dev_loss"]:.6f}；选择 epoch {selected["epoch"]}，只依据开发 loss。
+- BF16 正式尝试在第一轮结束前因缓存压力与速度波动中止，保留原始目录及原因。
+  硬件比较使用相同 40 条训练样本：BF16 195.80 秒/5.49 GiB，QLoRA 100.99 秒/4.40 GiB。
+  配置试跑权重未作为正式模型；测试输出没有用于训练或选择 epoch。
+
+## 300 条冻结决策：严格单步动作与回答匹配
+
+两组统一 BF16 推理、greedy、最多生成 256 tokens，无响应缓存、无模型回退、无业务答案兜底。
+adapter 通过 PEFT 非合并方式加载；其中 LoRA 张量为 FP32，不能将这里的耗时当成合并权重后的最优推理速度。
+工具调用检查名称、Schema、参数；商品选择检查严格 JSON、真实编号、排序、数量和去重。
+追问/错误文本部分仍采用关键词规则，不能作为完整语义正确性的证明。
+评分要求预设的下一步动作。基座有些回答先解析品类或查询品类知识，这些在系统提示中属于允许的
+准备步骤，也会因没有立即执行标注动作而被判失败。因此这里的通过率包含动作偏好/格式适配，
+不能把全部未通过都解释为业务决策错误；完整任务对照用于补充判断实际影响。
+商品选择样本还包含超出请求数量、重复记录、缺货 SKU 和恶意商品描述等压力夹具，部分形态
+超出现有商品工具的正常输出；这同样限制了通过率对真实业务分布的代表性。
+
+| 指标 | 基座 | adapter |
+|---|---:|---:|
+| 通过 | {base["passed"]}/300（{base["success_rate"]:.2%}） | {adapter["passed"]}/300（{adapter["success_rate"]:.2%}） |
+| 目标工具与参数联合通过率 | {base["tool_parameter_rate"]:.2%} | {adapter["tool_parameter_rate"]:.2%} |
+| 选对工具且 Schema 有效后的参数通过数 | {decomposition["base"]["correct_parameters"]}/{decomposition["base"]["valid_tool_choices"]} | {decomposition["adapter"]["correct_parameters"]}/{decomposition["adapter"]["valid_tool_choices"]} |
+| 单次生成 P50 | {base["p50_seconds"]:.2f} 秒 | {adapter["p50_seconds"]:.2f} 秒 |
+| 单次生成 P95 | {base["p95_seconds"]:.2f} 秒 | {adapter["p95_seconds"]:.2f} 秒 |
+
+配对变化：修正 {len(changes["improved"])} 条、退化 {len(changes["regressed"])} 条、
+两者都失败 {len(changes["both_failed"])} 条。全部案例与原始输出保留，未移除失败。
+模板相关性使简单样本比例不能代表真实用户分布，本报告不据此宣称生产成功率。
+工具参数联合通过率包含工具选择是否匹配，不能将其差值全部归因为参数抽取能力；
+条件通过数单独列出，以区分流程/工具选择适配与参数填写。
+
+### 失败样本复核（不改动冻结评分）
+
+- 缺少配送地 0/10：仍以 `ship_to=null` 调用到手价查询，没有先追问。
+- 品牌冲突 0/10：把同一品牌同时写入必选和排除条件；其中还有未按协议包装的工具文本。
+- 品类歧义 0/10：出现擅自选择一个候选、同时搜索两个候选、查询知识或重复解析；
+  这些动作没有完成要求的澄清，不能仅凭单步结果推断所有后续流程都会失败。
+- 修改配送地 5/10：五条失败均遗漏原来大于 1 的购买数量。SKU 选择三条失败把 SKU ID
+  写进商品 ID 字段；另有一条重复商品 ID、两条撤回排除条件时仍保留排除且品牌字段类型错误。
+- 计价不可用 0/10：十条回答都表达无法确认预算并建议重试，但缺少评分要求的
+  “计价/报价/汇率/价格”关键词。这是措辞规则的局限，不能说模型把服务异常当成无货；
+  原始分数保持不变，也不据此另报人为修正后的准确率。
+- 已选对工具且 Schema 有效的子集，参数正确比例为基座 49/50、adapter 123/128；
+  两个子集不同，不能声称参数抽取本身提高了约 57 个百分点。总体提升主要体现目标动作和输出格式适配。
+- 单步生成中位耗时上升，不能同时宣称本次微调提高速度。完整任务耗时还受调用次数、错误退出和校验影响。
+
+## 40 个完整任务：接入业务校验后的系统结果
+
+固定派发器、合成目录和运税夹具；真实执行 MainAgent → fork → 本地模型 → 生产商品工具。
+覆盖四种配送/币种组合下的预算口径、品牌、数量库存、预算更新、币种追问和目录别名。
+系统检查商品 ID、SKU、标价、数量、估算到手价；不测试真实支付，也不评价主规划模型能力。
+完整任务只开放商品查询和目录解析两个工具；单步测试开放三个工具（另含品类知识）。
+两种评测的工具空间不同，各自内部的基座/adapter 条件一致，不能直接比较两种测试的通过率。
+
+| 指标 | 基座 | adapter |
+|---|---:|---:|
+| 业务校验后任务通过 | {base_agent["guarded_passed"]}/40 | {adapter_agent["guarded_passed"]}/40 |
+| 非空商品回答原始选择错误/检查次数 | {base_agent["raw_selection_failures"]}/{base_agent["raw_selection_checks"]} | {adapter_agent["raw_selection_failures"]}/{adapter_agent["raw_selection_checks"]} |
+| executor 模型调用数 | {base_agent["executor_model_calls"]} | {adapter_agent["executor_model_calls"]} |
+| 完整任务 P50 | {base_agent["p50_seconds"]:.2f} 秒 | {adapter_agent["p50_seconds"]:.2f} 秒 |
+| 完整任务 P95 | {base_agent["p95_seconds"]:.2f} 秒 | {adapter_agent["p95_seconds"]:.2f} 秒 |
+
+业务校验会拒绝丢失约束的工具调用，并以工具事实生成商品卡；非法编号选择可能由确定性排序兜底。
+因此任务通过率不能替代模型原始正确率。一次任务可能检查多次选择，分母不能直接当成 40。
+模型调用数包含失败请求。完整任务的 HTTP 502 会保存请求、错误类型与案例失败，服务端未保存
+解析失败前的原始生成文本，因此不能进一步确定每次格式错误是否由生成截断造成。
+300 条单步测试则完整保存了解析前原文。任务时延包含失败后提前退出，不等于只对成功任务的体验比较。
+通过但至少发生一次原始选择错误的任务：基座 {agent_details["base"]["passed_with_raw_selection_failure"]} 个、
+adapter {agent_details["adapter"]["passed_with_raw_selection_failure"]} 个。成功任务耗时、错误分组、请求数与
+父子追踪检查另存 `agent_metric_details.json`；失败请求未返回的生成 token 不计入 observed_tokens，
+不能将该字段当作全部实际计算量。
+基座失败任务：`{", ".join(base_agent["failed_cases"]) or "无"}`。
+adapter 失败任务：`{", ".join(adapter_agent["failed_cases"]) or "无"}`。
+
+adapter 的 12 个完整任务失败集中在三类，每类四个：
+
+- 预算更新：第二轮只确认新预算或再次追问，没有重新搜索。
+- 币种补充：第二轮输出裸工具 JSON 文本，没有真正触发调用。
+- 目录别名：模型将“出行便携用品”误写为“行便携用品”，目录工具正确返回需澄清。
+  原始请求和响应确认错误来自模型参数，并非目录解析代码删字。
+
+基础模型有 18 个任务因工具输出解析错误退出、1 个触及调用上限；adapter 没有异常退出，
+但上述未执行任务仍判为失败。整体任务 P50 虽降低，成功任务各自的 P50 为
+基座 {agent_details["base"]["successful_task_p50_seconds"]:.2f} 秒、adapter {agent_details["adapter"]["successful_task_p50_seconds"]:.2f} 秒；
+成功任务集合不同，不能据此作同难度的速度因果结论。
+
+## 代码验证与验收结论
+
+完整回归 216 项通过，Ruff lint 通过。额外的全仓格式检查发现 34 个本轮未修改文件存在
+格式差异，未为此批量改写原文件；完整输出保存于 `format-check.txt`。
+数据和 adapter 完整性、评测来源与默认配置核验见 `final_audit.json`。
+当前完成训练和受控集成验证，仍未达到切换默认 executor 的质量要求。
+后续应增加真实多轮轨迹与澄清恢复样本、修复工具协议生成和别名保真，并用新的独立测试集验证；
+本轮不根据已看过的冻结测试反复训练或修改评分。
+
+## 分家族结果
+
+| 家族 | 基座 | adapter |
+|---|---:|---:|
+{families}
+
+## 产物与使用边界
+
+- 正式 adapter：`training/outputs/executor-v2-1.7b-qlora/adapter`。
+- 冻结数据与哈希：`eval/executor_v2/manifest.json`。
+- 全部原始结果：`eval/reports/executor-v2/`，含模型输入/输出、错误、来源哈希、逐案例时延、训练配置、
+  配对变化、业务改写审计和服务日志。大模型权重和原始报告目录已忽略，不上传仓库。
+- 复现步骤、规则边界与限制见 [training/V2.md](../training/V2.md)。
+  显式条件解析是有界规则，不覆盖任意语言、品牌和复杂否定；别名来自受控目录。
+- 300 条冻结测试现已被使用，下一轮数据或模型优化应另建独立测试，不据此反复调训练。
+- 当前结果支持本地受控验证，尚不能据此自动切换默认模型或宣称生产部署完成。
+"""
+    Path("docs/executor_sft_v2_report.md").write_text(report, encoding="utf-8")
+    print(
+        json.dumps(
+            {
+                "report": "docs/executor_sft_v2_report.md",
+                "raw_passed": adapter["passed"],
+                "guarded_passed": adapter_agent["guarded_passed"],
+            }
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

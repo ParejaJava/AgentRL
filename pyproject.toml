@@ -37,6 +37,7 @@ platform = [
   "tavily-python>=0.7,<1.0",
 ]
 dev = [
+  "jsonschema>=4.23,<5.0",
   "httpx>=0.27,<1.0",
   "pytest>=8.0,<9.0",
   "pytest-cov>=6.0,<8.0",

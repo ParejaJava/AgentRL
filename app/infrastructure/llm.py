@@ -1,5 +1,6 @@
 """OpenAI-compatible ChatModel 基础设施适配器。"""
 
+from dataclasses import replace
 from typing import Any
 
 from langchain_openai import ChatOpenAI
@@ -22,6 +23,10 @@ def _chat_model_kwargs(
         "api_key": settings.llm_api_key,
         "base_url": settings.llm_base_url,
     }
+    if settings.executor_model_name or settings.trajectory_root:
+        # Opted-in executor/capture runs require each physical retry to pass
+        # through the gateway. Unconfigured applications keep SDK defaults.
+        kwargs["max_retries"] = 0
     normalized = model_name.lower()
     reasoning_prefixes = ("gpt-5", "o1", "o3", "o4", "kimi-k2")
     if not normalized.startswith(reasoning_prefixes):
@@ -50,6 +55,29 @@ def create_chat_model(
             temperature=settings.llm_temperature,
             disable_thinking=disable_thinking,
         )
+    )
+
+
+def create_executor_model(
+    settings: Settings,
+    *,
+    model_name: str | None = None,
+) -> ChatOpenAI:
+    """Create the executor endpoint; never send planner credentials to a new host."""
+
+    executor_settings = replace(
+        settings,
+        llm_base_url=settings.executor_base_url or settings.llm_base_url,
+        llm_api_key=(
+            settings.executor_api_key
+            or ("local-no-key" if settings.executor_base_url else settings.llm_api_key)
+        ),
+    )
+    return create_chat_model(
+        executor_settings,
+        model_name=model_name
+        or settings.executor_model_name
+        or settings.llm_model_name,
     )
 
 

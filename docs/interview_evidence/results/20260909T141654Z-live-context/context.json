@@ -1,0 +1,2210 @@
+{
+  "claim_id": "CTX-001",
+  "capability": "Cache-aware 会话上下文治理",
+  "status": "verified",
+  "started_at": "2026-09-09T14:16:56.531141+00:00",
+  "duration_seconds": 216.721864,
+  "command": "uv run python -m scripts.evidence run --suite live-context",
+  "environment": {
+    "commit": "38e4fdf8b9436bb083d3a75ce2aa675e46cf7add",
+    "dirty": false,
+    "dirty_entries": 0,
+    "repository": "AgentRL",
+    "python": "3.12.10",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "uv": "uv 0.11.19 (7b2cff1c3 2026-06-03 x86_64-pc-windows-msvc)",
+    "pyproject_sha256": "a88abbccf7a9f2d154178c34ab79169de07a119f8c4b0f258fbe65fc2e94d590",
+    "uv_lock_sha256": "75ed6d0506445ac55906ceb43e7767c17d062b832d7770f17ec1dabe3a1c51ef",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "dataset": {
+    "path": "eval/evidence/context_cases.json",
+    "sha256": "b282f2a635b75ba907fc686c0c350ea10294870ed48b793c3a34b008d2501a54",
+    "cases": 3,
+    "modes": [
+      "off",
+      "deterministic",
+      "full"
+    ]
+  },
+  "runtime_policy": {
+    "model_max_concurrency": 12,
+    "model_min_interval_seconds": 0.75,
+    "model_max_retries": 2,
+    "shared_request_budget": 250,
+    "shared_token_budget": 1000000
+  },
+  "metrics": {
+    "input_token_reduction": 0.43296,
+    "input_token_reduction_scope": "agent_loop_only",
+    "total_model_requests": 107,
+    "total_observed_tokens": 118743,
+    "stopped_reason": null,
+    "incremental_summary_verified": true,
+    "rejected_summary_attempts": 2
+  },
+  "modes": {
+    "off": {
+      "usage": {
+        "started_requests": 31,
+        "completed_requests": 31,
+        "observed_tokens": 45231,
+        "observed_input_tokens": 43974,
+        "observed_output_tokens": 1257
+      },
+      "retention_rate": 1.0,
+      "prefix_stability": 1.0,
+      "compression_calls": 0,
+      "incremental_summary_attempts": 0,
+      "incremental_summary_successes": 0,
+      "incremental_summary_failures": 0,
+      "baseline_consolidation_calls": 0,
+      "tool_offload_count": 0,
+      "cache_epoch_rolls": 0,
+      "agent_usage": {
+        "model_calls": 31,
+        "input_tokens": 43974,
+        "output_tokens": 1257,
+        "cached_input_tokens": 0,
+        "source": "gateway_budget_no_compressor"
+      },
+      "cases": [
+        {
+          "case_id": "context-large-tools",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "6bd73e7034b671127bd415fb6836de5324b4df0a4b0f800b3aeeecb453ac9275",
+            "chars": 81
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "dc5c076a-8044-45d0-8e49-7848d5a00e3a",
+              "trace_id": "dc5c076a804445d08e497848d5a00e3a",
+              "turn": "1"
+            },
+            {
+              "run_id": "254e74e8-78af-468c-885b-082625b02286",
+              "trace_id": "254e74e878af468c885b082625b02286",
+              "turn": "2"
+            },
+            {
+              "run_id": "7917b7cc-65b0-4d75-88d8-0ccce79ef685",
+              "trace_id": "7917b7cc65b04d7588d80ccce79ef685",
+              "turn": "3"
+            },
+            {
+              "run_id": "89e6a46b-0234-4830-9cbc-081009daa462",
+              "trace_id": "89e6a46b023448309cbc081009daa462",
+              "turn": "4"
+            },
+            {
+              "run_id": "594d3a74-03d3-41a4-9b45-9648f5ba0098",
+              "trace_id": "594d3a7403d341a49b459648f5ba0098",
+              "turn": "5"
+            },
+            {
+              "run_id": "0fd8c338-193d-488b-8f4f-16fedd63f3f0",
+              "trace_id": "0fd8c338193d488b8f4f16fedd63f3f0",
+              "turn": "6"
+            },
+            {
+              "run_id": "5bb2f5b3-f7e2-4a3b-a968-669b84668332",
+              "trace_id": "5bb2f5b3f7e24a3ba968669b84668332",
+              "turn": "7"
+            },
+            {
+              "run_id": "347109db-eb11-404b-9997-c52c5aab1f70",
+              "trace_id": "347109dbeb11404b9997c52c5aab1f70",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 184,
+              "output_tokens": 40,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 2,
+              "model_requests": 2,
+              "input_tokens": 1291,
+              "output_tokens": 56,
+              "cache_epoch": 0,
+              "message_count": 6,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 3,
+              "model_requests": 1,
+              "input_tokens": 1106,
+              "output_tokens": 119,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 4,
+              "model_requests": 2,
+              "input_tokens": 3293,
+              "output_tokens": 49,
+              "cache_epoch": 0,
+              "message_count": 12,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 5,
+              "model_requests": 1,
+              "input_tokens": 2092,
+              "output_tokens": 32,
+              "cache_epoch": 0,
+              "message_count": 14,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 6,
+              "model_requests": 2,
+              "input_tokens": 5057,
+              "output_tokens": 54,
+              "cache_epoch": 0,
+              "message_count": 18,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 2960,
+              "output_tokens": 33,
+              "cache_epoch": 0,
+              "message_count": 20,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 8,
+              "model_requests": 1,
+              "input_tokens": 3010,
+              "output_tokens": 52,
+              "cache_epoch": 0,
+              "message_count": 22,
+              "cold_refs": 0,
+              "governance": {}
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 0,
+          "tool_offload_count": 0,
+          "compression_calls": 0,
+          "incremental_summary_attempts": 0,
+          "incremental_summary_successes": 0,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 0,
+          "compression_input_tokens": 0,
+          "compression_output_tokens": 0,
+          "agent_model_calls": 0,
+          "agent_input_tokens": 0,
+          "agent_output_tokens": 0,
+          "agent_cached_input_tokens": 0,
+          "compression_ratio": 0.0
+        },
+        {
+          "case_id": "context-task-state",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "6a28e37f8fd474543bf260c3166aee1e9adaab7ac43c8b9ba05559fbc0c2fdd2",
+            "chars": 139
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "387da6e0-c905-4275-a84d-e6e63fa781e1",
+              "trace_id": "387da6e0c9054275a84de6e63fa781e1",
+              "turn": "1"
+            },
+            {
+              "run_id": "cde73e02-aaaa-4bc5-b8e8-cd036dcd4193",
+              "trace_id": "cde73e02aaaa4bc5b8e8cd036dcd4193",
+              "turn": "2"
+            },
+            {
+              "run_id": "f2c39814-7ee9-454a-84fa-2e6c3fc3c749",
+              "trace_id": "f2c398147ee9454a84fa2e6c3fc3c749",
+              "turn": "3"
+            },
+            {
+              "run_id": "6e8f6e12-998d-494c-9ed8-ab33aa612dae",
+              "trace_id": "6e8f6e12998d494c9ed8ab33aa612dae",
+              "turn": "4"
+            },
+            {
+              "run_id": "31a8fb19-c226-4b9e-b70b-f1ce5aaf6b76",
+              "trace_id": "31a8fb19c2264b9eb70bf1ce5aaf6b76",
+              "turn": "5"
+            },
+            {
+              "run_id": "256fc784-1e74-435a-814c-05f219048248",
+              "trace_id": "256fc7841e74435a814c05f219048248",
+              "turn": "6"
+            },
+            {
+              "run_id": "15b9a662-083a-4c62-b5ec-45f196205a0a",
+              "trace_id": "15b9a662083a4c62b5ec45f196205a0a",
+              "turn": "7"
+            },
+            {
+              "run_id": "e08723fb-d2be-46d6-aee2-4a4154e1fc5e",
+              "trace_id": "e08723fbd2be46d6aee24a4154e1fc5e",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 180,
+              "output_tokens": 40,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 2,
+              "model_requests": 1,
+              "input_tokens": 237,
+              "output_tokens": 47,
+              "cache_epoch": 0,
+              "message_count": 4,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 3,
+              "model_requests": 2,
+              "input_tokens": 1373,
+              "output_tokens": 48,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 4,
+              "model_requests": 1,
+              "input_tokens": 1112,
+              "output_tokens": 67,
+              "cache_epoch": 0,
+              "message_count": 10,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 5,
+              "model_requests": 2,
+              "input_tokens": 3163,
+              "output_tokens": 43,
+              "cache_epoch": 0,
+              "message_count": 14,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 6,
+              "model_requests": 1,
+              "input_tokens": 2008,
+              "output_tokens": 70,
+              "cache_epoch": 0,
+              "message_count": 16,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 2091,
+              "output_tokens": 77,
+              "cache_epoch": 0,
+              "message_count": 18,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 8,
+              "model_requests": 1,
+              "input_tokens": 2183,
+              "output_tokens": 89,
+              "cache_epoch": 0,
+              "message_count": 20,
+              "cold_refs": 0,
+              "governance": {}
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 0,
+          "tool_offload_count": 0,
+          "compression_calls": 0,
+          "incremental_summary_attempts": 0,
+          "incremental_summary_successes": 0,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 0,
+          "compression_input_tokens": 0,
+          "compression_output_tokens": 0,
+          "agent_model_calls": 0,
+          "agent_input_tokens": 0,
+          "agent_output_tokens": 0,
+          "agent_cached_input_tokens": 0,
+          "compression_ratio": 0.0
+        },
+        {
+          "case_id": "context-correction",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "452fc597df0d7fc50bb902f0d4572ed57c32db01cb941ba05d315159fa39eea2",
+            "chars": 31
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "16c9bd66-c3fc-4e64-a5cd-1238ade04285",
+              "trace_id": "16c9bd66c3fc4e64a5cd1238ade04285",
+              "turn": "1"
+            },
+            {
+              "run_id": "b5772e8b-e28a-4cd4-abd9-4c9618775a3f",
+              "trace_id": "b5772e8be28a4cd4abd94c9618775a3f",
+              "turn": "2"
+            },
+            {
+              "run_id": "6ac01d94-e676-4bcb-9841-a8174d0d0638",
+              "trace_id": "6ac01d94e6764bcb9841a8174d0d0638",
+              "turn": "3"
+            },
+            {
+              "run_id": "8a8debca-ed53-41e3-81e6-ec711664dfcb",
+              "trace_id": "8a8debcaed5341e381e6ec711664dfcb",
+              "turn": "4"
+            },
+            {
+              "run_id": "9e479027-ed82-4096-8248-14153474af24",
+              "trace_id": "9e479027ed824096824814153474af24",
+              "turn": "5"
+            },
+            {
+              "run_id": "049207f8-467e-44af-bf17-63ddad963206",
+              "trace_id": "049207f8467e44afbf1763ddad963206",
+              "turn": "6"
+            },
+            {
+              "run_id": "dcd8f6bb-213c-40c2-a55a-8595079e5314",
+              "trace_id": "dcd8f6bb213c40c2a55a8595079e5314",
+              "turn": "7"
+            },
+            {
+              "run_id": "9ff45203-7f11-4925-9665-1ba4790e5861",
+              "trace_id": "9ff452037f11492596651ba4790e5861",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 183,
+              "output_tokens": 40,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 2,
+              "model_requests": 2,
+              "input_tokens": 1289,
+              "output_tokens": 52,
+              "cache_epoch": 0,
+              "message_count": 6,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 3,
+              "model_requests": 1,
+              "input_tokens": 1100,
+              "output_tokens": 43,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 4,
+              "model_requests": 1,
+              "input_tokens": 1160,
+              "output_tokens": 41,
+              "cache_epoch": 0,
+              "message_count": 10,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 5,
+              "model_requests": 1,
+              "input_tokens": 1215,
+              "output_tokens": 41,
+              "cache_epoch": 0,
+              "message_count": 12,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 6,
+              "model_requests": 2,
+              "input_tokens": 3355,
+              "output_tokens": 52,
+              "cache_epoch": 0,
+              "message_count": 16,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 2133,
+              "output_tokens": 51,
+              "cache_epoch": 0,
+              "message_count": 18,
+              "cold_refs": 0,
+              "governance": {}
+            },
+            {
+              "turn": 8,
+              "model_requests": 1,
+              "input_tokens": 2199,
+              "output_tokens": 21,
+              "cache_epoch": 0,
+              "message_count": 20,
+              "cold_refs": 0,
+              "governance": {}
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 0,
+          "tool_offload_count": 0,
+          "compression_calls": 0,
+          "incremental_summary_attempts": 0,
+          "incremental_summary_successes": 0,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 0,
+          "compression_input_tokens": 0,
+          "compression_output_tokens": 0,
+          "agent_model_calls": 0,
+          "agent_input_tokens": 0,
+          "agent_output_tokens": 0,
+          "agent_cached_input_tokens": 0,
+          "compression_ratio": 0.0
+        }
+      ]
+    },
+    "deterministic": {
+      "usage": {
+        "started_requests": 31,
+        "completed_requests": 31,
+        "observed_tokens": 25414,
+        "observed_input_tokens": 24094,
+        "observed_output_tokens": 1320
+      },
+      "retention_rate": 1.0,
+      "prefix_stability": 1.0,
+      "compression_calls": 0,
+      "incremental_summary_attempts": 0,
+      "incremental_summary_successes": 0,
+      "incremental_summary_failures": 0,
+      "baseline_consolidation_calls": 0,
+      "tool_offload_count": 7,
+      "cache_epoch_rolls": 7,
+      "agent_usage": {
+        "model_calls": 31,
+        "input_tokens": 24094,
+        "output_tokens": 1320,
+        "cached_input_tokens": 10752,
+        "source": "context_token_ledger"
+      },
+      "cases": [
+        {
+          "case_id": "context-large-tools",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "a0715fcabd561849e3adf0091288371b284e634d526ab61c20f985f0943f2fd5",
+            "chars": 82
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "f121be67-6650-4bc7-b462-e83b5a5498e2",
+              "trace_id": "f121be6766504bc7b462e83b5a5498e2",
+              "turn": "1"
+            },
+            {
+              "run_id": "7f548e64-4387-422b-a7da-6080d9eab8f7",
+              "trace_id": "7f548e644387422ba7da6080d9eab8f7",
+              "turn": "2"
+            },
+            {
+              "run_id": "16d84db3-3e21-406b-9813-888110b87875",
+              "trace_id": "16d84db33e21406b9813888110b87875",
+              "turn": "3"
+            },
+            {
+              "run_id": "11fc89c4-5394-4395-b5d1-b4bcd8152a09",
+              "trace_id": "11fc89c453944395b5d1b4bcd8152a09",
+              "turn": "4"
+            },
+            {
+              "run_id": "f63191bc-f76c-4a7c-92c9-04104897f5ea",
+              "trace_id": "f63191bcf76c4a7c92c904104897f5ea",
+              "turn": "5"
+            },
+            {
+              "run_id": "29135484-4097-4dc3-b813-7a82603073ca",
+              "trace_id": "2913548440974dc3b8137a82603073ca",
+              "turn": "6"
+            },
+            {
+              "run_id": "7c0a95c7-a1c2-4efb-b30a-155d0434158c",
+              "trace_id": "7c0a95c7a1c24efbb30a155d0434158c",
+              "turn": "7"
+            },
+            {
+              "run_id": "03b08228-9cfe-4102-a602-04e850c4316c",
+              "trace_id": "03b082289cfe4102a60204e850c4316c",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 326,
+              "output_tokens": 33,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 10,
+                "l2_tokens_after": 92,
+                "total_tokens_before": 241,
+                "total_tokens_after": 323,
+                "context_usage_ratio": 0.058837890625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 2,
+              "model_requests": 2,
+              "input_tokens": 982,
+              "output_tokens": 51,
+              "cache_epoch": 0,
+              "message_count": 6,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 218,
+                "l2_tokens_after": 300,
+                "total_tokens_before": 449,
+                "total_tokens_after": 531,
+                "context_usage_ratio": 0.109619140625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 3,
+              "model_requests": 1,
+              "input_tokens": 659,
+              "output_tokens": 118,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 248,
+                "l2_tokens_after": 330,
+                "total_tokens_before": 479,
+                "total_tokens_after": 561,
+                "context_usage_ratio": 0.116943359375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 4,
+              "model_requests": 2,
+              "input_tokens": 1580,
+              "output_tokens": 53,
+              "cache_epoch": 0,
+              "message_count": 12,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 485,
+                "l2_tokens_after": 567,
+                "total_tokens_before": 716,
+                "total_tokens_after": 798,
+                "context_usage_ratio": 0.1748046875,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 5,
+              "model_requests": 1,
+              "input_tokens": 951,
+              "output_tokens": 41,
+              "cache_epoch": 0,
+              "message_count": 14,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 512,
+                "l2_tokens_after": 594,
+                "total_tokens_before": 743,
+                "total_tokens_after": 825,
+                "context_usage_ratio": 0.181396484375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 6,
+              "model_requests": 2,
+              "input_tokens": 2062,
+              "output_tokens": 64,
+              "cache_epoch": 1,
+              "message_count": 18,
+              "cold_refs": 3,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 725,
+                "l2_tokens_after": 807,
+                "total_tokens_before": 956,
+                "total_tokens_after": 1073,
+                "context_usage_ratio": 0.2333984375,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 1228,
+              "output_tokens": 34,
+              "cache_epoch": 1,
+              "message_count": 20,
+              "cold_refs": 3,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 91,
+                "l2_tokens_before": 758,
+                "l2_tokens_after": 840,
+                "total_tokens_before": 1024,
+                "total_tokens_after": 1106,
+                "context_usage_ratio": 0.25,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 8,
+              "model_requests": 1,
+              "input_tokens": 1150,
+              "output_tokens": 52,
+              "cache_epoch": 2,
+              "message_count": 22,
+              "cold_refs": 3,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 91,
+                "l2_tokens_before": 788,
+                "l2_tokens_after": 870,
+                "total_tokens_before": 1054,
+                "total_tokens_after": 1135,
+                "context_usage_ratio": 0.25732421875,
+                "cache_epoch": 2,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 2,
+          "tool_offload_count": 3,
+          "compression_calls": 0,
+          "incremental_summary_attempts": 0,
+          "incremental_summary_successes": 0,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 0,
+          "compression_input_tokens": 0,
+          "compression_output_tokens": 0,
+          "agent_model_calls": 11,
+          "agent_input_tokens": 8938,
+          "agent_output_tokens": 446,
+          "agent_cached_input_tokens": 4096,
+          "compression_ratio": 0.0
+        },
+        {
+          "case_id": "context-task-state",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "1e643ca624e886bd7c99b6e0c7aa9a11edb2e2fecc2c27beca9d9768b81a4d72",
+            "chars": 117
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "f40f801d-1c73-4db7-a307-7417d3bf53f4",
+              "trace_id": "f40f801d1c734db7a3077417d3bf53f4",
+              "turn": "1"
+            },
+            {
+              "run_id": "650d80b1-59fc-42a2-8b3d-26bc481c3f49",
+              "trace_id": "650d80b159fc42a28b3d26bc481c3f49",
+              "turn": "2"
+            },
+            {
+              "run_id": "d05408ba-cbfe-4253-9b6f-98be47652874",
+              "trace_id": "d05408bacbfe42539b6f98be47652874",
+              "turn": "3"
+            },
+            {
+              "run_id": "72fa8f5f-c1f7-40c1-bd7f-687f0498f468",
+              "trace_id": "72fa8f5fc1f740c1bd7f687f0498f468",
+              "turn": "4"
+            },
+            {
+              "run_id": "aca017be-f211-41f2-a91e-646a446ae020",
+              "trace_id": "aca017bef21141f2a91e646a446ae020",
+              "turn": "5"
+            },
+            {
+              "run_id": "5a84f24a-a420-42f3-bb2d-03a5454890b7",
+              "trace_id": "5a84f24aa42042f3bb2d03a5454890b7",
+              "turn": "6"
+            },
+            {
+              "run_id": "939608be-9b98-4f2b-96a3-0f2dc7d19476",
+              "trace_id": "939608be9b984f2b96a30f2dc7d19476",
+              "turn": "7"
+            },
+            {
+              "run_id": "b4088cee-c32e-4d65-984f-deda726501d5",
+              "trace_id": "b4088ceec32e4d65984fdeda726501d5",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 314,
+              "output_tokens": 40,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 9,
+                "l2_tokens_after": 90,
+                "total_tokens_before": 239,
+                "total_tokens_after": 320,
+                "context_usage_ratio": 0.058349609375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 2,
+              "model_requests": 1,
+              "input_tokens": 371,
+              "output_tokens": 44,
+              "cache_epoch": 0,
+              "message_count": 4,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 41,
+                "l2_tokens_after": 122,
+                "total_tokens_before": 271,
+                "total_tokens_after": 352,
+                "context_usage_ratio": 0.066162109375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 3,
+              "model_requests": 2,
+              "input_tokens": 1094,
+              "output_tokens": 65,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 255,
+                "l2_tokens_after": 336,
+                "total_tokens_before": 485,
+                "total_tokens_after": 566,
+                "context_usage_ratio": 0.118408203125,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 4,
+              "model_requests": 1,
+              "input_tokens": 720,
+              "output_tokens": 65,
+              "cache_epoch": 0,
+              "message_count": 10,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 289,
+                "l2_tokens_after": 370,
+                "total_tokens_before": 519,
+                "total_tokens_after": 600,
+                "context_usage_ratio": 0.126708984375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 5,
+              "model_requests": 2,
+              "input_tokens": 1596,
+              "output_tokens": 67,
+              "cache_epoch": 0,
+              "message_count": 14,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 512,
+                "l2_tokens_after": 593,
+                "total_tokens_before": 742,
+                "total_tokens_after": 823,
+                "context_usage_ratio": 0.18115234375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 6,
+              "model_requests": 1,
+              "input_tokens": 980,
+              "output_tokens": 44,
+              "cache_epoch": 0,
+              "message_count": 16,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 548,
+                "l2_tokens_after": 629,
+                "total_tokens_before": 778,
+                "total_tokens_after": 859,
+                "context_usage_ratio": 0.18994140625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 940,
+              "output_tokens": 77,
+              "cache_epoch": 1,
+              "message_count": 18,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 581,
+                "l2_tokens_after": 662,
+                "total_tokens_before": 811,
+                "total_tokens_after": 915,
+                "context_usage_ratio": 0.197998046875,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 8,
+              "model_requests": 1,
+              "input_tokens": 1032,
+              "output_tokens": 70,
+              "cache_epoch": 2,
+              "message_count": 20,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 78,
+                "l2_tokens_before": 629,
+                "l2_tokens_after": 709,
+                "total_tokens_before": 882,
+                "total_tokens_after": 961,
+                "context_usage_ratio": 0.21533203125,
+                "cache_epoch": 2,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 2,
+          "tool_offload_count": 2,
+          "compression_calls": 0,
+          "incremental_summary_attempts": 0,
+          "incremental_summary_successes": 0,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 0,
+          "compression_input_tokens": 0,
+          "compression_output_tokens": 0,
+          "agent_model_calls": 10,
+          "agent_input_tokens": 7047,
+          "agent_output_tokens": 472,
+          "agent_cached_input_tokens": 3328,
+          "compression_ratio": 0.0
+        },
+        {
+          "case_id": "context-correction",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "1260a2c3c357b4afaf42319875a4dc3cd1d9d27293a69f336ed8d86823dbde71",
+            "chars": 53
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "b8991150-341a-44a1-af88-3deb5c74d117",
+              "trace_id": "b8991150341a44a1af883deb5c74d117",
+              "turn": "1"
+            },
+            {
+              "run_id": "83f3b54d-042b-41d2-b04f-8adbe4a5b4e3",
+              "trace_id": "83f3b54d042b41d2b04f8adbe4a5b4e3",
+              "turn": "2"
+            },
+            {
+              "run_id": "2de2d583-f0fa-415b-8416-7de0da09601a",
+              "trace_id": "2de2d583f0fa415b84167de0da09601a",
+              "turn": "3"
+            },
+            {
+              "run_id": "b234b65f-af91-4bcd-97d6-1076bce29702",
+              "trace_id": "b234b65faf914bcd97d61076bce29702",
+              "turn": "4"
+            },
+            {
+              "run_id": "d5c9b441-5c91-42a2-b338-1bf445182652",
+              "trace_id": "d5c9b4415c9142a2b3381bf445182652",
+              "turn": "5"
+            },
+            {
+              "run_id": "efd7c015-6c11-4f8d-aab6-724b7b361c18",
+              "trace_id": "efd7c0156c114f8daab6724b7b361c18",
+              "turn": "6"
+            },
+            {
+              "run_id": "d55e5f83-2b0d-4847-b9a1-9c6bf7c20fed",
+              "trace_id": "d55e5f832b0d4847b9a19c6bf7c20fed",
+              "turn": "7"
+            },
+            {
+              "run_id": "1ee43f50-d3a0-454e-b474-1f462130b382",
+              "trace_id": "1ee43f50d3a0454eb4741f462130b382",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 323,
+              "output_tokens": 37,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 10,
+                "l2_tokens_after": 92,
+                "total_tokens_before": 240,
+                "total_tokens_after": 322,
+                "context_usage_ratio": 0.05859375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 2,
+              "model_requests": 2,
+              "input_tokens": 992,
+              "output_tokens": 66,
+              "cache_epoch": 0,
+              "message_count": 6,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 221,
+                "l2_tokens_after": 303,
+                "total_tokens_before": 451,
+                "total_tokens_after": 533,
+                "context_usage_ratio": 0.110107421875,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 3,
+              "model_requests": 1,
+              "input_tokens": 681,
+              "output_tokens": 57,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 256,
+                "l2_tokens_after": 338,
+                "total_tokens_before": 486,
+                "total_tokens_after": 568,
+                "context_usage_ratio": 0.11865234375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 4,
+              "model_requests": 1,
+              "input_tokens": 729,
+              "output_tokens": 41,
+              "cache_epoch": 1,
+              "message_count": 10,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 294,
+                "l2_tokens_after": 423,
+                "total_tokens_before": 524,
+                "total_tokens_after": 669,
+                "context_usage_ratio": 0.1279296875,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 5,
+              "model_requests": 1,
+              "input_tokens": 870,
+              "output_tokens": 42,
+              "cache_epoch": 2,
+              "message_count": 12,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 71,
+                "l2_tokens_before": 325,
+                "l2_tokens_after": 500,
+                "total_tokens_before": 571,
+                "total_tokens_after": 749,
+                "context_usage_ratio": 0.139404296875,
+                "cache_epoch": 2,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 6,
+              "model_requests": 2,
+              "input_tokens": 2093,
+              "output_tokens": 63,
+              "cache_epoch": 2,
+              "message_count": 16,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 74,
+                "l2_tokens_before": 538,
+                "l2_tokens_after": 713,
+                "total_tokens_before": 787,
+                "total_tokens_after": 962,
+                "context_usage_ratio": 0.192138671875,
+                "cache_epoch": 2,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 1226,
+              "output_tokens": 61,
+              "cache_epoch": 2,
+              "message_count": 18,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 74,
+                "l2_tokens_before": 572,
+                "l2_tokens_after": 747,
+                "total_tokens_before": 821,
+                "total_tokens_after": 996,
+                "context_usage_ratio": 0.200439453125,
+                "cache_epoch": 2,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 8,
+              "model_requests": 1,
+              "input_tokens": 1195,
+              "output_tokens": 35,
+              "cache_epoch": 3,
+              "message_count": 20,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 74,
+                "l2_tokens_before": 612,
+                "l2_tokens_after": 786,
+                "total_tokens_before": 861,
+                "total_tokens_after": 1046,
+                "context_usage_ratio": 0.210205078125,
+                "cache_epoch": 3,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 3,
+          "tool_offload_count": 2,
+          "compression_calls": 0,
+          "incremental_summary_attempts": 0,
+          "incremental_summary_successes": 0,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 0,
+          "compression_input_tokens": 0,
+          "compression_output_tokens": 0,
+          "agent_model_calls": 10,
+          "agent_input_tokens": 8109,
+          "agent_output_tokens": 402,
+          "agent_cached_input_tokens": 3328,
+          "compression_ratio": 0.0
+        }
+      ]
+    },
+    "full": {
+      "usage": {
+        "started_requests": 45,
+        "completed_requests": 45,
+        "observed_tokens": 48098,
+        "observed_input_tokens": 44460,
+        "observed_output_tokens": 3638
+      },
+      "retention_rate": 1.0,
+      "prefix_stability": 1.0,
+      "compression_calls": 12,
+      "incremental_summary_attempts": 7,
+      "incremental_summary_successes": 5,
+      "incremental_summary_failures": 2,
+      "baseline_consolidation_calls": 7,
+      "tool_offload_count": 7,
+      "cache_epoch_rolls": 7,
+      "agent_usage": {
+        "model_calls": 31,
+        "input_tokens": 24935,
+        "output_tokens": 1484,
+        "cached_input_tokens": 10752,
+        "source": "context_token_ledger"
+      },
+      "cases": [
+        {
+          "case_id": "context-large-tools",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "28a9adac476023769ecc89b1807f3b024b155b0be1c5f39e663c44559d2b3caf",
+            "chars": 69
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "8905b2f7-e72f-4b30-bd62-93b29a0828bd",
+              "trace_id": "8905b2f7e72f4b30bd6293b29a0828bd",
+              "turn": "1"
+            },
+            {
+              "run_id": "433ff9d8-ae05-4adc-92a9-ee2cd92551d3",
+              "trace_id": "433ff9d8ae054adc92a9ee2cd92551d3",
+              "turn": "2"
+            },
+            {
+              "run_id": "bd957fc7-6136-460c-a6e8-80532294921f",
+              "trace_id": "bd957fc76136460ca6e880532294921f",
+              "turn": "3"
+            },
+            {
+              "run_id": "2dff47c9-191b-4b76-89e9-df844afcd2d1",
+              "trace_id": "2dff47c9191b4b7689e9df844afcd2d1",
+              "turn": "4"
+            },
+            {
+              "run_id": "f35e7a6b-fc1f-4e98-b4b5-1413eddbad84",
+              "trace_id": "f35e7a6bfc1f4e98b4b51413eddbad84",
+              "turn": "5"
+            },
+            {
+              "run_id": "fd33a2b9-4c14-49a7-aedb-7960c5ced6ce",
+              "trace_id": "fd33a2b94c1449a7aedb7960c5ced6ce",
+              "turn": "6"
+            },
+            {
+              "run_id": "2696c875-9e2d-4695-aa37-288e261c864b",
+              "trace_id": "2696c8759e2d4695aa37288e261c864b",
+              "turn": "7"
+            },
+            {
+              "run_id": "15132ed7-3e3a-48e0-bd17-28e03396dc62",
+              "trace_id": "15132ed73e3a48e0bd1728e03396dc62",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 326,
+              "output_tokens": 31,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 10,
+                "l2_tokens_after": 92,
+                "total_tokens_before": 241,
+                "total_tokens_after": 323,
+                "context_usage_ratio": 0.058837890625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 2,
+              "model_requests": 2,
+              "input_tokens": 980,
+              "output_tokens": 83,
+              "cache_epoch": 0,
+              "message_count": 6,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 219,
+                "l2_tokens_after": 301,
+                "total_tokens_before": 450,
+                "total_tokens_after": 532,
+                "context_usage_ratio": 0.10986328125,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 3,
+              "model_requests": 1,
+              "input_tokens": 689,
+              "output_tokens": 140,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 266,
+                "l2_tokens_after": 348,
+                "total_tokens_before": 497,
+                "total_tokens_after": 579,
+                "context_usage_ratio": 0.121337890625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 4,
+              "model_requests": 2,
+              "input_tokens": 1678,
+              "output_tokens": 83,
+              "cache_epoch": 0,
+              "message_count": 12,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 513,
+                "l2_tokens_after": 595,
+                "total_tokens_before": 744,
+                "total_tokens_after": 826,
+                "context_usage_ratio": 0.181640625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 5,
+              "model_requests": 1,
+              "input_tokens": 1030,
+              "output_tokens": 46,
+              "cache_epoch": 0,
+              "message_count": 14,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 557,
+                "l2_tokens_after": 639,
+                "total_tokens_before": 788,
+                "total_tokens_after": 870,
+                "context_usage_ratio": 0.1923828125,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 6,
+              "model_requests": 4,
+              "input_tokens": 6006,
+              "output_tokens": 391,
+              "cache_epoch": 1,
+              "message_count": 18,
+              "cold_refs": 3,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 56,
+                "l2_tokens_before": 772,
+                "l2_tokens_after": 503,
+                "total_tokens_before": 1003,
+                "total_tokens_after": 812,
+                "context_usage_ratio": 0.244873046875,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 1194,
+              "output_tokens": 54,
+              "cache_epoch": 1,
+              "message_count": 20,
+              "cold_refs": 3,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 134,
+                "l2_tokens_before": 807,
+                "l2_tokens_after": 538,
+                "total_tokens_before": 1116,
+                "total_tokens_after": 847,
+                "context_usage_ratio": 0.2724609375,
+                "cache_epoch": 1,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 8,
+              "model_requests": 3,
+              "input_tokens": 3826,
+              "output_tokens": 490,
+              "cache_epoch": 2,
+              "message_count": 22,
+              "cold_refs": 3,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 134,
+                "l2_tokens_before": 844,
+                "l2_tokens_after": 475,
+                "total_tokens_before": 1153,
+                "total_tokens_after": 803,
+                "context_usage_ratio": 0.281494140625,
+                "cache_epoch": 2,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 2,
+          "tool_offload_count": 3,
+          "compression_calls": 4,
+          "incremental_summary_attempts": 2,
+          "incremental_summary_successes": 2,
+          "incremental_summary_failures": 0,
+          "baseline_consolidation_calls": 2,
+          "compression_input_tokens": 772,
+          "compression_output_tokens": 130,
+          "agent_model_calls": 11,
+          "agent_input_tokens": 9215,
+          "agent_output_tokens": 553,
+          "agent_cached_input_tokens": 4352,
+          "compression_ratio": 0.168394
+        },
+        {
+          "case_id": "context-task-state",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "4773692f2da923565ba6c5f3fbf128e87a6b0aa47c6a555b54b3c9a55bbeca68",
+            "chars": 132
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "0f22727d-bf43-4674-8047-8f2e5d47cade",
+              "trace_id": "0f22727dbf43467480478f2e5d47cade",
+              "turn": "1"
+            },
+            {
+              "run_id": "f49caf2a-7dde-4f8b-8100-94c3590e9ce3",
+              "trace_id": "f49caf2a7dde4f8b810094c3590e9ce3",
+              "turn": "2"
+            },
+            {
+              "run_id": "f00a9ecb-b48d-41bf-8373-4f4cb3aac5e3",
+              "trace_id": "f00a9ecbb48d41bf83734f4cb3aac5e3",
+              "turn": "3"
+            },
+            {
+              "run_id": "b97d58b7-cd9e-4cb9-96eb-79111ffcba9a",
+              "trace_id": "b97d58b7cd9e4cb996eb79111ffcba9a",
+              "turn": "4"
+            },
+            {
+              "run_id": "85552d46-b30d-4f65-935a-372e789988f9",
+              "trace_id": "85552d46b30d4f65935a372e789988f9",
+              "turn": "5"
+            },
+            {
+              "run_id": "61bab5cd-7277-436e-a471-05f878fcaed5",
+              "trace_id": "61bab5cd7277436ea47105f878fcaed5",
+              "turn": "6"
+            },
+            {
+              "run_id": "49551323-7b9f-4cdd-ad83-051e254ad13d",
+              "trace_id": "495513237b9f4cddad83051e254ad13d",
+              "turn": "7"
+            },
+            {
+              "run_id": "5dd321da-74ea-48cb-8c68-4046e244839e",
+              "trace_id": "5dd321da74ea48cb8c684046e244839e",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 314,
+              "output_tokens": 46,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 9,
+                "l2_tokens_after": 90,
+                "total_tokens_before": 239,
+                "total_tokens_after": 320,
+                "context_usage_ratio": 0.058349609375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 2,
+              "model_requests": 1,
+              "input_tokens": 377,
+              "output_tokens": 65,
+              "cache_epoch": 0,
+              "message_count": 4,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 43,
+                "l2_tokens_after": 124,
+                "total_tokens_before": 273,
+                "total_tokens_after": 354,
+                "context_usage_ratio": 0.066650390625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 3,
+              "model_requests": 2,
+              "input_tokens": 1148,
+              "output_tokens": 81,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 264,
+                "l2_tokens_after": 345,
+                "total_tokens_before": 494,
+                "total_tokens_after": 575,
+                "context_usage_ratio": 0.12060546875,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 4,
+              "model_requests": 1,
+              "input_tokens": 762,
+              "output_tokens": 65,
+              "cache_epoch": 0,
+              "message_count": 10,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 309,
+                "l2_tokens_after": 390,
+                "total_tokens_before": 539,
+                "total_tokens_after": 620,
+                "context_usage_ratio": 0.131591796875,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 5,
+              "model_requests": 2,
+              "input_tokens": 1686,
+              "output_tokens": 83,
+              "cache_epoch": 0,
+              "message_count": 14,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 532,
+                "l2_tokens_after": 613,
+                "total_tokens_before": 762,
+                "total_tokens_after": 843,
+                "context_usage_ratio": 0.18603515625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 6,
+              "model_requests": 1,
+              "input_tokens": 1041,
+              "output_tokens": 49,
+              "cache_epoch": 0,
+              "message_count": 16,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 579,
+                "l2_tokens_after": 660,
+                "total_tokens_before": 809,
+                "total_tokens_after": 890,
+                "context_usage_ratio": 0.197509765625,
+                "cache_epoch": 0,
+                "strategies": [
+                  "clear_tool_results"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 7,
+              "model_requests": 3,
+              "input_tokens": 4746,
+              "output_tokens": 415,
+              "cache_epoch": 1,
+              "message_count": 18,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 614,
+                "l2_tokens_after": 366,
+                "total_tokens_before": 844,
+                "total_tokens_after": 674,
+                "context_usage_ratio": 0.2060546875,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 8,
+              "model_requests": 3,
+              "input_tokens": 2863,
+              "output_tokens": 428,
+              "cache_epoch": 2,
+              "message_count": 20,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 133,
+                "l2_tokens_before": 699,
+                "l2_tokens_after": 450,
+                "total_tokens_before": 1007,
+                "total_tokens_after": 812,
+                "context_usage_ratio": 0.245849609375,
+                "cache_epoch": 2,
+                "strategies": [
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高；增量摘要失败并已回退：压缩结果没有减少 token",
+                "prefix_mismatch": false
+              }
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 2,
+          "tool_offload_count": 2,
+          "compression_calls": 3,
+          "incremental_summary_attempts": 2,
+          "incremental_summary_successes": 1,
+          "incremental_summary_failures": 1,
+          "baseline_consolidation_calls": 2,
+          "compression_input_tokens": 532,
+          "compression_output_tokens": 73,
+          "agent_model_calls": 10,
+          "agent_input_tokens": 7426,
+          "agent_output_tokens": 597,
+          "agent_cached_input_tokens": 2816,
+          "compression_ratio": 0.137218
+        },
+        {
+          "case_id": "context-correction",
+          "retained": true,
+          "required_terms_retained": true,
+          "superseded_terms_absent": true,
+          "final_answer": {
+            "sha256": "20285efc1b04df723e4c2f90598daa0c291ba71c5e109a5063ea44cef2107b1e",
+            "chars": 30
+          },
+          "tool_names": [
+            "evidence_blob"
+          ],
+          "trace_runs": [
+            {
+              "run_id": "17f43176-bda3-400e-9f94-11ac1fa5bfb2",
+              "trace_id": "17f43176bda3400e9f9411ac1fa5bfb2",
+              "turn": "1"
+            },
+            {
+              "run_id": "b2cb69e2-25b1-44ea-9d7f-a96affdab848",
+              "trace_id": "b2cb69e225b144ea9d7fa96affdab848",
+              "turn": "2"
+            },
+            {
+              "run_id": "5eea563c-b095-4f13-b433-4be876918c8f",
+              "trace_id": "5eea563cb0954f13b4334be876918c8f",
+              "turn": "3"
+            },
+            {
+              "run_id": "22f4feb8-2f99-4da2-afb3-33ff3aebeab6",
+              "trace_id": "22f4feb82f994da2afb333ff3aebeab6",
+              "turn": "4"
+            },
+            {
+              "run_id": "3f39f266-babc-4ef6-b93b-62597adbd573",
+              "trace_id": "3f39f266babc4ef6b93b62597adbd573",
+              "turn": "5"
+            },
+            {
+              "run_id": "a48ce26d-ad11-4fe5-96cf-9f9201aa108b",
+              "trace_id": "a48ce26dad114fe596cf9f9201aa108b",
+              "turn": "6"
+            },
+            {
+              "run_id": "96cd920f-100d-4842-8585-2bb9ad621fc0",
+              "trace_id": "96cd920f100d484285852bb9ad621fc0",
+              "turn": "7"
+            },
+            {
+              "run_id": "19b207ef-5adb-408e-ba5e-9f81d16c5d77",
+              "trace_id": "19b207ef5adb408eba5e9f81d16c5d77",
+              "turn": "8"
+            }
+          ],
+          "turn_metrics": [
+            {
+              "turn": 1,
+              "model_requests": 1,
+              "input_tokens": 323,
+              "output_tokens": 41,
+              "cache_epoch": 0,
+              "message_count": 2,
+              "cold_refs": 0,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 10,
+                "l2_tokens_after": 92,
+                "total_tokens_before": 240,
+                "total_tokens_after": 322,
+                "context_usage_ratio": 0.05859375,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 2,
+              "model_requests": 2,
+              "input_tokens": 1000,
+              "output_tokens": 52,
+              "cache_epoch": 0,
+              "message_count": 6,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 223,
+                "l2_tokens_after": 305,
+                "total_tokens_before": 453,
+                "total_tokens_after": 535,
+                "context_usage_ratio": 0.110595703125,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 3,
+              "model_requests": 1,
+              "input_tokens": 671,
+              "output_tokens": 56,
+              "cache_epoch": 0,
+              "message_count": 8,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 252,
+                "l2_tokens_after": 334,
+                "total_tokens_before": 482,
+                "total_tokens_after": 564,
+                "context_usage_ratio": 0.11767578125,
+                "cache_epoch": 0,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 4,
+              "model_requests": 3,
+              "input_tokens": 2720,
+              "output_tokens": 213,
+              "cache_epoch": 1,
+              "message_count": 10,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 55,
+                "l2_tokens_before": 290,
+                "l2_tokens_after": 326,
+                "total_tokens_before": 520,
+                "total_tokens_after": 568,
+                "context_usage_ratio": 0.126953125,
+                "cache_epoch": 1,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 5,
+              "model_requests": 3,
+              "input_tokens": 2542,
+              "output_tokens": 200,
+              "cache_epoch": 2,
+              "message_count": 12,
+              "cold_refs": 1,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 67,
+                "l2_tokens_before": 315,
+                "l2_tokens_after": 397,
+                "total_tokens_before": 557,
+                "total_tokens_after": 639,
+                "context_usage_ratio": 0.135986328125,
+                "cache_epoch": 2,
+                "strategies": [
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高；增量摘要失败并已回退：压缩结果没有减少 token",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 6,
+              "model_requests": 2,
+              "input_tokens": 2087,
+              "output_tokens": 53,
+              "cache_epoch": 2,
+              "message_count": 16,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 67,
+                "l2_tokens_before": 522,
+                "l2_tokens_after": 604,
+                "total_tokens_before": 764,
+                "total_tokens_after": 846,
+                "context_usage_ratio": 0.1865234375,
+                "cache_epoch": 2,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 7,
+              "model_requests": 1,
+              "input_tokens": 1213,
+              "output_tokens": 57,
+              "cache_epoch": 2,
+              "message_count": 18,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 67,
+                "l2_tokens_before": 552,
+                "l2_tokens_after": 634,
+                "total_tokens_before": 794,
+                "total_tokens_after": 876,
+                "context_usage_ratio": 0.19384765625,
+                "cache_epoch": 2,
+                "strategies": [
+                  "none"
+                ],
+                "reason": "上下文仍位于安全水位",
+                "prefix_mismatch": false
+              }
+            },
+            {
+              "turn": 8,
+              "model_requests": 3,
+              "input_tokens": 5238,
+              "output_tokens": 416,
+              "cache_epoch": 3,
+              "message_count": 20,
+              "cold_refs": 2,
+              "governance": {
+                "l0_tokens": 0,
+                "l1_tokens": 67,
+                "l2_tokens_before": 591,
+                "l2_tokens_after": 562,
+                "total_tokens_before": 833,
+                "total_tokens_after": 874,
+                "context_usage_ratio": 0.203369140625,
+                "cache_epoch": 3,
+                "strategies": [
+                  "clear_tool_results",
+                  "incremental_summary",
+                  "roll_cache_epoch"
+                ],
+                "reason": "存在已闭合且不属于 D1 的旧工具结果；Epoch Roll 前先沉淀尚未压缩的闭合历史；Epoch 基线失效、阶段切换或冻结上下文债务过高",
+                "prefix_mismatch": false
+              }
+            }
+          ],
+          "prefix_stability": 1.0,
+          "cache_epoch_rolls": 3,
+          "tool_offload_count": 2,
+          "compression_calls": 5,
+          "incremental_summary_attempts": 3,
+          "incremental_summary_successes": 2,
+          "incremental_summary_failures": 1,
+          "baseline_consolidation_calls": 3,
+          "compression_input_tokens": 522,
+          "compression_output_tokens": 143,
+          "agent_model_calls": 10,
+          "agent_input_tokens": 8294,
+          "agent_output_tokens": 334,
+          "agent_cached_input_tokens": 3584,
+          "compression_ratio": 0.273946
+        }
+      ]
+    }
+  },
+  "failures": [],
+  "limitations": [
+    "供应商返回 cached_input_tokens 时才可声明真实 Prompt Cache 命中率；否则只报告稳定前缀率。",
+    "实验使用固定小窗口加速触发，不代表生产环境的上下文窗口大小。",
+    "受控 evidence_blob 只隔离验证治理策略，不替代完整购物 Agent 端到端评测。",
+    "input_token_reduction 只比较主 AgentLoop 输入；摘要模型开销单独计入 usage 与压缩字段。",
+    "无净 Token 收益的摘要会被拒绝并计数，不会删除原始候选事件。"
+  ],
+  "passed": true
+}

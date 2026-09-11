@@ -109,4 +109,4 @@ Context Window 是一次推理能接收和生成的 Token 总范围。更长不�
 
 控制手段包括：稳定短 System Prompt；按需工具 Schema；D1–D4 上下文投影；大结果外置；增量而非全量摘要；轻重模型分层；总预算和每阶段预算；缓存稳定前缀；限制 Agent 轮次和并发分支。
 
-项目 ModelGateway 支持主/轻量/最小/备用档位，预算比例决定模型层级；同一预算可向 fork 任务传播。排查时按 trace 分解输入、输出、工具结果、摘要和各子 Agent Token，观察 Cache Epoch 重建、重复同参调用、工具 JSON 膨胀或子任务过度拆分。CTX-001 的本地候选 A/B/C 已测得 `full` 相比 `off` 输入 Token 降低 32.21%、信息保留率 100%、同 Epoch 前缀 Hash 稳定率 100%；供应商虽返回部分缓存 Token，当前实验仍不把前缀稳定率换算成“缓存命中 80%”。
+项目 ModelGateway 支持主/轻量/最小/备用档位，预算比例决定模型层级；同一预算可向 fork 任务传播。排查时按 trace 分解输入、输出、工具结果、摘要和各子 Agent Token，观察 Cache Epoch 重建、重复同参调用、工具 JSON 膨胀或子任务过度拆分。正式 `CTX-001` A/B/C 中，`full` 相比 `off` 的 AgentLoop 输入 Token 降低 43.30%，信息保留率和同 Epoch 前缀 Hash 稳定率均为 100%；但计入摘要模型后总 Token 尚未下降，所以不能宣称节省总成本，也不把前缀稳定率换算成“Prompt Cache 命中率”。

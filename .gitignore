@@ -16,4 +16,8 @@ eval/reports/evidence/
 !eval/reports/.gitkeep
 frontend/node_modules/
 frontend/dist/
+training/.venv/
+training/outputs/
+eval/reports/executor/
+eval/reports/executor-v2/
 

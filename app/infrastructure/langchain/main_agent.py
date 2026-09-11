@@ -40,6 +40,12 @@ class MainAgent:
         model: BaseChatModel,
         tools: Sequence[BaseTool],
         governance_config: GovernanceConfig,
+        sub_agent_model: BaseChatModel | None = None,
+        sub_agent_governance_config: GovernanceConfig | None = None,
+        main_model_middleware: Sequence[AgentMiddleware] = (),
+        sub_model_middleware: Sequence[AgentMiddleware] = (),
+        main_boundary_middleware: Sequence[AgentMiddleware] = (),
+        sub_boundary_middleware: Sequence[AgentMiddleware] = (),
         main_only_tools: Sequence[BaseTool] = (),
         task_service: TaskBoardService | None = None,
         compressor: ContextCompressor | None = None,
@@ -56,20 +62,24 @@ class MainAgent:
         self._checkpointer = checkpointer or InMemorySaver()
         self._observability = observability
         child_tools = list(tools)
+        child_model = sub_agent_model if sub_agent_model is not None else model
+        child_config = sub_agent_governance_config or governance_config
 
         child_middleware = [
+            *sub_model_middleware,
             *shared_middleware,
             *create_context_middleware(
-                model=self._model,
+                model=child_model,
                 tools=child_tools,
                 system_prompt=sub_agent_system_prompt,
                 agent_id="forked_sub_agent",
-                config=self._config,
+                config=child_config,
                 compressor=compressor,
             ),
+            *sub_boundary_middleware,
         ]
         child_loop = ForkedAgentLoop.create(
-            model=self._model,
+            model=child_model,
             tools=child_tools,
             system_prompt=sub_agent_system_prompt,
             max_concurrency=sub_agent_max_concurrency,
@@ -91,6 +101,7 @@ class MainAgent:
         self._child_tool_names = tuple(tool.name for tool in child_tools)
         self._main_tool_names = tuple(tool.name for tool in main_tools)
         main_middleware = [
+            *main_model_middleware,
             *shared_middleware,
             *create_context_middleware(
                 model=self._model,
@@ -100,6 +111,7 @@ class MainAgent:
                 config=self._config,
                 compressor=compressor,
             ),
+            *main_boundary_middleware,
         ]
         self._agent = create_agent(
             model=self._model,

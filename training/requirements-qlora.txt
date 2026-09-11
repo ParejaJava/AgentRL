@@ -1,0 +1,3 @@
+# Optional memory-constrained training, in the isolated training/.venv only.
+-r requirements.txt
+bitsandbytes==0.50.2

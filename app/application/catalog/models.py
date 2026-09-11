@@ -72,6 +72,7 @@ class RankedItem:
         product_card = self.product.to_dict()
         try:
             product_card["primary_price"] = self.product.primary_sku().price.to_dict()
+            product_card["primary_sku_id"] = self.product.primary_sku().sku_id
         except ValueError:
             product_card["primary_price"] = None
         if self.landed_price is not None:

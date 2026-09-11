@@ -63,4 +63,10 @@ uv run python scripts/evaluate_product_recall.py --dataset eval/evidence/product
 
 首次成功发布 offline 快照时，发布器会生成 `docs/interview_evidence/results/coverage_baseline.json`，把该次总覆盖率及 Domain/Application/可靠性分层覆盖率锁定为后续回归下限；关键领域规则的分支门槛无论首次测量如何都不得低于 90%。
 
-发布成功后，每个运行目录会包含 `claim_index.json`，把 Claim ID、代码/测试锚点和本次报告文件连接起来；`docs/interview_evidence/results/latest.json` 会分别保存最新 offline 与 live 指针，不会让后发布的套件覆盖另一套证据入口。
+发布成功后，每个运行目录会包含 `claim_index.json`，把 Claim ID、代码/测试锚点和本次报告文件连接起来；`docs/interview_evidence/results/latest.json` 分别保存 `offline`、`live-e2e` 和 `live-context` 指针，不会让后发布的套件覆盖另一套证据入口。
+
+当前正式 Run ID：
+
+- Offline：`20260909T073736Z-offline`（Commit `fa1ca544`）
+- Live E2E：`20260909T094839Z-live-e2e`（Commit `bd67b9a`）
+- Live Context：`20260909T141654Z-live-context`（Commit `38e4fdf`）

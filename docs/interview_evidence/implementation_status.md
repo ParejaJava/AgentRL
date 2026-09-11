@@ -1,56 +1,60 @@
 # 面试证据链实现与取证状态
 
-## 已实现
+## 正式状态
 
-| Claim ID | 实现内容 | 本地候选状态 |
-|---|---|---|
-| ENV-001 | Python/uv/锁文件、OS、CPU/GPU/CUDA、模型缓存、Docker、Redis、OpenSearch、Langfuse 与数据集预检 | verified |
-| ARCH-001 | AST 依赖边界、依赖方向图、Composition Root 图、主/子工具权限矩阵 | verified |
-| ORCH-001 | 4 路串并行、菱形 DAG、部分失败、原子认领、Worker 租约恢复、幂等回写、会话隔离，各 30 次 | verified |
-| TEST-001 | 全量测试、总/分层覆盖率、关键领域分支门槛 | verified |
-| REL-001 | 模型限额/重试、Redis 熔断 fail-open、两套三级降级、压缩失败、应急投影与工具卸载故障矩阵 | verified |
-| RAG-THRESHOLD-001 | 独立开发集拒答阈值选择，冻结测试集不参与调参 | verified |
-| RAG-001 | keyword/BM25/KNN/Hybrid RRF/Hybrid + Reranker 消融 | verified |
-| SEARCH-001 | lexical/embedding/embedding + reranker 消融 | verified |
-| SEARCH-PERSONALIZATION-001 | 固定定向集 personalization off/on | verified |
-| COMMERCE-001 | 偏好、黑名单、ship_to 条件计价、Money/Decimal、参数拒绝、订单证据/确认/幂等 | verified |
-| E2E-001 | 12 场景 × 3 次真实 Kimi 工具路由、参数、Fork/DAG、安全与边界 | verified |
-| CTX-001 | 3 模式 × 3 会话 × 8 轮真实 Kimi A/B/C | verified |
-| OBS-001 | 事件协议、WebSocket/SSE、Langfuse 回读、run/trace 关联和脱敏拓扑摘要 | verified |
-| BOUNDARY-PAYMENT | 真实库存、支付、退款和第三方平台下单 | boundary |
+| Claim ID | 能力 | 状态 | 正式证据 |
+|---|---|---|---|
+| ENV-001 | Python/uv/锁文件、GPU、Docker、Redis、OpenSearch、Langfuse 与数据集预检 | verified | 三套 `preflight.json` |
+| ARCH-001 | DDD-lite/Hexagonal 依赖方向与权限矩阵 | verified | Offline |
+| ORCH-001 | 并行、DAG、部分失败、租约恢复、幂等与隔离 | verified | Offline |
+| TEST-001 | 全量测试、分层覆盖率和关键领域分支门槛 | verified | Offline |
+| REL-001 | 模型/工具/检索/存储/上下文故障矩阵 | verified | Offline |
+| RAG-THRESHOLD-001 | 独立开发集拒答阈值选择 | verified | Offline |
+| RAG-001 | 品类五种检索策略消融 | verified | Offline |
+| SEARCH-001 | 商品三种检索策略消融 | verified | Offline |
+| SEARCH-PERSONALIZATION-001 | 个性化 off/on 定向实验 | verified | Offline |
+| COMMERCE-001 | 偏好、黑名单、计价、参数和订单意向规则 | verified | Offline |
+| E2E-001 | 真实 Kimi 工具路由、Fork/DAG 与边界 | verified | Live E2E |
+| CTX-001 | 三模式真实 Kimi 长会话 A/B/C | verified | Live Context |
+| OBS-001 | Langfuse Trace 回读与事件覆盖 | verified（抽样） | Live E2E + Live Context |
+| BOUNDARY-PAYMENT | 真实库存、支付、退款和第三方平台下单 | boundary | 不实现 |
 
-这里的 `verified` 表示本地候选报告有真实运行结果；由于当前 Git 工作区尚未提交，它们还不是正式发布快照。
+## 三套正式快照
 
-## 最新原始候选
+### Offline：`20260909T073736Z-offline`
 
-最终代码已完成新的完整 offline 候选回归。由于工作区未提交，它仍不能发布为正式快照。
-
-### Offline：`20260908T160311Z-offline`
-
-- 套件总状态：通过。
+- Commit：`fa1ca544bbfcd720918bbbed835d4f95bce57472`。
 - 170 项测试通过；总行覆盖率 73.42%。
-- Domain 行覆盖率 93.19%，Application 行覆盖率 85.79%。
-- 关键领域规则行/分支覆盖率均为 100%。
-- 4 路 I/O P50 串行 0.248 秒、并行 0.070 秒，加速 3.55×。
-- 重复派发率与上下文泄漏率均为 0；部分失败保留率、DAG 正确率、中断恢复率与幂等回写率均为 100%。
-- 17 类模型、工具、检索、存储、上下文和子 Agent 故障注入全部通过。
-- 品类阈值开发集选择 0.01，Recall@10 93.33%、负例拒识率 86.67%。
-- 品类冻结集最终策略 Recall@10 94.44%、MRR@10 80.37%、NDCG@10 81.79%、负例拒识率 90%。
-- 商品冻结集最终策略 Recall@10 96.27%、MRR@10 93.22%、NDCG@10 92.58%。
+- Domain 行覆盖率 93.19%，Application 行覆盖率 85.79%，关键领域规则行/分支覆盖率 100%。
+- 4 路 I/O P50 串行 0.240 秒、并行 0.070 秒，加速 3.43×。
+- 重复派发率和上下文泄漏率为 0；部分失败保留、DAG、中断恢复和幂等回写均为 100%。
+- 17 类故障注入 17/17 通过。
+- 品类最终策略：Recall@10 94.44%、MRR@10 80.37%、NDCG@10 81.79%、负例拒识率 90%。
+- 商品最终策略：Recall@10 96.27%、MRR@10 93.22%、NDCG@10 92.58%。
+- 发布脱敏扫描通过。
 
-### Live：`20260908T143344Z-live`
+### Live E2E：`20260909T094839Z-live-e2e`
 
-- 套件总状态：通过。
-- 36 次端到端运行完成 36 次，通过率 97.22%；唯一失败是一次品类知识请求未调用工具。
-- E2E 使用 130 次请求、550,589 Token；上下文实验使用 120 次请求、128,995 Token。
-- 整个 live 套件合计恰好 250 次请求、679,584 Token，没有超过硬上限。
-- 上下文 `full` 相比 `off` 输入 Token 降低 32.21%，信息保留率 100%，稳定前缀率 100%。
-- Langfuse 成功回读 3/3 条完整主/子 Agent Trace，run/trace 映射率 100%，Fork、压缩和 final 事件摘要均存在。
+- Commit：`bd67b9a9a03e004760e835dc6e1dd5b5cf08c05c`。
+- 12 个场景 × 3 次，36/36 通过。
+- 启动 123 次模型请求，完成并记录 116 次响应；观测 515,793 Token。
+- 模型并发 10、子 Agent 并发 8、启动间隔 0.75 秒，未触发请求/Token 上限。
+- Langfuse 回读 3/3 条抽样 Trace，其中 2 条满足完整主/子拓扑；Fork 与 final 事件存在，run/trace 映射率 100%。
+- 发布脱敏扫描通过。
 
-## 发布前还需执行
+### Live Context：`20260909T141654Z-live-context`
 
-1. 审查当前改动并提交，确保 `git status --short` 为空。
-2. 在干净 Commit 上分别执行 live-e2e 和 live-context；旧的组合式 live 原始报告只保留为历史候选。
-3. 分别执行 `publish --run-id`，让发布器完成脱敏扫描并生成 `docs/interview_evidence/results/` 快照。
-4. 两套 live 的 `observability.json` 分别验证主/子 Agent 与上下文治理 Trace；抽样 Trace 不能宣称全量遥测 100% 上传。
-5. 将简历每个数字链接到最新正式快照；没有报告支持的耗时收益继续留为 planned。
+- Commit：`38e4fdf8b9436bb083d3a75ce2aa675e46cf7add`。
+- `off`、`deterministic`、`full` × 3 会话 × 8 轮全部通过。
+- `full` 相比 `off` 的 AgentLoop 输入 Token 降低 43.30%，信息保留率和同 Epoch 前缀稳定率为 100%。
+- 7 次摘要尝试中 5 次产生净压缩，2 次被安全拒绝；卸载 7 个大工具结果，滚动 7 次 Epoch。
+- 共 107 次模型请求、118,743 个观测 Token。
+- Langfuse 回读 3/3 条抽样 Trace，其中 1 条满足完整治理拓扑；compression 事件存在，run/trace 映射率 100%。
+- 发布脱敏扫描通过。
+
+## 后续维护规则
+
+1. 修改对应能力后，只重跑受影响套件，并在干净 Commit 上重新发布。
+2. 简历数字引用正式快照，不用本地临时候选覆盖。
+3. 新快照若回归失败，保留旧 verified 结果，同时将新问题记录为待修复，不能选择性隐藏失败样本。
+4. 每次投递前检查 [results/latest.json](results/latest.json)、[诚实边界](boundaries.md) 和 [面试速讲](interview_brief.md) 是否一致。

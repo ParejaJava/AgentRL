@@ -1,0 +1,49 @@
+{
+  "counts": {
+    "train": 224,
+    "dev": 56,
+    "test": 84
+  },
+  "groups": 26,
+  "dataset_sha256": "4a620bf6cc887313556e0a354299ec1632acc6aeb991ae8591daf98a6eaced58",
+  "train_sha256": "810a38fbdb25013fbfa4bd28efefa58020586d0caf998bb2a20f711cded3f896",
+  "dev_sha256": "0c1ae81efded7fdf8dc89383daa858e593706fed8dca0573a626d70dea78ee3e",
+  "test_sha256": "79070ea55bd58126d52161066f72b41525b50d12558e7b4fadd525c86e1aa08f",
+  "source": "authored_synthetic",
+  "entities": {
+    "train": [
+      "咖啡杯",
+      "旅行三件套",
+      "威士忌酒杯",
+      "保温壶",
+      "帆布包",
+      "登山杖",
+      "充电器",
+      "台灯",
+      "收纳盒",
+      "雨伞",
+      "运动水壶",
+      "枕头",
+      "手套",
+      "鼠标",
+      "行李箱",
+      "茶壶"
+    ],
+    "dev": [
+      "咖啡机",
+      "瑜伽垫",
+      "餐具",
+      "靠垫"
+    ],
+    "test": [
+      "蓝牙音箱",
+      "露营椅",
+      "电动牙刷",
+      "背包",
+      "键盘",
+      "望远镜"
+    ]
+  },
+  "tool_schema_sha256": "d019d016e67a768f8f47c993a768cf94c9df91fab7e89df72c5653d52424263f",
+  "limitations": "Small synthetic benchmark; shared task families, disjoint entities and surface templates. Keyword checks do not prove semantic correctness."
+}

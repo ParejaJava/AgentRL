@@ -301,6 +301,10 @@ def test_item_search_tool_exposes_only_business_search_arguments() -> None:
         "top_k",
         "price_max_major",
         "target_currency",
+        "quantity",
+        "price_basis",
+        "excluded_brands",
+        "required_brand",
     }
     assert payload["index_id"] == "amazon-cn"
     assert payload["items"][0]["product"]["item_id"] == "light"

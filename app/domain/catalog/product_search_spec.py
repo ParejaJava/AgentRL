@@ -2,6 +2,7 @@
 
 import math
 from dataclasses import dataclass
+from typing import Literal
 
 from .money import Money, normalize_currency
 
@@ -18,6 +19,9 @@ class ProductSearchSpec:
     target_currency: str = "CNY"
     price_max_major: float | None = None
     quantity: int = 1
+    price_basis: Literal["unit", "subtotal", "landed"] = "unit"
+    excluded_brands: tuple[str, ...] = ()
+    required_brand: str | None = None
 
     def __post_init__(self) -> None:
         """规范化查询槽位，并拒绝不可能安全执行的搜索条件。"""
@@ -35,15 +39,25 @@ class ProductSearchSpec:
             raise TypeError("quantity 必须是整数")
         if self.quantity < 1:
             raise ValueError("quantity 必须大于 0")
+        if self.price_basis not in {"unit", "subtotal", "landed"}:
+            raise ValueError("price_basis 必须为 unit、subtotal 或 landed")
+        if self.price_basis == "landed" and not (self.ship_to or "").strip():
+            raise ValueError("到手总价预算必须明确配送国家")
+        excluded = tuple(
+            dict.fromkeys(b.strip() for b in self.excluded_brands if b.strip())
+        )
+        required = self.required_brand.strip() if self.required_brand else None
+        if required and required.casefold() in {b.casefold() for b in excluded}:
+            raise ValueError("品牌要求与排除条件冲突，请先确认是否撤回排除条件")
+        object.__setattr__(self, "excluded_brands", excluded)
+        object.__setattr__(self, "required_brand", required)
 
         category = self.category.strip() if self.category else None
         if category and len(category) > 100:
             raise ValueError("category 不能超过 100 个字符")
         ship_to = self.ship_to.strip().upper() if self.ship_to else None
         if ship_to and (
-            len(ship_to) != 2
-            or not ship_to.isascii()
-            or not ship_to.isalpha()
+            len(ship_to) != 2 or not ship_to.isascii() or not ship_to.isalpha()
         ):
             raise ValueError("ship_to 必须是两位字母国家或地区代码")
         locale = self.locale.strip()

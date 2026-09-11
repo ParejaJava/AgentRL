@@ -24,6 +24,8 @@ flowchart TB
 - A：建立 Domain/Application/Infrastructure/Presentation 分层、端口与 Composition Root，并用 AST 回归测试阻止反向依赖。
 - R：离线证据套件输出依赖边与零违规结果；覆盖率和固定 Commit 一起归档。未经报告不得声称生产收益。
 
+正式快照 `20260909T073736Z-offline` 的 AST 扫描违规数为 0；170 项自动化测试通过，总行覆盖率 73.42%，Domain 行覆盖率 93.19%，Application 行覆盖率 85.79%，关键领域规则行/分支覆盖率均为 100%。AST 结果只证明静态 import 方向，运行时业务正确性由对应测试和专项报告承担。证据见 [architecture.json](results/20260909T073736Z-offline/architecture.json)、[tests.json](results/20260909T073736Z-offline/tests.json) 和 [coverage.json](results/20260909T073736Z-offline/coverage.json)。
+
 ## 常见追问
 
 为什么不是“完整 DDD”？因为该项目规模尚不需要为每个子域建立独立聚合仓储与复杂事件一致性；采用 DDD-lite 是为了保护规则和边界，而不是堆叠名词。

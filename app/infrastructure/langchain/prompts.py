@@ -8,6 +8,16 @@ _SHOPPING_TOOL_GUIDANCE = """根据任务自主选择工具，并清楚说明必
   必须分别填写 category、ship_to 或 price_max_major，不能只写进自然语言查询。
   传入 ship_to 时商品卡会包含估算到手价；它不是结账承诺，回答时应说明估算属性。
   品类常识不能代替商品工具返回的商品事实和价格。
+- 有预算但币种未确认时先追问，不得根据收货地猜币种。quantity 是购买件数，top_k 是候选款数。
+  price_basis=unit 表示单件标价，subtotal 表示商品小计，landed 表示含运税的估算到手总价；到手预算必须有配送地。
+  excluded_brands 和 required_brand 必须保留已确认的品牌约束；冲突时先追问。
+- resolve_product_category 只按商品目录解析品类。目录返回多个或零个匹配时先确认，不可自行改成近似品类。
+- confirmed_shopping_constraints 中的 values 是已确认条件，pending 是待确认项；子任务不能覆盖或丢失它们。
+- item_search 返回非空商品时，最终只输出 JSON 对象 {"item_ids":["实际商品编号"]}，不要代码围栏。
+  只选本轮工具实际返回的不同商品编号，不超过 top_k；应用会用工具中的 SKU、价格和数量生成商品卡。
+  没有商品时不要生成商品编号，说明当前检索范围内没有符合项；只能根据 filtered_out 说明已知原因。
+  不得从空结果推断全站无货，也不得未经用户允许放宽预算、配送、品牌或数量。
+  工具超时仅在允许重试时重试一次；熔断或不可用时说明失败，不能伪装成无商品。
 - web_search 仅用于可能变化的政策、法规和平台规则，并在回答中保留来源 URL；
   不用网页结果替代 item_search 的商品库存和价格快照。
 - working_memory 中的 [like]/[dislike] 来自当前买家的跨会话偏好；推荐时应应用，

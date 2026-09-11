@@ -1,6 +1,7 @@
 """创建上下文隔离、可并发执行的同质子 AgentLoop。"""
 
 import asyncio
+import copy
 import json
 import random
 from collections.abc import Callable, Sequence
@@ -138,6 +139,10 @@ class ForkedAgentLoop:
             run_id=str(uuid4()),
             trace_id=parent.trace_id if parent is not None else None,
             session_dir=child_session_dir,
+            parent_run_id=parent.run_id if parent is not None else None,
+            confirmed_requirements=copy.deepcopy(parent.confirmed_requirements)
+            if parent is not None
+            else None,
         )
         if self._observability is not None:
             config["callbacks"] = self._observability.create(

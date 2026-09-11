@@ -33,6 +33,7 @@ from app.infrastructure.resilience import SharedCircuitBreaker
 
 __all__ = [
     "EvidenceBudgetExceeded",
+    "ModelAttemptBudgetMiddleware",
     "ModelGatewayMiddleware",
     "ToolHarnessMiddleware",
     "ToolResilienceConfig",
@@ -65,8 +66,12 @@ class ModelGatewayMiddleware(AgentMiddleware):
         evidence_budget: EvidenceUsageBudget | None = None,
         fallback_model: BaseChatModel | None = None,
         lite_model: BaseChatModel | None = None,
+        semaphore: asyncio.Semaphore | None = None,
+        external_attempt_accounting: bool = False,
     ) -> None:
-        self._semaphore = asyncio.Semaphore(max_concurrency)
+        self._semaphore = (
+            semaphore if semaphore is not None else asyncio.Semaphore(max_concurrency)
+        )
         self._max_retries = max(0, max_retries)
         self._evidence_budget = evidence_budget or EvidenceUsageBudget(
             max_total_requests=max_total_requests,
@@ -75,6 +80,7 @@ class ModelGatewayMiddleware(AgentMiddleware):
         )
         self._fallback = fallback_model
         self._lite = lite_model
+        self._external_attempt_accounting = external_attempt_accounting
 
     def usage_snapshot(self) -> dict[str, int]:
         """返回进程内模型网关计数，供受控评测和运行诊断使用。"""
@@ -121,12 +127,7 @@ class ModelGatewayMiddleware(AgentMiddleware):
                 await self._reserve_request()
                 try:
                     response = await handler(selected)
-                    response_usage = _response_usage(response)
-                    await self._evidence_budget.record_usage(
-                        input_tokens=response_usage[0],
-                        output_tokens=response_usage[1],
-                    )
-                    _charge_budget(response, "model")
+                    await self._record_response(response, "model")
                     return response
                 except Exception as exc:  # noqa: BLE001 - 需兼容多供应商异常。
                     last_error = exc
@@ -136,12 +137,7 @@ class ModelGatewayMiddleware(AgentMiddleware):
             if self._fallback is not None:
                 await self._reserve_request()
                 response = await handler(selected.override(model=self._fallback))
-                response_usage = _response_usage(response)
-                await self._evidence_budget.record_usage(
-                    input_tokens=response_usage[0],
-                    output_tokens=response_usage[1],
-                )
-                _charge_budget(response, "fallback_model")
+                await self._record_response(response, "fallback_model")
                 return response
             assert last_error is not None
             raise last_error
@@ -149,7 +145,42 @@ class ModelGatewayMiddleware(AgentMiddleware):
     async def _reserve_request(self) -> None:
         """原子检查证据硬上限、执行请求间隔并预留一个模型请求。"""
 
-        await self._evidence_budget.reserve_request()
+        if not self._external_attempt_accounting:
+            await self._evidence_budget.reserve_request()
+
+    async def _record_response(self, response: ModelResponse, source: str) -> None:
+        if not self._external_attempt_accounting:
+            input_tokens, output_tokens = _response_usage(response)
+            await self._evidence_budget.record_usage(
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            )
+            _charge_budget(response, source)
+
+
+class ModelAttemptBudgetMiddleware(AgentMiddleware):
+    """Count each physical attempt, including retries inside context governance.
+
+    Install after governance and pair with a gateway configured for external
+    attempt accounting; the gateway still controls concurrency and model routing.
+    """
+
+    def __init__(self, budget: EvidenceUsageBudget) -> None:
+        self._budget = budget
+
+    async def awrap_model_call(
+        self,
+        request: ModelRequest,
+        handler: Callable[[ModelRequest], Awaitable[ModelResponse]],
+    ) -> ModelResponse:
+        await self._budget.reserve_request()
+        response = await handler(request)
+        input_tokens, output_tokens = _response_usage(response)
+        await self._budget.record_usage(
+            input_tokens=input_tokens, output_tokens=output_tokens
+        )
+        _charge_budget(response, "model_attempt")
+        return response
 
 
 class ToolResilienceMiddleware(AgentMiddleware):
@@ -181,7 +212,10 @@ class ToolResilienceMiddleware(AgentMiddleware):
         thread_id = require_context().thread_id
         async with self._lock:
             opened = self._opened_at.get(tool_name)
-            if opened is not None and time.monotonic() - opened < self._config.recovery_seconds:
+            if (
+                opened is not None
+                and time.monotonic() - opened < self._config.recovery_seconds
+            ):
                 return _tool_error(request, tool_name, "circuit_open", "工具熔断中")
             recent = self._recent[thread_id]
             if list(recent).count(signature) >= self._config.repeated_call_limit - 1:
@@ -302,9 +336,7 @@ class ToolHarnessMiddleware(AgentMiddleware):
             "[FILTERED_TOOL_INSTRUCTION]",
             original,
         )
-        warnings: list[str] = (
-            [prerequisite_warning] if prerequisite_warning else []
-        )
+        warnings: list[str] = [prerequisite_warning] if prerequisite_warning else []
         if injection_count:
             warnings.append("工具结果中的疑似提示词注入已过滤")
         required = self._REQUIRED_FIELDS.get(tool_name)
@@ -320,6 +352,8 @@ class ToolHarnessMiddleware(AgentMiddleware):
                 business_status = parsed.get("status")
                 expected_error = business_status in {
                     "confirmation_required",
+                    "needs_clarification",
+                    "unavailable",
                     "invalid_request",
                     "not_found",
                     "error",
